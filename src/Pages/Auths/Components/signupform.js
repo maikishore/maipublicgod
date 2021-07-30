@@ -1,10 +1,12 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import ErrorAlert from "../../../Commons/ErrorAlert";
 import useAuth from "../../../GlobalContexts/authcontext";
 
 
 
 function SignUpForm() {
+  const history=useHistory()
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
   const confirmpasswordRef = React.useRef();
@@ -22,13 +24,13 @@ function SignUpForm() {
       try {
         setErrorMessage("");
         setLoading(true)
-        console.log(passwordRef.current.value ,confirmpasswordRef.current.value)
 
         await signup(
           emailRef.current.value,
           passwordRef.current.value,
-         
+          
         );
+        history.push("/login")
        
       } catch {
         setErrorMessage("Failed to create an account");
@@ -79,7 +81,9 @@ function SignUpForm() {
          
           <label class="label">
             Already have an acccount ?
-            <button class="btn btn-link">Login In</button>
+            <button onClick={()=>{
+              history.push("/signin")
+            }} class="btn btn-link">Login In</button>
           </label>
         </div>
         <div class="form-control mt-6">

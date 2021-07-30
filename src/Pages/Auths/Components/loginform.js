@@ -1,15 +1,46 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom';
+import ErrorAlert from '../../../Commons/ErrorAlert';
+import useAuth from '../../../GlobalContexts/authcontext';
+
 
 function LoginForm() {
+  const history=useHistory()
+  
+  const emailRef = React.useRef();
+  const passwordRef = React.useRef();
+  const { login } = useAuth();
+
+  const [errorMessage, setErrorMessage] = React.useState("")
+  const [loading, setLoading] = React.useState(false)
+
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+
+    try {
+      setErrorMessage("")
+      setLoading(true)
+      await login(emailRef.current.value, passwordRef.current.value)
+      history.push("/test")
+    } catch {
+      setErrorMessage("Failed to log in")
+    }
+
+    setLoading(false)
+  }
+
     return (
       
         <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+            {errorMessage?<ErrorAlert message={errorMessage}/>:""}
           <div class="card-body  ">
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Email</span>
               </label>
               <input
+              ref={emailRef}
                 type="email"
                 placeholder="email"
                 class="input input-bordered font-semibold"
@@ -20,21 +51,24 @@ function LoginForm() {
                 <span class="label-text">Password</span>
               </label>
               <input
+              ref={passwordRef}
                 type="password"
                 placeholder="password"
                 class="input input-bordered font-semibold"
               />
               <label class="label">
-                <a href="#" class="label-text-alt font-semibold">
+                <button onClick={()=>{
+                  history.push("/reset")
+                }} href="#" class="label-text-alt font-semibold">
                   Forgot password?
-                </a>
+                </button>
               </label>
             </div>
             <div class="form-control mt-6">
-              <input type="button" value="Login" class="btn btn-primary" />
+              <input onClick={handleSubmit} type="button"  value="Login" class="btn btn-primary" />
             </div>
   
-            <button class="btn btn-link">Need account ? Sign Up</button>
+            <button  class="btn btn-link">Need account ? Sign Up</button>
           </div>
         </div>
     
