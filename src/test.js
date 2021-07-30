@@ -16,53 +16,138 @@ export default function Test() {
     <div className="">
       <Logo src={maibrain_logo} />
 
-      <LoginForm />
+      <ResetForm />
+    </div>
+  );
+}
+
+function SignUpForm() {
+  return (
+    <div className="flex flex-nowrap my-8 lg:items-center lg:flex-row  sm:flex-col justify-center sm:items-center ">
+      <div class="md:w-3/5 sm:w-2/3 ">
+        <img alt="" src={login_illustration} />
+      </div>
+      <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+        <div class="card-body  ">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="email"
+              class="input input-bordered font-semibold"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="password"
+              class="input input-bordered font-semibold"
+            />
+            <label class="label">
+              <span class="label-text">Confirm Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="password again"
+              class="input input-bordered font-semibold"
+            />
+            <label class="label">
+              Already have an acccount ?
+              <button class="btn btn-link">Login In</button>
+
+            </label>
+          </div>
+          <div class="form-control mt-6">
+            <input type="button" value="Sign Up" class="btn btn-primary" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LoginForm() {
+  return (
+    <div className="flex flex-nowrap my-8 lg:items-center lg:flex-row  sm:flex-col justify-center sm:items-center ">
+      <div class="md:w-3/5 sm:w-2/3 ">
+        <img alt="" src={login_illustration} />
+      </div>
+      <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+        <div class="card-body  ">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="email"
+              class="input input-bordered font-semibold"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="password"
+              class="input input-bordered font-semibold"
+            />
+            <label class="label">
+              <a href="#" class="label-text-alt font-semibold">
+                Forgot password?
+              </a>
+            </label>
+          </div>
+          <div class="form-control mt-6">
+            <input type="button" value="Login" class="btn btn-primary" />
+          </div>
+
+          <button class="btn btn-link">Need account ? Sign Up</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ResetForm() {
+  return (
+    <div className="flex flex-nowrap my-8 lg:items-center lg:flex-row  sm:flex-col justify-center sm:items-center ">
+      <div class="md:w-3/5 sm:w-2/3 ">
+        <img alt="" src={login_illustration} />
+      </div>
+      <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+        <div class="card-body  ">
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Email</span>
+            </label>
+            <input
+              type="email"
+              placeholder="email"
+              class="input input-bordered font-semibold"
+            />
+          </div>
+        
+          <div class="form-control mt-6">
+            <input type="button" value="Reset" class="btn btn-primary" />
+          </div>
+
+        </div>
+      </div>
     </div>
   );
 }
 
 
 
-function LoginForm() {
-  return (<div className="flex flex-nowrap my-8 lg:items-center lg:flex-row  sm:flex-col justify-center sm:items-center ">
-  <div class="md:w-3/5 sm:w-2/3 ">
-    <img alt="" src={login_illustration} />
-  </div>
-  <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
-    <div class="card-body  ">
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Email</span>
-        </label>
-        <input
-          type="email"
-          placeholder="email"
-          class="input input-bordered font-semibold"
-        />
-      </div>
-      <div class="form-control">
-        <label class="label">
-          <span class="label-text">Password</span>
-        </label>
-        <input
-          type="password"
-          placeholder="password"
-          class="input input-bordered font-semibold"
-        />
-        <label class="label">
-          <a href="#" class="label-text-alt font-semibold">
-            Forgot password?
-          </a>
-        </label>
-      </div>
-      <div class="form-control mt-6">
-        <input type="button" value="Login" class="btn btn-primary" />
-      </div>
-    </div>
-  </div>
-</div>)
 
-}
+
 
 function Logo(props) {
   return (
