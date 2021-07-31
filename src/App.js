@@ -6,6 +6,9 @@ import Login from "./Pages/Auths/Login";
 import SignUp from "./Pages/Auths/Signup";
 import Reset from "./Pages/Auths/Reset";
 import { AuthProvider } from "./GlobalContexts/authcontext";
+import PrivateRoute from "./Routes/PrivateRoute";
+import Profile from "./Pages/Dashboard/profile";
+
 
 function App() {
   return (
@@ -17,11 +20,11 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/" component={<div>Welcome</div>} />
-            <Route exact path="/test" component={Test} />
-            <Route exact path="/signup" component={SignUp} />
-            <Route exact path="/signin" component={Login} />
-            <Route exact path="/reset" component={Reset} />
-
+            <Route  path="/test" component={Test} />
+            <Route  path="/signup" component={SignUp} />
+            <Route  path="/login" component={Login} />
+            <Route  path="/reset" component={Reset} />
+            <PrivateRoute path="/profile" component={Profile} />
 
             
 
