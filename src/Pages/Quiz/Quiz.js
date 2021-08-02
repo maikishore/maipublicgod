@@ -1,9 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import ErrorAlert from "./Commons/ErrorAlert";
-import Navbar from "./Commons/Navbar/Navbar";
-import useAuth from "./GlobalContexts/authcontext";
+
+
 import { HiAnnotation, HiOutlinePencil, HiPencil, HiPencilAlt, HiQrcode } from "react-icons/hi";
+import Navbar from "../../Commons/Navbar/Navbar";
+
+
+
 
 function QuizTypeCard(props) {
   return (
@@ -19,7 +22,7 @@ function QuizTypeCard(props) {
   );
 }
 
-function Test() {
+function Quiz() {
 const data=[
   {icon:<HiAnnotation />,text:"ONE",goto:"/test"},
   {icon:<HiPencil />,text:"two",goto:"/test"},
@@ -53,4 +56,4 @@ const Qcards=data.map((each)=>{
     </div>
   );
 }
-export default Test;
+export default Quiz;
