@@ -3,54 +3,131 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "./Commons/ErrorAlert";
 import Navbar from "./Commons/Navbar/Navbar";
 import useAuth from "./GlobalContexts/authcontext";
-import { HiAnnotation, HiOutlinePencil, HiPencil, HiPencilAlt, HiQrcode } from "react-icons/hi";
+import ReactCardFlip from "react-card-flip";
+import {
+  FaVolumeUp,
+  FaVolumeMute
+} from "react-icons/fa";
+import Speak from "./Services/tts";
 
-function QuizTypeCard(props) {
+
+
+
+
+function ClozeCard(props) {
+  const [toggleFlip, setToggleFlip] = React.useState(false);
+  const [toogleSound, setToggleSound] = React.useState(true);
+
   return (
-    <div 
-    onClick={props.handleClick}
-    class="mx-2  flex btn btn-ghost card w-full h-60 lg:w-40 lg:h-1/3  flex-col  flex-auto bg-white  justify-center items-center hover:shadow-xl hover:bg-green-200">
-      <div>
-        <p class="p-2 text-8xl "> {props.icon} </p>
-       
-      </div>
-      <div class="p-2 text-lg">{props.text}</div>
+    <div class="w-2/3 cursor-pointer shadow hover:shadow-xl  justify-center items-center  ">
+      <ReactCardFlip flipSpeedBackToFront="0.8" flipSpeedFrontToBack="0.8" class="" isFlipped={toggleFlip} flipDirection="vertical">
+        <div
+          onClick={() => {
+            setToggleFlip(!toggleFlip);
+          }}
+          class="py-40  bg-white"
+        >
+          <div class="flex flex-col justify-center items-center">  
+           <p class="break-words text-center text-lg font-bold">
+            {props.question}
+
+          </p> 
+         
+          
+          </div>
+         
+
+          
+         
+        </div>
+
+        <div
+          onClick={() => {
+            setToggleFlip(!toggleFlip);
+          }}
+          class="py-40 bg-white"
+        >
+          <p class="break-words text-center text-lg font-bold">
+            {props.answer}
+          </p>
+        </div>
+      </ReactCardFlip>
+      <p onClick={(e)=>{
+        setToggleSound(!toogleSound)
+        if(toogleSound) {
+
+          Speak(true,toggleFlip?props.answer:props.question)
+          
+        }
+        else {
+          window.speechSynthesis.cancel()
+        
+          
+        }
+        
+      }} className="btn  btn-ghost mt-2 p-2 text-xl text-blue-800"> 
+      
+    {toogleSound?<FaVolumeUp />:<FaVolumeMute />}
+      
+      </p>
+
     </div>
   );
 }
 
 function Test() {
-const data=[
-  {icon:<HiAnnotation />,text:"ONE",goto:"/test"},
-  {icon:<HiPencil />,text:"two",goto:"/test"},
-  {icon:<HiPencilAlt />,text:"three",goto:"/test"},
-  {icon:<HiQrcode />,text:"four",goto:"/test"},
-  {icon:<HiQrcode />,text:"five",goto:"/test"},
-  {icon:<HiQrcode />,text:"six",goto:"/test"},
-]
-
-const Qcards=data.map((each)=>{
-  return <QuizTypeCard key={each.text} icon={each.icon} text={each.text} handleClick={()=>{
-    console.log(each.goto) 
-  }}/>
-})
+  const data = [
+    { question: "This is first questionThis is first questioThis is first question", answer: "This is first answer" },
+    { question: "This is second question", answer: "This is first answer" },
+    { question: "This is third question", answer: "This is first answer" },
+    { question: "This is fourth question", answer: "This is first answer" },
+  ];
 
 
 
+
+  
+  const clozecards = data.map((each, index) => {
+    return (
+      <div
+        id={"item" + index.toString()}
+        class="flex items-center justify-center w-full text-center shadow carousel-item"
+      >
+        <ClozeCard question={each.question} answer={each.answer} />
+      </div>
+    );
+  });
+
+  const clozenavigation = data.map((each, index) => {
+    return (
+      <a href={`/test#item${index.toString()}`} class="btn btn-xs btn-circle">
+        {(index + 1).toString()}
+      </a>
+    );
+  });
 
   return (
-    <div class="bg-gray-600 ">
+    <div class=" ">
       <Navbar />
-      
-      <div class="flex  justify-center bg-gray-600 h-screen ">
+      <div
+        style={{ height: "80vh" }}
+        class="w-full   bg-gray-200 text-center carousel"
+      >
+        {clozecards}
 
-
- 
-      <div class="flex  flex-col w-full  lg:flex-row justify-center items-center">  {Qcards} </div>
-
+       
       </div>
- 
+  
+      <div class="flex justify-center w-full my-1 space-x-2">
+        {clozenavigation}
+      </div>
     </div>
   );
 }
+
+
+
+
+
+
 export default Test;
