@@ -10,6 +10,8 @@ import PrivateRoute from "./Routes/PrivateRoute";
 import Profile from "./Pages/Dashboard/profile";
 import Cloze from "./Pages/Quiz/Cloze/Cloze";
 import Quiz from "./Pages/Quiz/Quiz";
+import QandA from "./Pages/Quiz/QnA/QnA";
+import Mcq from "./Pages/Quiz/MCQ/mcq";
 
 
 function App() {
@@ -30,8 +32,9 @@ function App() {
             <PrivateRoute path="/quiz" component={Quiz} />
 
             <PrivateRoute path="/cloze" component={Cloze} />
+            <PrivateRoute path="/qna" component={QandA} />
+            <PrivateRoute path="/mcq" component={Mcq} />
 
-            
 
       
           </Switch>

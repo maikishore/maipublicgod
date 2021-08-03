@@ -4,7 +4,7 @@ import QnACard from './components/QnACard';
 
 
 
-function QnA() {
+function QandA() {
   const data = [
     {
       question:
@@ -29,7 +29,7 @@ function QnA() {
 
   const clozenavigation = data.map((each, index) => {
     return (
-      <a href={`/cloze#item${index.toString()}`} className="btn btn-xs btn-circle">
+      <a href={`/qna#item${index.toString()}`} className="btn btn-xs btn-circle">
         {(index + 1).toString()}
       </a>
     );
@@ -53,4 +53,4 @@ function QnA() {
 }
 
 
-export default QnA;
+export default QandA;
