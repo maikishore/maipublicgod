@@ -11,11 +11,11 @@ function ClozeCard(props) {
   const [toogleSound, setToggleSound] = React.useState(true);
 
   return (
-    <div class="w-2/3 cursor-pointer shadow hover:shadow-xl  justify-center items-center  ">
+    <div className="w-2/3 cursor-pointer shadow hover:shadow-xl  justify-center items-center  ">
       <ReactCardFlip
         flipSpeedBackToFront="0.8"
         flipSpeedFrontToBack="0.8"
-        class=""
+        className=""
         isFlipped={toggleFlip}
         flipDirection="vertical"
       >
@@ -23,10 +23,10 @@ function ClozeCard(props) {
           onClick={() => {
             setToggleFlip(!toggleFlip);
           }}
-          class="py-40  bg-white"
+          className="py-40  bg-white"
         >
-          <div class="flex flex-col justify-center items-center">
-            <p class="break-words text-center text-lg font-bold">
+          <div className="flex flex-col justify-center items-center">
+            <p className="break-words text-center text-lg font-bold">
               {props.question}
             </p>
           </div>
@@ -36,9 +36,9 @@ function ClozeCard(props) {
           onClick={() => {
             setToggleFlip(!toggleFlip);
           }}
-          class="py-40 bg-white"
+          className="py-40 bg-white"
         >
-          <p class="break-words text-center text-lg font-bold">
+          <p className="break-words text-center text-lg font-bold">
             {props.answer}
           </p>
         </div>

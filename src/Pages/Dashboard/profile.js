@@ -16,7 +16,7 @@ const styles = {
 };
 
 function Profile() {
-  const classes = styles;
+  const classNamees = styles;
   const [errorMessage, setErrorMessage] = React.useState("");
   const { currentUser, logout, updateEmail } = useAuth();
   const history = useHistory();
@@ -25,7 +25,7 @@ function Profile() {
 
   async function handleLogout() {
     setErrorMessage("");
-    setLoading(true)
+    setLoading(true);
     try {
       await logout();
       history.push("/login");
@@ -34,7 +34,7 @@ function Profile() {
       setErrorMessage("Failed to logout ");
       console.log("not logged out");
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   async function handleUpdate() {
@@ -48,36 +48,40 @@ function Profile() {
   }
 
   return (
-    <div className={classes.update_profile_container}>
+    <div className={classNamees.update_profile_container}>
       {errorMessage ? <ErrorAlert message={errorMessage} /> : ""}
 
-      <div class="card w-1/3 h-2/3 text-center shadow-2xl">
-        <figure class="px-10 pt-10">
-          <img src="https://picsum.photos/id/1005/400/250" class="rounded-xl" />
+      <div className="card w-1/3 h-2/3 text-center shadow-2xl">
+        <figure className="px-10 pt-10">
+          <img src="https://picsum.photos/id/1005/400/250" className="rounded-xl" />
         </figure>
-        <div class="card-body">
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Email</span>
+        <div className="card-body">
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Email</span>
             </label>
             <input
               ref={emailRef}
               type="text"
               placeholder={currentUser.email}
-              class="input input-bordered"
+              className="input input-bordered"
             />
           </div>
 
-          <div class="justify-evenly card-actions">
-            <button disabled={loading} onClick={handleUpdate} class="btn btn-outline btn-primary">
+          <div className="justify-evenly card-actions">
+            <button
+              disabled={loading}
+              onClick={handleUpdate}
+              className="btn btn-outline btn-primary"
+            >
               Update
             </button>
             <button
-            disabled={loading}
+              disabled={loading}
               onClick={() => {
                 handleLogout();
               }}
-              class="btn btn-outline btn-secondary"
+              className="btn btn-outline btn-secondary"
             >
               Log Out
             </button>

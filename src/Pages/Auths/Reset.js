@@ -15,7 +15,7 @@ function Reset() {
     return (
         <div><Logo src={logo} />
         <div className="flex flex-nowrap my-8 lg:items-center lg:flex-row  sm:flex-col justify-center sm:items-center ">
-        <div class="md:w-3/5 sm:w-2/3 ">
+        <div className="md:w-3/5 sm:w-2/3 ">
           <img alt="" src={login_illustration} />
         </div>
    <ResetForm />

@@ -29,54 +29,59 @@ function LoginForm() {
   }
 
   return (
-    <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+    <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
       {errorMessage ? <ErrorAlert message={errorMessage} /> : ""}
-      <div class="card-body  ">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Email</span>
+      <div className="card-body  ">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Email</span>
           </label>
           <input
             ref={emailRef}
             type="email"
             placeholder="email"
-            class="input input-bordered font-semibold"
+            className="input input-bordered font-semibold"
           />
         </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Password</span>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Password</span>
           </label>
           <input
             ref={passwordRef}
             type="password"
             placeholder="password"
-            class="input input-bordered font-semibold"
+            className="input input-bordered font-semibold"
           />
-          <label class="label">
+          <label className="label">
             <button
               onClick={() => {
                 history.push("/reset");
               }}
               href="#"
-              class="label-text-alt font-semibold"
+              className="label-text-alt font-semibold"
             >
               Forgot password?
             </button>
           </label>
         </div>
-        <div class="form-control mt-6">
+        <div className="form-control mt-6">
           <input
             onClick={handleSubmit}
             type="button"
             value="Login"
-            class="btn btn-primary"
+            className="btn btn-primary"
           />
         </div>
 
-        <button onClick={()=>{
-          history.push("/signup")
-        }} class="btn btn-link">Need account ? Sign Up</button>
+        <button
+          onClick={() => {
+            history.push("/signup");
+          }}
+          className="btn btn-link"
+        >
+          Need account ? Sign Up
+        </button>
       </div>
     </div>
   );

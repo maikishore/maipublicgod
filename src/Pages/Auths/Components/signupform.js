@@ -3,10 +3,8 @@ import { useHistory } from "react-router-dom";
 import ErrorAlert from "../../../Commons/ErrorAlert";
 import useAuth from "../../../GlobalContexts/authcontext";
 
-
-
 function SignUpForm() {
-  const history=useHistory()
+  const history = useHistory();
   const emailRef = React.useRef();
   const passwordRef = React.useRef();
   const confirmpasswordRef = React.useRef();
@@ -23,85 +21,76 @@ function SignUpForm() {
     } else {
       try {
         setErrorMessage("");
-        setLoading(true)
+        setLoading(true);
 
-        await signup(
-          emailRef.current.value,
-          passwordRef.current.value,
-          
-        );
-        history.push("/login")
-       
+        await signup(emailRef.current.value, passwordRef.current.value);
+        history.push("/login");
       } catch {
         setErrorMessage("Failed to create an account");
       }
-      setLoading(false)
-    };
-  
-
+      setLoading(false);
     }
+  };
 
-    
   return (
-
-    <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
-     {errorMessage?<ErrorAlert message={errorMessage}/>:""}
-      <div class="card-body  ">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Email</span>
+    <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+      {errorMessage ? <ErrorAlert message={errorMessage} /> : ""}
+      <div className="card-body  ">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Email</span>
           </label>
           <input
             ref={emailRef}
             type="email"
             placeholder="email"
-            class="input input-bordered font-semibold"
+            className="input input-bordered font-semibold"
           />
         </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Password</span>
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Password</span>
           </label>
           <input
             ref={passwordRef}
             type="password"
             placeholder="password"
-            class="input input-bordered font-semibold"
+            className="input input-bordered font-semibold"
           />
-          <label class="label">
-            <span class="label-text">Confirm Password</span>
+          <label className="label">
+            <span className="label-text">Confirm Password</span>
           </label>
           <input
             ref={confirmpasswordRef}
             type="password"
             placeholder="password again"
-            class="input input-bordered font-semibold"
+            className="input input-bordered font-semibold"
           />
 
-         
-          <label class="label">
+          <label className="label">
             Already have an acccount ?
-            <button onClick={()=>{
-              history.push("/signin")
-            }} class="btn btn-link">Login In</button>
+            <button
+              onClick={() => {
+                history.push("/signin");
+              }}
+              className="btn btn-link"
+            >
+              Login In
+            </button>
           </label>
         </div>
-        <div class="form-control mt-6">
+        <div className="form-control mt-6">
           <input
             onClick={handlSubmit}
             type="button"
             value="Sign Up"
             disabled={loading}
-            class="btn btn-primary "
+            className="btn btn-primary "
           />
         </div>
       </div>
     </div>
   );
 }
-
-
-
-
 
 export default SignUpForm;

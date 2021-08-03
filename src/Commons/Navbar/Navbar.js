@@ -3,29 +3,29 @@ import logo from "../../Assets/maibrain_logo.png";
 
 function Navbar() {
   return (
-    <div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content ">
-      <div class="flex-none  lg:flex"></div>
-      <div class="flex-1  px-2 py-2 mx-2 lg:flex">
-        <div class="flex flex-row items-center gap-4 justify-center">
-          <div class="w-20 btn btn-circle rounded-md shadow-lg">
-            <img class="  shadow-lg" alt="" src={logo} />
+    <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content ">
+      <div className="flex-none  lg:flex"></div>
+      <div className="flex-1  px-2 py-2 mx-2 lg:flex">
+        <div className="flex flex-row items-center gap-4 justify-center">
+          <div className="w-20 btn btn-circle rounded-md shadow-lg">
+            <img className="  shadow-lg" alt="" src={logo} />
           </div>
 
-          <div class="text-lg font-bold">MAIBRAIN</div>
+          <div className="text-lg font-bold">MAIBRAIN</div>
         </div>
       </div>
-      <div class="flex-1  lg:flex-none ">
-        <div class="form-control">
-          <input type="text" placeholder="Search" class="input input-ghost" />
+      <div className="flex-1  lg:flex-none ">
+        <div className="form-control">
+          <input type="text" placeholder="Search" className="input input-ghost" />
         </div>
       </div>
-      <div class="flex-none">
-        <button class="btn btn-square btn-ghost">
+      <div className="flex-none">
+        <button className="btn btn-square btn-ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            class="inline-block w-6 h-6 stroke-current"
+            className="inline-block w-6 h-6 stroke-current"
           >
             <path
               stroke-linecap="round"
@@ -36,13 +36,13 @@ function Navbar() {
           </svg>
         </button>
       </div>
-      <div class="flex-none">
-        <button class="btn btn-square btn-ghost">
+      <div className="flex-none">
+        <button className="btn btn-square btn-ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            class="inline-block w-6 h-6 stroke-current"
+            className="inline-block w-6 h-6 stroke-current"
           >
             <path
               stroke-linecap="round"
@@ -53,17 +53,17 @@ function Navbar() {
           </svg>
         </button>
       </div>
-      <div class="flex-none btn btn-ghost">
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" class="btn btn-ghost rounded-btn">
+      <div className="flex-none btn btn-ghost">
+        <div className="dropdown dropdown-end">
+          <div tabindex="0" className="btn btn-ghost rounded-btn">
             {" "}
-            <div class="avatar">
-              <div class="rounded-full w-10 h-10 m-1">
+            <div className="avatar">
+              <div className="rounded-full w-10 h-10 m-1">
                 <img src="https://i.pravatar.cc/500?img=32" />
               </div>
             </div>
           </div>
-          <ul class="shadow hover :bg-gray-100 menu dropdown-content bg-gray-700 rounded-box w-52">
+          <ul className="shadow hover :bg-gray-100 menu dropdown-content bg-gray-700 rounded-box w-52">
             <li>
               <a>Profile</a>
             </li>

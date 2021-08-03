@@ -20,53 +20,52 @@ function ResetForm() {
       await resetPassword(emailRef.current.value);
       setSucess(true);
     } catch (error) {
-      setErrorMessage("Failed to reset password")
-
+      setErrorMessage("Failed to reset password");
     }
-    setLoading(false)
+    setLoading(false);
   }
 
   return sucess ? (
     <ResetSucess />
   ) : (
-    <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+    <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
       {errorMessage ? <ErrorAlert message={errorMessage} /> : ""}
-      <div class="card-body  ">
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Email</span>
+      <div className="card-body  ">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text">Email</span>
           </label>
           <input
             ref={emailRef}
             type="email"
             placeholder="email"
-            class="input input-bordered font-semibold"
+            className="input input-bordered font-semibold"
           />
         </div>
 
-        <div class="form-control mt-6">
+        <div className="form-control mt-6">
           <input
-          disabled={loading} 
+            disabled={loading}
             onClick={handleResetPassword}
             type="button"
             value="Password Reset"
-            class="btn btn-base-100"
+            className="btn btn-base-100"
           />
         </div>
 
-        <div class="form-control mt-6">
+        <div className="form-control mt-6">
           <input
             onClick={() => {
               history.push("/login");
             }}
-            disabled={loading} 
+            disabled={loading}
             type="button"
             value="Login"
-            class="btn btn-primary"
+            className="btn btn-primary"
           />
         </div>
 
-        <button onClick={() => {}} class="btn btn-link">
+        <button onClick={() => {}} className="btn btn-link">
           Need account ? Sign Up
         </button>
       </div>
@@ -77,9 +76,9 @@ function ResetForm() {
 function ResetSucess() {
   const history = useHistory();
   return (
-    <div class="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
-      <div class="card-body  ">
-        <h1 className="font-bold text-lg text-center">
+    <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
+      <div className="card-body  ">
+        <h1 classNameName="font-bold text-lg text-center">
           Please check your email to reset your password.
         </h1>
         <input
@@ -88,7 +87,7 @@ function ResetSucess() {
           }}
           type="button"
           value="Login"
-          class="mt-4 btn btn-primary"
+          className="mt-4 btn btn-primary"
         />
       </div>
     </div>

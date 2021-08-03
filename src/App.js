@@ -8,6 +8,7 @@ import Reset from "./Pages/Auths/Reset";
 import { AuthProvider } from "./GlobalContexts/authcontext";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Profile from "./Pages/Dashboard/profile";
+import Cloze from "./Pages/Quiz/Cloze/Cloze";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route  path="/login" component={Login} />
             <Route  path="/reset" component={Reset} />
             <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/cloze" component={Cloze} />
 
             
 

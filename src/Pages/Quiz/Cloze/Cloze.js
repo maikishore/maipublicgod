@@ -19,7 +19,7 @@ function Cloze() {
     return (
       <div
         id={"item" + index.toString()}
-        class="flex items-center justify-center w-full text-center shadow carousel-item"
+        className="flex items-center justify-center w-full text-center shadow carousel-item"
       >
         <ClozeCard question={each.question} answer={each.answer} />
       </div>
@@ -28,23 +28,23 @@ function Cloze() {
 
   const clozenavigation = data.map((each, index) => {
     return (
-      <a href={`/cloze#item${index.toString()}`} class="btn btn-xs btn-circle">
+      <a href={`/cloze#item${index.toString()}`} className="btn btn-xs btn-circle">
         {(index + 1).toString()}
       </a>
     );
   });
 
   return (
-    <div class=" ">
+    <div className=" ">
       <Navbar />
       <div
         style={{ height: "80vh" }}
-        class="w-full   bg-gray-200 text-center carousel"
+        className="w-full   bg-gray-200 text-center carousel"
       >
         {clozecards}
       </div>
 
-      <div class="flex justify-center w-full my-1 space-x-2">
+      <div className="flex justify-center w-full my-1 space-x-2">
         {clozenavigation}
       </div>
     </div>
