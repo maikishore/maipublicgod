@@ -1,7 +1,16 @@
 /* Basic editor styles */
+.ProseMirror {
+    height: 70vh;
+   overflow-y: scroll;
+    
+  
+}
 .ProseMirror > * + * {
     margin-top: 0.75em;
+   border:none;
    
+  
+    
 }
 .ProseMirror ul, .ProseMirror ol {
     padding: 0 1rem;

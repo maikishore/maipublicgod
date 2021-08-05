@@ -58,7 +58,7 @@ React.useEffect(()=>{
       <div className="text-sm breadcrumbs">
         <ul>{nlists}</ul>
       </div>
-      <div className="dropdown dropdown-end">
+      <div className="dropdown dropdown-right">
         <div tabindex="0" className="btn btn-sm btn-accent rounded-btn">
           Add Node
         </div>
@@ -220,7 +220,7 @@ function Editors() {
     editorProps: {
       attributes: {
         class:
-          " prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-5 h-30  focus:ring-2 focus:ring-blue-600 "
+          " prose prose-sm sm:prose lg:prose-lg xl:prose-2xl border-none bg-white-400 overflow-y-auto   "
       }
     },
     content: `
@@ -229,9 +229,14 @@ function Editors() {
   })
 
   return (
-    <div className="w-full h-screen shadow-lg">
+    <div className="w-full ">
+      <div className="m-1 p-2 shadow-xl bg-white-400">
       <MenuBar editor={editor} />
-      <EditorContent editor={editor}  />
+      </div>
+      
+
+      <div className="m-1 shadow-md border-2 border-gray-700 "><EditorContent editor={editor}   /></div>
+      
     </div>
   )
 }
@@ -239,7 +244,7 @@ function Editors() {
 
 export default function test() {
   return (
-    <div>
+    <div className="">
       <Navbar />
       <div className="w-full h-screen bg-white-400">
         <div className="grid grid-flow-row grid-rows-8">
