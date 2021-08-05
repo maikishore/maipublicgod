@@ -1,6 +1,19 @@
 import React from "react";
 import Navbar from "../../../Commons/Navbar/Navbar";
+import OptionCard from "./components/optioncard";
 import McqCard from "./mcqcard";
+
+import { useRef, useEffect } from 'react';
+
+export const useIsMount = () => {
+  const isMountRef = useRef(true);
+  useEffect(() => {
+    isMountRef.current = false;
+  }, []);
+  return isMountRef.current;
+};
+
+
 
 function Mcqq() {
   const data = [
@@ -38,14 +51,15 @@ function Mcqq() {
 }
 
 function correct(arr1,arr2) {
-console.log(arr1,arr2,"called")
+
   var s=0
   for(var i=0;i<arr1.length;i++){
     if(arr1[i].toString()===arr2[i].toString()){
       s=s+1
     } 
   }
-  console.log("sum",s)
+
+  
   return s
 }
 
@@ -54,10 +68,13 @@ console.log(arr1,arr2,"called")
 function Mcq() {
   const [qnumber,setQNumber]=React.useState([])
   const [cnumber,setCNumber]=React.useState([])
+  const [optnum, setOptNum] = React.useState(100);
+ const [check,setCheck]=React.useState(0)
+  const [inputAnswers,setinputAnswers]=React.useState([])
+ 
+ const [currentqNumber,setCurrentqNumber]=React.useState()
+ const didMountRef = React.useRef(false);
 
- 
-  const [currentIndex,setCurrentIndex]=React.useState(0)
- 
   var correctanswers=[]
 
 
@@ -94,7 +111,8 @@ function Mcq() {
   for(var i=0;i<data.length;i++) {
    
     correctanswers.push(data[i].correctanswer)
-    console.log("cca",correctanswers)
+
+    
   }
 
 
@@ -114,11 +132,20 @@ React.useEffect(()=>{
 
 },[])
 
- 
-React.useEffect(()=>{
 
-return ()=>{}
-},[currentIndex])
+const isMount = useIsMount();
+useEffect(() => {
+  if (isMount) {
+    
+  } else {
+    let x=inputAnswers.slice()
+    x[currentqNumber]=optnum
+    setinputAnswers(prevstate=> {return x})
+    console.log("inputanswers",inputAnswers);
+  }
+},[check]);
+ 
+
 
 
 
@@ -129,32 +156,41 @@ return ()=>{}
         id={"item" + index.toString()}
         className="flex items-center justify-center w-full text-center shadow carousel-item"
       >
-        <McqCard data={each} question={
-          data[index].question} func={(e)=>{
-         console.log(e)
-            /*
-            let x=qnumber
-    
-            x[index]=100
-            setQNumber(prevState=>x)
-
-            let y=cnumber
-        
-            y[index]=e.currentTarget
-            setCNumber(prevState=>y)
-
-
-
-
-          
-            if(parseInt(qnumber.reduce((a, b) => a + b, 0))===parseInt(data.length*100)){
-              console.log("Hurruy!")
-             
-              console.log("correcty",correct(correctanswers,cnumber))
-            }*/
      
-         }
-      } />
+
+     <div className="w-full  ">
+      <div className="w-full -mt-2 h-screen bg-gray-300">
+        <div className="flex flex-row justify-center items-start">
+          <div className="m-6 mt-40 w-1/2 h-96 shadow-md bg-white rounded-box ">
+            <div className="card m-1 text-lg text-bold text-left p-4  border-2 shadow border-gray-100 bg-white-400  rounded-box">
+              {data[index].question}
+            </div>
+
+            {data[index].options.map((e, i) => {
+    return (
+      <OptionCard
+        key={i}
+        value={i}
+       
+        onClick={(e) => {
+          
+          setOptNum(i);
+         setCurrentqNumber(index)
+         setCheck(check+1)
+          
+        }}
+        
+        color={i === optnum ? "bg-blue-500" : "bg-white"}
+        optionnumber={String.fromCharCode(65+i)}
+        option={e}
+      />
+    );
+  })}
+          </div>
+        </div>
+      </div>
+    </div>
+     
      
       </div>
     );
