@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Commons/Navbar/Navbar";
 
 import { IoAddCircleSharp } from "react-icons/io5";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent,BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { defaultExtensions } from "@tiptap/starter-kit";
 import BulletList from "@tiptap/extension-bullet-list";
@@ -14,12 +14,12 @@ import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import OrderedList from "@tiptap/extension-ordered-list";
 import ListItem from "@tiptap/extension-list-item";
-import Subscript from '@tiptap/extension-subscript'
+import Subscript from "@tiptap/extension-subscript";
 
-import Superscript from '@tiptap/extension-superscript'
-import Image from '@tiptap/extension-image'
-import Dropcursor from '@tiptap/extension-dropcursor'
-import TextAlign from '@tiptap/extension-text-align'
+import Superscript from "@tiptap/extension-superscript";
+import Image from "@tiptap/extension-image";
+import Dropcursor from "@tiptap/extension-dropcursor";
+import TextAlign from "@tiptap/extension-text-align";
 
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
@@ -157,8 +157,6 @@ const MenuBar = ({ editor }) => {
         <MdStrikethroughS />
       </button>
 
-
-
       <button
         onClick={() =>
           editor
@@ -168,7 +166,9 @@ const MenuBar = ({ editor }) => {
             .run()
         }
         className={
-          editor.isActive("superscript") ? classes.iconactive : classes.icondeactive
+          editor.isActive("superscript")
+            ? classes.iconactive
+            : classes.icondeactive
         }
       >
         Superscript
@@ -183,13 +183,13 @@ const MenuBar = ({ editor }) => {
             .run()
         }
         className={
-          editor.isActive("subscript") ? classes.iconactive : classes.icondeactive
+          editor.isActive("subscript")
+            ? classes.iconactive
+            : classes.icondeactive
         }
       >
         Subscript
       </button>
-
-
 
       <button
         onClick={() =>
@@ -232,14 +232,16 @@ const MenuBar = ({ editor }) => {
 
       <button
         onClick={() =>
-          editor.chain().focus().setTextAlign('left').run()
+          editor
+            .chain()
+            .focus()
+            .setTextAlign("left")
+            .run()
         }
         className={
-          editor.isActive({ textAlign: 'left'} )
-          ? classes.iconactive
-          : classes.icondeactive
-          
-  
+          editor.isActive({ textAlign: "left" })
+            ? classes.iconactive
+            : classes.icondeactive
         }
       >
         Left
@@ -247,40 +249,37 @@ const MenuBar = ({ editor }) => {
 
       <button
         onClick={() =>
-          editor.chain().focus().setTextAlign('center').run()
+          editor
+            .chain()
+            .focus()
+            .setTextAlign("center")
+            .run()
         }
         className={
-          editor.isActive({ textAlign: 'center'} )
-          ? classes.iconactive
-          : classes.icondeactive
-          
-  
+          editor.isActive({ textAlign: "center" })
+            ? classes.iconactive
+            : classes.icondeactive
         }
       >
         center
       </button>
 
-
-
-
       <button
         onClick={() =>
-          editor.chain().focus().setTextAlign('right').run()
+          editor
+            .chain()
+            .focus()
+            .setTextAlign("right")
+            .run()
         }
         className={
-          editor.isActive({ textAlign: 'right'} )
-          ? classes.iconactive
-          : classes.icondeactive
-          
-  
+          editor.isActive({ textAlign: "right" })
+            ? classes.iconactive
+            : classes.icondeactive
         }
       >
         right
       </button>
-
-
-
-
 
       <button
         onClick={() =>
@@ -459,7 +458,7 @@ const MenuBar = ({ editor }) => {
         blockquote
       </button>
       <button
-            className={classes.icondeactive}
+        className={classes.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -471,7 +470,7 @@ const MenuBar = ({ editor }) => {
         horizontal rule
       </button>
       <button
-            className={classes.icondeactive}
+        className={classes.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -483,7 +482,7 @@ const MenuBar = ({ editor }) => {
         hard break
       </button>
       <button
-            className={classes.icondeactive}
+        className={classes.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -495,7 +494,7 @@ const MenuBar = ({ editor }) => {
         undo
       </button>
       <button
-            className={classes.icondeactive}
+        className={classes.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -507,9 +506,8 @@ const MenuBar = ({ editor }) => {
         redo
       </button>
 
-
       <div className="dropdown dropdown-right">
-        <div tabindex="0"  className={classes.icondeactive}>
+        <div tabindex="0" className={classes.icondeactive}>
           Image
         </div>
         <ul
@@ -519,7 +517,6 @@ const MenuBar = ({ editor }) => {
           <li>
             <div className="form-control">
               <input
-             
                 type="text"
                 placeholder="Image Source"
                 className="mb-1 input input-bordered"
@@ -528,7 +525,14 @@ const MenuBar = ({ editor }) => {
             <button
               onClick={(e) => {
                 if (true) {
-                  editor.chain().focus().setImage({ src: "https://global-uploads.webflow.com/59deb588800ae30001ec19c9/5d0bc991c864410c5ad87931_logo-new.svg" }).run()
+                  editor
+                    .chain()
+                    .focus()
+                    .setImage({
+                      src:
+                        "https://global-uploads.webflow.com/59deb588800ae30001ec19c9/5d0bc991c864410c5ad87931_logo-new.svg",
+                    })
+                    .run();
                 }
               }}
               className="btn btn-sm"
@@ -538,7 +542,6 @@ const MenuBar = ({ editor }) => {
           </li>
         </ul>
       </div>
-
     </div>
   );
 };
@@ -558,7 +561,7 @@ function Editors() {
       Image,
       Dropcursor,
       TextAlign.configure({
-        types: ['heading', 'paragraph','image','img'],
+        types: ["heading", "paragraph", "image", "img"],
       }),
     ],
     editorProps: {
@@ -567,11 +570,33 @@ function Editors() {
           " prose prose-sm sm:prose lg:prose-lg xl:prose-2xl border-none bg-white overflow-y-auto   ",
       },
     },
-
   });
 
   return (
     <div className="w-full ">
+      {editor && <BubbleMenu 
+      className="flex justify-baseline items-center"
+      tippyOptions={{placement:"bottom"}}
+      editor={editor}>
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={editor.isActive('bold') ? styles.iconactive : styles.icondeactive}
+        >
+          bold
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={editor.isActive('italic') ? 'is-active' : ''}
+        >
+          italic
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          className={editor.isActive('strike') ? 'is-active' : ''}
+        >
+          strike
+        </button>
+      </BubbleMenu>}
       <div className="m-1 h-auto p-1 shadow-xxl bg-gray-200">
         <MenuBar editor={editor} />
       </div>
