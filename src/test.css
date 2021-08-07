@@ -4,7 +4,10 @@
 
 .ProseMirror {
     height: 70vh;
+    
+    max-width: 100vw;
    overflow-y: scroll;
+   overflow-x: hidden;
    text-align: left;
    padding:10px;
   

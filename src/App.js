@@ -12,7 +12,7 @@ import Cloze from "./Pages/Quiz/Cloze/Cloze";
 import Quiz from "./Pages/Quiz/Quiz";
 import QandA from "./Pages/Quiz/QnA/QnA";
 import Mcq from "./Pages/Quiz/MCQ/mcq";
-
+import TKS from "./tks";
 
 function App() {
   return (
