@@ -1,19 +1,16 @@
 import React from 'react'
 
 function Entities(props) {
-    const [entityList, setEntityList] = React.useState(props.entities);
-  
-    const ents = entityList.map((each, index) => {
+ 
+    const ents = props.entityList.map((each, index) => {
       return (
         <div
           id={index}
-          onClick={(e) => {
-            setEntityList((prevstate) =>
-              prevstate.filter((item) => item !== each)
-            );
-            console.log(entityList);
-          }}
+          value={each}
+          key={index}
+          onClick={props.entityFunc}
           class="mx-1 p-1 badge badge-primary cursor-pointer"
+        
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

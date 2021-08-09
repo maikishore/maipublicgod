@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "./Commons/Navbar/Navbar";
-
 import { IoAddCircleSharp } from "react-icons/io5";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -28,7 +27,6 @@ const styles = {
   icondeactive: "mx-1 px-2 py-2 bg-gray-100 shadow btn btn-ghost",
   ol: "list-inside",
 };
-
 
 function Editors(props) {
   const editor = useEditor({
@@ -68,7 +66,7 @@ function Editors(props) {
           }}
           editor={editor}
         >
-          <button onClick={props.widthFunc} className={styles.icondeactive}>
+          <button onClick={props.noteFunc} className={styles.icondeactive}>
             Take Note
           </button>
           <button
@@ -114,7 +112,9 @@ function Test() {
 
   const [nlist, setNlist] = React.useState(["A", "b", "C"]);
   const [nodeCheck, setNodecheck] = React.useState(true);
-
+  const [noteText, setNoteText] = React.useState("");
+  const [entityList, setEntityList] = React.useState(["a", "b"]);
+  const [enityId, setEnityId] = React.useState();
   const nodeRef = React.useRef();
 
   React.useEffect(() => {
@@ -184,15 +184,31 @@ function Test() {
             <div className={`${editorWidth ? "m-4 w-full" : "w-2/3"} `}>
               <Editors
                 editorWidth={editorWidth}
-                widthFunc={() => {
-                  setWidth(!editorWidth);
-                  console.log(editorWidth);
+                noteFunc={() => {
+                  setWidth(false);
+                  setNoteText(window.getSelection().toString());
                 }}
               />
             </div>
 
             <div className={`${editorWidth ? "hidden" : "visible w-1/3 "}`}>
-              <Notecard text="Heoo" entities={["a", "b", "c"]} />
+              <Notecard
+                entityList={entityList}
+                entityFunc={(e) => {
+                  const id = e.currentTarget.getAttribute("id");
+                  setEntityList(entityList.filter((item,index) => index.toString() !== id.toString()));
+                  console.log(id);
+                }}
+                closeFunc={(e) => {
+                  setWidth(true);
+                }}
+
+                addEntityFunc={(e)=>{
+setEntityList([...entityList,window.getSelection().toString()])
+                }}
+                text={noteText}
+
+              />
             </div>
           </div>
         </div>
