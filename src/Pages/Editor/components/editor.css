@@ -1,0 +1,133 @@
+/* Basic editor styles */
+
+
+
+.ProseMirror {
+    height: 70vh;
+    
+    max-width: 100vw;
+   overflow-y: scroll;
+   overflow-x: hidden;
+   text-align: left;
+   padding:10px;
+  
+}
+
+
+
+
+
+
+
+
+
+.ProseMirror > * + * {
+    margin-top: 0.75em;
+   
+    border:none;
+   
+  
+    
+}
+.ProseMirror ul {
+    list-style-type: circle;
+    padding: 0 1rem;
+    margin:1rem;
+}
+
+.ProseMirror img {
+    width:auto;
+    height: auto;
+    margin: auto;
+    text-align: center;
+
+
+
+}
+.ProseMirror img.ProseMirror-selectednode {
+    padding: 5px;
+    outline: 1px solid #181f22;
+   
+}
+
+
+.ProseMirror ol {
+    list-style-type: number;
+    padding: 0 1rem;
+    margin:1rem;
+}
+
+.ProseMirror h1 {
+    font-size:2.5em;
+}
+
+.ProseMirror h2 {
+    font-size:2em;
+}
+
+.ProseMirror h3 {
+    font-size:1.67em;
+}
+
+
+.ProseMirror h4 {
+    font-size:1.62em;
+}
+
+
+.ProseMirror h5 {
+    font-size:1.33em;
+}
+
+
+.ProseMirror h6 {
+    font-size:1.0em;
+}
+
+.ProseMirror p {
+    font-size:1.25em;
+
+}
+
+
+ul {
+    color: black;
+}
+
+
+.ProseMirror h1, .ProseMirror h2, .ProseMirror h3, .ProseMirror h4, .ProseMirror h5, .ProseMirror h6 {
+    line-height: 1.1;
+}
+.ProseMirror code {
+    background-color: darkgray;
+    
+    color: #616161;
+}
+.ProseMirror pre {
+    background: slategrey;
+    color: #fff;
+    
+    font-family: 'JetBrainsMono', monospace;
+    padding: 0.75rem 1rem;
+    border-radius: 0rem;
+
+}
+.ProseMirror pre code {
+    color: inherit;
+    padding: 0;
+    background: none;
+    font-size: 0.8rem;
+}
+.ProseMirror img {
+    max-width: 100%;
+    height: auto;
+}
+.ProseMirror blockquote {
+    padding-left: 1rem;
+    border-left: 2px solid rgba(13, 13, 13, 0.1);
+}
+.ProseMirror hr {
+    border: none;
+    border-top: 2px solid rgba(13, 13, 13, 0.1);
+    margin: 2rem 0;
+}

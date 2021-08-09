@@ -13,6 +13,10 @@ import Quiz from "./Pages/Quiz/Quiz";
 import QandA from "./Pages/Quiz/QnA/QnA";
 import Mcq from "./Pages/Quiz/MCQ/mcq";
 import TKS from "./tks";
+import Editors from "./Pages/Editor/editors";
+
+
+
 
 function App() {
   return (
@@ -28,7 +32,11 @@ function App() {
             <Route  path="/signup" component={SignUp} />
             <Route  path="/login" component={Login} />
             <Route  path="/reset" component={Reset} />
+            
+            <Route  path="/note" component={Editors} />
             <PrivateRoute path="/profile" component={Profile} />
+           
+           
             <PrivateRoute path="/quiz" component={Quiz} />
 
             <PrivateRoute path="/cloze" component={Cloze} />
