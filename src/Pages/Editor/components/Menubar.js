@@ -96,7 +96,22 @@ const MenuBar = ({ editor }) => {
         >
           Subscript
         </button>
-  
+        <button
+          onClick={() =>
+            editor
+              .chain()
+              .focus()
+              .toggleHighlight()
+              .run()
+          }
+          className={
+            editor.isActive("highlight")
+              ? classes.iconactive
+              : classes.icondeactive
+          }
+        >
+          Highlight
+        </button>
         <button
           onClick={() =>
             editor

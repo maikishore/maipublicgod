@@ -6,16 +6,77 @@ import Nodes from "./components/Nodes";
 import Notecard from "./components/Notecard";
 import RawEditor from "./components/RawEditor";
 
+import { IoAddCircleSharp } from "react-icons/io5";
+import { useEditor, EditorContent, 
+  BubbleMenu,
+  } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+import { FaBold, FaItalic, FaCode } from "react-icons/fa";
+import { MdStrikethroughS } from "react-icons/md";
+import Subscript from "@tiptap/extension-subscript";
+
+import Superscript from "@tiptap/extension-superscript";
+import Image from "@tiptap/extension-image";
+import TextAlign from "@tiptap/extension-text-align";
+import Highlight from '@tiptap/extension-highlight'
+
+
+
+const styles = {
+  iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
+  icondeactive: "mx-1 px-2 py-2 bg-gray-100 shadow btn btn-ghost",
+  ol: "list-inside",
+};
 
 function Editors() {
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+     
+      Superscript,
+      Subscript,
+      Image,
+
+      Highlight.configure({ multicolor: true }),
+
+      TextAlign.configure({
+        types: ["heading", "paragraph", "image", "img"],
+      }),
+     
+    ],
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl border-none bg-white overflow-y-auto   ",
+      },
+    },
+  });
+
+
+
+
     const [editorWidth, setWidth] = React.useState(true);
   
     const [nlist, setNlist] = React.useState(["A", "b", "C"]);
     const [nodeCheck, setNodecheck] = React.useState(true);
     const [noteText, setNoteText] = React.useState("");
     const [entityList, setEntityList] = React.useState(["a", "b"]);
+    const [highlightColor, setHighlightColor] = React.useState(true);
+
+  
     const nodeRef = React.useRef();
   
+
+   
+
+
+
+
+
+
+
     React.useEffect(() => {
       if (nodeRef.current.value.length !== 0) {
         setNlist((prevstate) => [...prevstate, nodeRef.current.value]);
@@ -50,6 +111,10 @@ function Editors() {
       );
     });
   
+
+
+
+
     return (
       <div className="">
         <Navbar />
@@ -83,9 +148,22 @@ function Editors() {
               <div className={`${editorWidth ? "m-4 w-full" : "w-2/3"} `}>
                 <RawEditor
                   editorWidth={editorWidth}
+                  editor={editor}
                   noteFunc={() => {
+                    setHighlightColor(true)
+                    var hcolor="#FFEFD5"
+                    
+                    editor.chain().focus().toggleHighlight({
+                      color: highlightColor? hcolor:"red"
+                    }).run()
+                  
+                    
+
+                   
                     setWidth(false);
+                
                     setNoteText(window.getSelection().toString());
+                  
                   }}
                 />
               </div>
