@@ -11,8 +11,9 @@ const styles = {
     ol: "list-inside",
   };
 
-const MenuBar = ({ editor }) => {
+const MenuBar = (props ) => {
     const classes = styles;
+    const editor=props.editor
   
     if (!editor) {
       return null;
@@ -463,6 +464,8 @@ const MenuBar = ({ editor }) => {
             </li>
           </ul>
         </div>
+
+    {props.textcolormenu}
       </div>
     );
   };

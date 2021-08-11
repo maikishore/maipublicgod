@@ -20,32 +20,113 @@ const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
   icondeactive: "mx-1 px-2 py-2 bg-gray-100 shadow btn btn-ghost",
   bubbleiconactive: "  mx-1   bg-gray-700 shadow btn btn-sm",
-  bubbleicondeactive: " mx-1 bg-gray-900 shadow btn btn-sm",
-  colorbutton: "w-8 h-2 mx-1  bg-red-700 shadow btn btn-sm btn-square",
+  bubbleicondeactive: "mx-1 bg-gray-900 shadow btn btn-sm",
+  colorbutton: "w-8 h-2 mx-1   shadow btn btn-sm btn-circle  ",
 
   ol: "list-inside",
 };
+
+
 function RawEditor(props) {
   const editor = props.editor;
+  const [textColor, setTextColor] = React.useState("black");
 
-  return (
-    <div className="w-full">
-      {editor && <BubbleMenus editor={editor} noteFunc={props.noteFunc} />}
-      <div className="m-1 h-auto p-1 shadow-xxl bg-gray-200">
-        <MenuBar editor={editor} />
-      </div>
 
-      <div className="m-1 shadow-md border-2 border-gray-700 ">
-        <EditorContent editor={editor} />
-      </div>
-    </div>
-  );
+const colorFunc=(e) => {
+
+
+  switch (e.currentTarget.value.toString()) {
+    case "red":
+      setTextColor("red");
+      break;
+    case "blue":
+      setTextColor("blue");
+      break;
+    case "green":
+      setTextColor("green");
+      break;
+    case "gray":
+      setTextColor("gray");
+      break;
+
+    case "white":
+      setTextColor("white");
+      break;
+
+    default:
+      setTextColor("black");
+  }
+
+
 }
 
 
 
+const textcolormenu=(<div class="dropdown">
+<div tabindex="0" class={`m-1 btn bg-${textColor}-800`}>Dropdown</div> 
+<ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
+  <li  >
+  <div class="flex justify-start items-baseline">
+  <button
+        value="red"
+        onClick={colorFunc}
+        className={styles.colorbutton + "bg-red-800 hover:bg-red-800"}
+      ></button>
+      <button
+        value="green"
+        onClick={colorFunc}
+        className={styles.colorbutton + "bg-green-800 hover:bg-green-800"}
+      ></button>
+      <button
+        value="blue"
+        onClick={colorFunc}
+        className={styles.colorbutton + "bg-blue-800 hover:bg-blue-800"}
+      ></button>
+      <button
+        value="gray"
+        onClick={colorFunc}
+        className={styles.colorbutton + "bg-gray-800 hover:bg-gray-800"}
+      ></button>
+
+      <button
+        value="white"
+        onClick={colorFunc}
+        className={styles.colorbutton + "bg-white hover:bg-white"}
+      ></button>
+
+      <button
+        value="blue"
+        onClick={colorFunc}
+        className={styles.colorbutton}
+      ></button>
+</div>
+  </li>
+</ul>
+</div>
+  
+)
 
 
+
+  return (
+    <div className="w-full">
+      {editor && (
+        <BubbleMenus
+          editor={editor}
+        
+          noteFunc={props.noteFunc}
+        />
+      )}
+      <div className="m-1 h-auto p-1 shadow-xxl bg-gray-200">
+        <MenuBar editor={editor} textcolormenu={textcolormenu} />
+      </div>
+
+      <div className="m-1 shadow-md border-2 border-gray-700 ">
+        <EditorContent editor={editor} className={`text-${textColor}-800`} />
+      </div>
+    </div>
+  );
+}
 
 function BubbleMenus(props) {
   return (
@@ -59,18 +140,10 @@ function BubbleMenus(props) {
       editor={props.editor}
     >
       <button onClick={props.noteFunc} className={styles.bubbleicondeactive}>
-       M
+        M
       </button>
 
-      <button onClick={props.noteFunc} className={styles.colorbutton}>
-       
-      </button>
-      <button onClick={props.noteFunc} className={styles.colorbutton}>
-       
-      </button>
-
-
-
+     
       <button
         onClick={() => {
           props.editor
