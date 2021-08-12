@@ -12,13 +12,13 @@ import Superscript from "@tiptap/extension-superscript";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-
+import {BiFontColor} from "react-icons/bi"
 import "./editor.css";
 import MenuBar from "./Menubar";
 
 const styles = {
-  iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
-  icondeactive: "mx-1 px-2 py-2 bg-gray-100 shadow btn btn-ghost",
+  iconactive: "mx-1 px-2 py-2  bg-gray-500 shadow btn btn-ghost hover:bg-gray-100",
+  icondeactive: "mx-1 px-2 py-2 bg-gray-200 shadow btn btn-ghost hover:bg-gray-100",
   bubbleiconactive: "  mx-1   bg-gray-700 shadow btn btn-sm",
   bubbleicondeactive: "mx-1 bg-gray-900 shadow btn btn-sm",
   colorbutton: "w-8 h-2 mx-1   shadow btn btn-sm btn-circle  ",
@@ -63,7 +63,7 @@ const colorFunc=(e) => {
 
 
 const textcolormenu=(<div class="dropdown">
-<div tabindex="0" class={`m-1 btn bg-${textColor}-800`}>Dropdown</div> 
+<div tabindex="0" class={styles.iconactive}><BiFontColor class={`text-lg text-${textColor}-800`}/></div> 
 <ul tabindex="0" class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52">
   <li  >
   <div class="flex justify-start items-baseline">
@@ -142,7 +142,7 @@ function BubbleMenus(props) {
       <button onClick={props.noteFunc} className={styles.bubbleicondeactive}>
         M
       </button>
-
+   
      
       <button
         onClick={() => {
