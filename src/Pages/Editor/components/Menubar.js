@@ -11,7 +11,7 @@ import {
 import { MdStrikethroughS } from "react-icons/md";
 import { AiOutlineLine } from "react-icons/ai";
 import { ImPagebreak } from "react-icons/im";
-import {BiFontFamily} from "react-icons/bi"
+import { BiFontFamily } from "react-icons/bi";
 import {
   FaSuperscript,
   FaSubscript,
@@ -36,6 +36,7 @@ const styles = {
 const MenuBar = (props) => {
   const classes = styles;
   const editor = props.editor;
+  const imgRef = React.useRef();
 
   if (!editor) {
     return null;
@@ -43,6 +44,8 @@ const MenuBar = (props) => {
 
   return (
     <div className="px-1 py-2 bg-gray-100 flex gap-1 items-baseline flex-wrap">
+     <div data-tip="Bold" class="tooltip tooltip-bottom">
+     
       <button
         onClick={() =>
           editor
@@ -57,6 +60,9 @@ const MenuBar = (props) => {
       >
         <FaBold />
       </button>
+
+
+      </div>
       <button
         onClick={() =>
           editor
@@ -122,7 +128,7 @@ const MenuBar = (props) => {
 
       <div class="dropdown">
         <div tabindex="0" class={styles.icondeactive}>
-         <BiFontFamily />
+          <BiFontFamily />
         </div>
         <ul
           tabindex="0"
@@ -185,7 +191,6 @@ const MenuBar = (props) => {
             </p>
           </li>
 
-          
           <li>
             <p
               href={""}
@@ -219,7 +224,7 @@ const MenuBar = (props) => {
                   .run()
               }
             >
-            Zilla Slab
+              Zilla Slab
             </p>
           </li>
           <li>
@@ -243,8 +248,6 @@ const MenuBar = (props) => {
         </ul>
       </div>
       {props.textcolormenu}
-
-
 
       <button
         onClick={() =>
@@ -580,8 +583,6 @@ const MenuBar = (props) => {
         <FaRedo />
       </button>
 
-     
-
       <div className="dropdown dropdown-right">
         <div tabindex="0" className={classes.icondeactive}>
           <FaImages />
@@ -593,6 +594,7 @@ const MenuBar = (props) => {
           <li>
             <div className="form-control">
               <input
+                ref={imgRef}
                 type="text"
                 placeholder="Image Source"
                 className="mb-1 input input-bordered"
@@ -605,8 +607,7 @@ const MenuBar = (props) => {
                     .chain()
                     .focus()
                     .setImage({
-                      src:
-                        "https://global-uploads.webflow.com/59deb588800ae30001ec19c9/5d0bc991c864410c5ad87931_logo-new.svg",
+                      src: imgRef.current.value,
                     })
                     .run();
                 }
@@ -618,8 +619,6 @@ const MenuBar = (props) => {
           </li>
         </ul>
       </div>
-
-     
     </div>
   );
 };

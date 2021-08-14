@@ -19,12 +19,30 @@ import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
 import TextStyle from '@tiptap/extension-text-style'
 import FontFamily from '@tiptap/extension-font-family'
+import TaskList from '@tiptap/extension-task-list'
+import TaskItem from '@tiptap/extension-task-item'
+
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
   icondeactive: "mx-1 px-2 py-2 bg-gray-100 shadow btn btn-ghost",
   ol: "list-inside",
 };
 
+
+
+
+/*
+const CustomDocument = Document.extend({
+  content: 'taskList',
+})
+
+const CustomTaskItem = TaskItem.extend({
+  content: 'inline*',
+})
+
+
+
+*/
 function Editors() {
   const editor = useEditor({
     extensions: [
@@ -40,6 +58,10 @@ function Editors() {
       TextAlign.configure({
         types: ["heading", "paragraph", "image", "img"],
       }),
+      /*
+      CustomDocument,
+      TaskList,
+      CustomTaskItem*/
     ],
     editorProps: {
       attributes: {
@@ -54,7 +76,7 @@ function Editors() {
   const [nlist, setNlist] = React.useState(["A", "b", "C"]);
   const [nodeCheck, setNodecheck] = React.useState(true);
   const [noteText, setNoteText] = React.useState("");
-  const [entityList, setEntityList] = React.useState(["a", "b"]);
+  const [entityList, setEntityList] = React.useState([]);
   const [highlightColor, setHighlightColor] = React.useState(true);
 
   const nodeRef = React.useRef();
@@ -128,7 +150,31 @@ function Editors() {
                 editorWidth={editorWidth}
                 editor={editor}
                
-                noteFunc={() => {
+                noteFunc={async () => {
+              const getEntities= async (notedata) =>{
+                const response = await fetch("http://127.0.0.1:5000/entities", {
+                  method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                  mode: 'cors', // no-cors, *cors, same-origin
+                  cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                  credentials: 'same-origin', // include, *same-origin, omit
+                  headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                  },
+                   // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                  body: JSON.stringify({"note":notedata}) // body data type must match "Content-Type" header
+                });
+            
+                return response.json()
+
+              }
+            
+              setNoteText(window.getSelection().toString());
+              const x=await getEntities(window.getSelection().toString())
+            console.log(x['entities'])
+            setEntityList(x['entities'])
+
+
                   setHighlightColor(true);
                   var hcolor = "#FFEFD5";
 
@@ -142,7 +188,7 @@ function Editors() {
 
                   setWidth(false);
 
-                  setNoteText(window.getSelection().toString());
+                 
                 }}
               />
             </div>
@@ -162,10 +208,13 @@ function Editors() {
                 closeFunc={(e) => {
                   setWidth(true);
                 }}
+
                 addEntityFunc={(e) => {
+                  console.log(window.getSelection().toString())
+                 
                   setEntityList([
                     ...entityList,
-                    window.getSelection().toString(),
+                   { label:window.getSelection().toString()}
                   ]);
                 }}
                 text={noteText}

@@ -12,6 +12,7 @@ import Superscript from "@tiptap/extension-superscript";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+
 import {BiFontColor} from "react-icons/bi"
 import "./editor.css";
 import MenuBar from "./Menubar";
@@ -152,34 +153,11 @@ function BubbleMenus(props) {
             .unsetHighlight()
             .run();
         }}
-        className={styles.icondeactive}
+        className={styles.bubbleicondeactive}
       >
-        Highlight
+        Unhighlight
       </button>
-      <button
-        onClick={() =>
-          props.editor
-            .chain()
-            .focus()
-            .toggleItalic()
-            .run()
-        }
-        className={props.editor.isActive("italic") ? "is-active" : ""}
-      >
-        italic
-      </button>
-      <button
-        onClick={() =>
-          props.editor
-            .chain()
-            .focus()
-            .toggleStrike()
-            .run()
-        }
-        className={props.editor.isActive("strike") ? "is-active" : ""}
-      >
-        strike
-      </button>
+ 
     </BubbleMenu>
   );
 }
