@@ -14,6 +14,7 @@ import QandA from "./Pages/Quiz/QnA/QnA";
 import Mcq from "./Pages/Quiz/MCQ/mcq";
 import TKS from "./tks";
 import Editors from "./Pages/Editor/editors";
+import VideoNote from "./Pages/Video/videonote";
 
 
 
@@ -29,11 +30,16 @@ function App() {
           <Switch>
             <Route exact path="/" component={<div>Welcome</div>} />
             <Route  path="/test" component={Test} />
+            <Route  path="/tks" component={TKS} />
+           
             <Route  path="/signup" component={SignUp} />
             <Route  path="/login" component={Login} />
             <Route  path="/reset" component={Reset} />
             
             <Route  path="/note" component={Editors} />
+            <Route  path="/videonote" component={VideoNote} />
+
+           
             <PrivateRoute path="/profile" component={Profile} />
            
            

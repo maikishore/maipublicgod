@@ -1,13 +1,11 @@
 import React from "react";
-import Navbar from "./Commons/Navbar/Navbar";
-
-import Nodes from "./Pages/Editor/components/Nodes";
-import Notecard from "./Pages/Editor/components/Notecard";
 
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
-import videotext from "./videovtt.vtt";
 import ReactPlayer from "react-player";
+import Navbar from "../../Commons/Navbar/Navbar";
+import Nodes from "../Editor/components/Nodes";
+import Notecard from "../Editor/components/Notecard";
 
 const vttext = [
   { text: "[Music]", start: 2.029, duration: 3.08 },
@@ -1027,7 +1025,7 @@ const vttext = [
   { text: "you", start: 689.18, duration: 2.06 },
 ];
 
-function TKS() {
+function VideoNote() {
   const [editorWidth, setWidth] = React.useState(true);
 
   const [nlist, setNlist] = React.useState(["A", "b", "C"]);
@@ -1201,4 +1199,4 @@ function TKS() {
   );
 }
 
-export default TKS;
+export default VideoNote;

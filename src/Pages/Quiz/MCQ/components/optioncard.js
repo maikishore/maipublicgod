@@ -3,7 +3,7 @@ import React from 'react'
 
 function OptionCard(props) {
 
-
+  const [optnum, setOptNum] = React.useState(100);
     return (  <div 
     
     onClick={props.onClick}
@@ -13,7 +13,7 @@ function OptionCard(props) {
     </div>
     <div className="px-2 py-2 text-center ">{props.option}</div>
     </div>)
-    
+  
     }
 
 export default OptionCard;

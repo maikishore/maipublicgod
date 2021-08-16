@@ -12,7 +12,7 @@ function McqCard(props) {
         onClick={(e) => {
           func()
           setOptNum(index);
-          console.log(index)
+          
         }}
         
         color={index === optnum ? "bg-blue-500" : "bg-white"}

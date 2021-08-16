@@ -14,10 +14,10 @@ function Notecard(props) {
             />
           </div>
 
-          <button class="btn w-1/3 btn-success">Save</button>
+          <button class="btn w-1/3 btn-success">Save N</button>
           <button
             onClick={props.closeFunc}
-            class="btn my-2 text-center bg-pink-300 mx-1 btn-sm btn-circle"
+            class="btn my-2 mx-1 text-center bg-gray-300 mx-1 btn-sm btn-circle"
           >
             X
           </button>

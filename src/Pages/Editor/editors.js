@@ -9,7 +9,13 @@ import { IoAddCircleSharp } from "react-icons/io5";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import { FaBold, FaItalic, FaCode } from "react-icons/fa";
+import {
+  FaBold,
+  FaItalic,
+  FaCode,
+  FaVolumeUp,
+  FaVolumeMute,
+} from "react-icons/fa";
 import { MdStrikethroughS } from "react-icons/md";
 import Subscript from "@tiptap/extension-subscript";
 
@@ -17,10 +23,9 @@ import Superscript from "@tiptap/extension-superscript";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
-import TextStyle from '@tiptap/extension-text-style'
-import FontFamily from '@tiptap/extension-font-family'
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
+import TextStyle from "@tiptap/extension-text-style";
+import FontFamily from "@tiptap/extension-font-family";
+import Speak from "../../Services/tts";
 
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
@@ -28,21 +33,6 @@ const styles = {
   ol: "list-inside",
 };
 
-
-
-
-/*
-const CustomDocument = Document.extend({
-  content: 'taskList',
-})
-
-const CustomTaskItem = TaskItem.extend({
-  content: 'inline*',
-})
-
-
-
-*/
 function Editors() {
   const editor = useEditor({
     extensions: [
@@ -78,7 +68,7 @@ function Editors() {
   const [noteText, setNoteText] = React.useState("");
   const [entityList, setEntityList] = React.useState([]);
   const [highlightColor, setHighlightColor] = React.useState(true);
-
+  const [speakToggle, setSpeakToggle] = React.useState(false);
   const nodeRef = React.useRef();
 
   React.useEffect(() => {
@@ -115,6 +105,14 @@ function Editors() {
     );
   });
 
+  React.useEffect(() => {
+    if (speakToggle) {
+      Speak(true, getTextFromEditor(editor.getJSON()));
+    } else {
+      window.speechSynthesis.cancel();
+    }
+  }, [speakToggle]);
+
   return (
     <div className="">
       <Navbar />
@@ -139,8 +137,14 @@ function Editors() {
             />
 
             <div class="m-2 flex items-start justify-center ">
-              <button onClick={(e) => {}} className="btn  btn-sm btn-circle">
-                +
+              <button
+                onClick={(e) => {
+                  console.log(speakToggle);
+                  setSpeakToggle(!speakToggle);
+                }}
+                className="btn  btn-sm btn-circle"
+              >
+                {speakToggle ? <FaVolumeMute /> : <FaVolumeUp />}
               </button>
             </div>
           </div>
@@ -149,31 +153,37 @@ function Editors() {
               <RawEditor
                 editorWidth={editorWidth}
                 editor={editor}
-               
                 noteFunc={async () => {
-              const getEntities= async (notedata) =>{
-                const response = await fetch("http://127.0.0.1:5000/entities", {
-                  method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                  mode: 'cors', // no-cors, *cors, same-origin
-                  cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                  credentials: 'same-origin', // include, *same-origin, omit
-                  headers: {
-                    'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                  },
-                   // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                  body: JSON.stringify({"note":notedata}) // body data type must match "Content-Type" header
-                });
-            
-                return response.json()
+                  const getEntities = async (notedata) => {
+                    const response = await fetch(
+                      process.env.REACT_APP_ML_URL + "/entities",
+                      {
+                        method: "POST", // *GET, POST, PUT, DELETE, etc.
+                        mode: "cors", // no-cors, *cors, same-origin
+                        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                        credentials: "same-origin", // include, *same-origin, omit
+                        headers: {
+                          "Content-Type": "application/json",
+                          // 'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                        body: JSON.stringify({ note: notedata }), // body data type must match "Content-Type" header
+                      }
+                    );
 
-              }
-            
-              setNoteText(window.getSelection().toString());
-              const x=await getEntities(window.getSelection().toString())
-            console.log(x['entities'])
-            setEntityList(x['entities'])
+                    return response.json();
+                  };
 
+                  setNoteText(window.getSelection().toString());
+                  try {
+                    const x = await getEntities(
+                      window.getSelection().toString()
+                    );
+
+                    setEntityList(x["entities"]);
+                  } catch {
+                    setEntityList([]);
+                  }
 
                   setHighlightColor(true);
                   var hcolor = "#FFEFD5";
@@ -187,8 +197,6 @@ function Editors() {
                     .run();
 
                   setWidth(false);
-
-                 
                 }}
               />
             </div>
@@ -208,13 +216,12 @@ function Editors() {
                 closeFunc={(e) => {
                   setWidth(true);
                 }}
-
                 addEntityFunc={(e) => {
-                  console.log(window.getSelection().toString())
-                 
+                  console.log(window.getSelection().toString());
+
                   setEntityList([
                     ...entityList,
-                   { label:window.getSelection().toString()}
+                    { label: window.getSelection().toString() },
                   ]);
                 }}
                 text={noteText}
@@ -225,6 +232,15 @@ function Editors() {
       </div>
     </div>
   );
+}
+
+function getTextFromEditor(jsonText) {
+  console.log(jsonText);
+  let s = "";
+  for (var i = 0; i < jsonText["content"].length; i++) {
+    s = s + jsonText["content"][i]["content"][0]["text"];
+  }
+  return s;
 }
 
 export default Editors;
