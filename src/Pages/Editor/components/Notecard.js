@@ -3,6 +3,7 @@ import Entities from "./Entities";
 
 function Notecard(props) {
   return (
+    
     <div className="w-auto bg-white-100 shadow-lg border-2">
       <div className="flex flex-row ">
         <div className="py-2 px-2 flex  w-full ">
@@ -17,7 +18,7 @@ function Notecard(props) {
           <button class="btn w-1/3 btn-success">Save N</button>
           <button
             onClick={props.closeFunc}
-            class="btn my-2 mx-1 text-center bg-gray-300 mx-1 btn-sm btn-circle"
+            class="btn my-2  text-center bg-gray-300 mx-1 btn-sm btn-circle"
           >
             X
           </button>
@@ -65,7 +66,7 @@ function Notecard(props) {
         </div>
       </div>
 
-      <div className="w-auto bg-purple-100 max-h-80 overflow-y-scroll">
+      <div className="w-auto text-left px-2 text-md bg-purple-100 max-h-60 overflow-y-scroll">
         {props.text}
       </div>
     </div>
