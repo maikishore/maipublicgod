@@ -131,3 +131,11 @@ ul {
     border-top: 2px solid rgba(13, 13, 13, 0.1);
     margin: 2rem 0;
 }
+
+#mynetwork {
+    width: 800px;
+    height: 800px;
+    border: 1px solid #444444;
+    background-color: #222222;
+  }
+  

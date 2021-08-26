@@ -79,3 +79,51 @@ function Nodes(props) {
   }
 
   export default Nodes;
+
+
+
+
+
+  const data = [
+  {
+    id: "sjnfjkls",
+    type: "jjas",
+    title: "This is first title",
+    nodes: ["Maibrain", "Scinece"],
+    srctext: "This is note text",
+    notes: [
+      { id: "kshj", notetext: "shfjkhsfakfdkh", entities: ["2", "5", "6"] },
+    ],
+    maiscore: 5,
+    updates: [],
+    collabrative: {},
+  },
+  //Second
+  {
+    id: "sjnsasfjklsaa",
+    type: "jjasas",
+    title: "This is Second title",
+    nodes: ["Maibrain", "Physics", "Quantam Mechanics"],
+    srctext: "This is note text",
+    notes: [
+      { id: "kshj", notetext: "shfjkhsfakfdkh", entities: ["22", "55", "66"] },
+    ],
+    maiscore: 1,
+    updates: [],
+    collabrative: {},
+  },
+  //Third
+  {
+    id: "sjnfjkls",
+    type: "jjas",
+    title: "This is first title",
+    nodes: ["Maibrain", "English", "Grammar"],
+    srctext: "This is note text",
+    notes: [
+      { id: "kshj", notetext: "shfjkhsfakfdkh", entities: ["20", "50", "60"] },
+    ],
+    maiscore: 6,
+    updates: [],
+    collabrative: {},
+  },
+];
