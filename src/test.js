@@ -2,13 +2,49 @@ import React from "react";
 
 import { Network, Node, Edge } from "react-vis-network";
 import Navbar from "./Commons/Navbar/Navbar";
+import { BiReset } from "react-icons/bi";
+import { GiBrain } from "react-icons/gi";
+import { FaInfo } from "react-icons/fa";
+import "./test.css"
+import {
+  Tooltip,
+} from 'react-tippy';
+ 
 
 function Test() {
   const Decorator = (props) => {
     return (
-      <button onClick={() => console.log(`You clicked ${props.maiscore_}`)}>
-        Click Me
-      </button>
+      <Tooltip
+      // options
+      title="Welcome to React"
+      html={
+
+      <div className="w-60 h-50 card  rounded shadow-xl bg-green-100">
+      <div className="card-title ">
+      <p className="p-1 "> {props["title"]} </p>
+      </div>
+      <div class="stat">
+    <div class="stat-title">Maiscore</div> 
+    <div class="stat-value">{props['maiscore_']}</div> 
+    <div class="stat-actions">
+      <button class="btn  btn-sm btn-primary">Open Note</button> 
+      <button class="btn mx-1 btn-sm btn-primary">Memorize</button>
+    </div>
+  </div>
+
+    
+
+        </div>}
+      
+      position="bottom"
+      trigger="click"
+    
+    >
+     
+       <FaInfo class="m-1 bg-green-100"/>
+      
+    </Tooltip>
+   
     );
   };
 
@@ -18,83 +54,84 @@ function Test() {
       title: "Title One",
       content: "sjhfk",
       notes: [],
-      nodes: ["Science", "Physics"],
-      maiscore: 4,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Science", "Biology"],
-      maiscore: 5,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["English", "Prose", "Shertak"],
-      maiscore: 8,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Science", "Biology", "Bio Chemistry"],
-      maiscore: 3,
+      nodes: ["History", "Pre Independence", "Quit India Movement"],
+      maiscore: 30,
       type: "Web",
       entities: ["A", "B", "Bio"],
     },
     {
-      id: "kshfskj",
+      id: "kshfkj",
       title: "Title One",
       content: "sjhfk",
       notes: [],
-      nodes: ["Science", "Biology", "Bio Chemistry Physics"],
-      maiscore: 9,
+      nodes: ["Biology", "Botnay",],
+      maiscore: 10,
       type: "Web",
-      entities: ["A", "B", "USA"],
+      entities: ["A", "B"],
+    },
+    {
+      id: "kshfkj",
+      title: "Title One",
+      content: "sjhfk",
+      notes: [],
+      nodes: ["Botnay", "Plants"],
+      maiscore: 10,
+      type: "Web",
+      entities: ["A", "B"],
     },
 
     {
       id: "kshfkj",
-      title: "MyTitle",
+      title: "Title One",
       content: "sjhfk",
       notes: [],
-      nodes: ["English", "Anthropology", "Bio Chemistry"],
+      nodes: ["Botnay", "Animals"],
       maiscore: 5,
       type: "Web",
-      entities: ["A", "B", "USA"],
+      entities: ["A", "B"],
     },
+
+    {
+      id: "kshfkj",
+      title: "Title One",
+      content: "sjhfk",
+      notes: [],
+      nodes: ["Botnay", "Animals", "Humans"],
+      maiscore: 1,
+      type: "Web",
+      entities: ["A", "B"],
+    },
+
+    {
+      id: "kshfkj",
+      title: "Title One",
+      content: "sjhfk",
+      notes: [],
+      nodes: ["Physics", "Animals", "Humans"],
+      maiscore: 1,
+      type: "Web",
+      entities: ["A", "B"],
+    },
+
+
   ];
 
   const [showLabel, setShowLabel] = React.useState(false);
   const [graph, setGraph] = React.useState();
   const [query, setQuery] = React.useState(false);
+  const networkRef=React.useRef()
+
   const queryRef = React.useRef();
   const queryTypeRef = React.useRef();
 
   function matchQuery(qstring, cstring, qtype) {
     try {
       if (qtype === "maiscore" && qstring.length !== 0) {
-        if (
-          parseInt(qstring) <= parseInt(cstring)
-          
-        ) {
+        if ( parseInt(cstring)<=parseInt(qstring)) {
           return 18;
         }
       }
-  
+
       if (qtype === "title" && qstring.length !== 0) {
         console.log(qstring, cstring, qtype);
         if (
@@ -103,33 +140,72 @@ function Test() {
           return 18;
         }
       }
-  
-      if (qtype === "entities" && qstring.length !== 0) {
-  
-        var words = cstring.map(function(v) {
-          return v.toLowerCase();
-        });
-        if (words.includes(qstring.toLowerCase())) {
-          return 18;
-        }
-      }
-  
-      if (qtype === "nodes" && qstring.length !== 0) {
-       
-        var words = cstring.map(function(v) {
-          return v.toLowerCase();
-        });
-        if (words.includes(qstring.toLowerCase())) {
-          return 18;
-        }
-      }
-      return 12;
 
-    }catch {
-      return 12
+      if (qtype === "entities" && qstring.length !== 0) {
+        var words = cstring.map(function(v) {
+          return v.toLowerCase();
+        });
+        if (words.includes(qstring.toLowerCase())) {
+          return 18;
+        }
+      }
+
+      if (qtype === "nodes" && qstring.length !== 0) {
+        var words = cstring.map(function(v) {
+          return v.toLowerCase();
+        });
+        if (words.includes(qstring.toLowerCase())) {
+          return 18;
+        }
+      }
+      return 10;
+    } catch {
+      return 10;
     }
-   
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  const CustomIcon = ({ icon, color = '#F472B6' }) => {
+    const viewBox = 36;
+    const iconSize = 20;
+    const pad = (viewBox - iconSize) / 2;
+    const center = viewBox / 2;
+   
+    return (
+
+      <svg id="svgs"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={`0 0 ${viewBox} ${viewBox}`}
+
+      >
+ 
+        <g >
+          <circle  cx={center} cy={center} r={16} fill={color} />
+          <g transform={`translate(${pad}, ${pad})`}>
+ 
+            {React.createElement(icon, { color: 'white', size: iconSize })}
+          </g>
+        </g>
+
+ 
+      </svg>
+    );
+  };
+
+
+
+
+
 
   React.useEffect(() => {
     const nodehistory = [];
@@ -139,10 +215,15 @@ function Test() {
         id="Maibrain"
         label={"Maibrain"}
         fixed={true}
-        size={24}
-        color={"cyan"}
+        size={30}
+        shadow={true}
+        
+       icon={GiBrain}
+        component={CustomIcon}
       />,
     ];
+
+
 
     const g = data.map((each, index) => {
       return data[index]["nodes"].map((e, i) => {
@@ -153,6 +234,7 @@ function Test() {
             graphList.push(
               <Node
                 id={data[index]["nodes"][i]}
+                title={data[index]["title"]}
                 label={showLabel ? data[index]["nodes"][i] : " "}
                 group={data[index]["nodes"][i - 1]}
                 maiscore_={data[index]["maiscore"]}
@@ -161,7 +243,9 @@ function Test() {
                   data[index][queryTypeRef.current.value],
                   queryTypeRef.current.value
                 )}
-                decorator={Decorator}
+                decorator={
+                  i === data[index]["nodes"].length - 1 ? Decorator : () => {}
+                }
                 shadow={{
                   size: 60,
                   color: "cyan",
@@ -185,6 +269,9 @@ function Test() {
                   data[index][queryTypeRef.current.value],
                   queryTypeRef.current.value
                 )}
+                decorator={
+                  i === data[index]["nodes"].length - 1 ? Decorator : () => {}
+                }
               />
             );
             graphList.push(
@@ -205,6 +292,9 @@ function Test() {
                     data[index][queryTypeRef.current.value],
                     queryTypeRef.current.value
                   )}
+                  decorator={
+                    i === data[index]["nodes"].length - 1 ? Decorator : () => {}
+                  }
                 />
               </>
             );
@@ -223,14 +313,16 @@ function Test() {
   return (
     <div className=" overflow-hidden bg-gray-900">
       <Navbar />
-      <div style={{ height: "100vh" }} className=" bg-gray-900">
-        <div className="flex justify-center items-center">
+      <div style={{ height: "100vh" }} className=" overflow-hidden bg-gray-900">
+        <div className="flex  w-full items-baseline ">
+          <div className="flex w-2/3  items-center justify-end">
+       
           <input ref={queryRef} className="my-3 input-md rounded w-1/3 " />
           <select
             ref={queryTypeRef}
-            class="mx-1 select select-bordered ax-w-xs"
+            class="mx-1 select select-bordered ax-w-xs text-medium"
           >
-            <option selected="selected">Type</option>
+            <option  className="mb-1 text-md font-bold" selected="selected">Type</option>
             <option value="title">Title</option>
             <option value="nodes">Nodes</option>
             <option value="entities">Keywords</option>
@@ -244,24 +336,41 @@ function Test() {
           >
             Query
           </button>
-
-          <div class="form-control">
-            <label class="cursor-pointer label">
-              <div className="flex flex-col justify-center items-center">
-                <input
-                  type="checkbox"
-                  onClick={(e) => {
-                    setShowLabel(!showLabel);
-                  }}
-                  class="toggle toggle-primary"
-                />
-                <span class="label-text text-white mx-1 my-1">Show Labels</span>
-              </div>
-            </label>
           </div>
+ 
+
+          <div className="flex w-1/4 justify-end items-baseline ">
+            <div class="form-control">
+              <label class="cursor-pointer label">
+                <div className="flex flex-col justify-center items-center">
+                  <input
+                    type="checkbox"
+                    onClick={(e) => {
+                      setShowLabel(!showLabel);
+                    }}
+                    class="toggle toggle-primary"
+                  />
+                  <span class="label-text text-white mx-1 my-1">
+                    Show Labels
+                  </span>
+                </div>
+              </label>
+            </div>
+
+            <button onClick={(e)=>{
+              queryRef.current.value=""
+              queryTypeRef.current.value="Type"
+             setQuery(!query)
+            }} className="btn btn-sm bg-red-300 hover:bg-red-100">
+              <BiReset />
+            </button>
+          </div>
+
+
         </div>
 
         <Network
+          ref={networkRef}
           options={{
             nodes: {
               shape: "dot",
