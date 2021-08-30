@@ -15,6 +15,7 @@ import Mcq from "./Pages/Quiz/MCQ/mcq";
 import TKS from "./tks";
 import Editors from "./Pages/Editor/editors";
 import VideoNote from "./Pages/Video/videonote";
+import Graph from "./Pages/Graph/graph";
 
 
 
@@ -49,6 +50,7 @@ function App() {
             <PrivateRoute path="/qna" component={QandA} />
             <PrivateRoute path="/mcq" component={Mcq} />
 
+            <PrivateRoute path="/kgraph" component={Graph} />
 
       
           </Switch>
