@@ -16,14 +16,14 @@ export default function MenuCard(props) {
         <div className="px-1 stat-title">{props.timetoread}</div>
       </div>
 
-      <div className="m-2 p-1 flex gap-2 flex-wrap ">
+      <div className="m-1  max-h-12  overflow-hidden flex gap-1 flex-wrap ">
       {props.nodes.map((each,index)=>{
-          return (  <div class="badge badge-secondary">{each}</div>
+          return (  <div key={index} class="badge bg-gray-600">{each}</div>
 )
       })}
       </div>
 
-      <div className="flex flex-wrap flex-row justify-between items-baseline===">
+      <div className="flex flex-wrap flex-row justify-between items-baseline">
         <p className="p-2 overflow-y-hidden h-24 w-full font-bold text-4xl text-left">
         {props.title}
         </p>

@@ -16,6 +16,7 @@ import TKS from "./tks";
 import Editors from "./Pages/Editor/editors";
 import VideoNote from "./Pages/Video/videonote";
 import Graph from "./Pages/Graph/graph";
+import MainLibrary from "./Pages/Main/mainlibrary";
 
 
 
@@ -25,7 +26,7 @@ function App() {
  
    
       <AuthProvider>
-      <div className="App">
+      <div className="App ">
            
         <Router>
           <Switch>
@@ -51,8 +52,8 @@ function App() {
             <PrivateRoute path="/mcq" component={Mcq} />
 
             <PrivateRoute path="/kgraph" component={Graph} />
+            <PrivateRoute path="/library" component={MainLibrary} />
 
-      
           </Switch>
         </Router>
      
