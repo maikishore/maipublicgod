@@ -6,7 +6,9 @@ import { FaBook, FaStickyNote } from "react-icons/fa";
 import MenuCard from "./components/menucard";
 import SelectCard from "./components/selectcard";
 import Navbar from "../../Commons/Navbar/Navbar";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import Graph from "../Graph/graph";
+
 const data = [
   {
     id: "kshfkj",
@@ -108,8 +110,11 @@ export default function MainLibrary(props) {
   const [filterData, setFilterData] = React.useState([]);
   const [addToggle, setaddToggle] = React.useState(false);
   const [showModal, setShowModal] = React.useState(false);
+  const [graphToggle,setGraphToggle]=React.useState(false)
+  
   const history = useHistory();
-const webUrlRef=React.useRef();
+
+  const webUrlRef = React.useRef();
   const filterFunc = (data, matchtypee) => {
     var k = [];
     for (var i = 0; i < data.length; i++) {
@@ -157,7 +162,7 @@ const webUrlRef=React.useRef();
         break;
 
       case "VIDEO":
-        history.push("/videonote");
+        history.push("/videonote/");
 
         break;
 
@@ -176,6 +181,10 @@ const webUrlRef=React.useRef();
     };
   }, [addToggle]);
 
+
+
+
+
   const contentcards = filterData.map((each, index) => {
     return (
       <MenuCard
@@ -187,10 +196,30 @@ const webUrlRef=React.useRef();
     );
   });
 
+
+
+  const pageshift=( <div class="">
+  <div class="form-control flex " onClick={()=>{
+    setGraphToggle(!graphToggle)
+  }}>
+    <label class="cursor-pointer">
+      <div className="flex flex-col justify-center items-center">
+          <input type="checkbox" checked={graphToggle?"checked":""}  class="toggle toggle-secondary" />
+          <span class="label-text px-2 font-bold text-lg text-yellow-500 ">{graphToggle?"Mailibrary":"Maigraph"}</span> 
+
+       </div>
+
+
+    </label>
+  </div>
+</div>
+  )
   return (
     <div>
       <Navbar />
-
+   
+      {graphToggle?<
+        Graph togglePage={pageshift} />:<div>
       <div className="w-full h-60 -mt-2 bg-gradient-to-r from-green-400 to-blue-500">
         <div className="flex flex-row  justify-start items-center">
           <div className=" w-1/2 mt-12 ml-8 ">
@@ -215,7 +244,7 @@ const webUrlRef=React.useRef();
                 <div className="mt-4 flex justify-center items-center">
                   <div class="form-control">
                     <input
-                    ref={webUrlRef}
+                      ref={webUrlRef}
                       type="text"
                       placeholder="paste url here"
                       class="input w-96 input-lg input-bordered"
@@ -223,9 +252,14 @@ const webUrlRef=React.useRef();
                   </div>
 
                   <div>
-                    <button onClick={(e)=>{
-                      openInNewTab(webUrlRef.current.value)
-                    }} className="btn btn-lg ml-1 btn-primary">Go</button>
+                    <button
+                      onClick={(e) => {
+                        openInNewTab(webUrlRef.current.value);
+                      }}
+                      className="btn btn-lg ml-1 btn-primary"
+                    >
+                      Go
+                    </button>
                   </div>
 
                   <div>
@@ -241,17 +275,27 @@ const webUrlRef=React.useRef();
                 </div>
 
                 <div class="alert alert-info">
-  <div class="flex-1 text-center mt-1 justify-center items-center">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
-    </svg> 
-    <label> You can take your note on webpages with our chrome extension
-                  installed.</label>
-  </div>
-</div>
-
-
-              
+                  <div class="flex-1 text-center mt-1 justify-center items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      class="w-6 h-6 mx-2 stroke-current"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    <label>
+                      {" "}
+                      You can take your note on webpages with our chrome
+                      extension installed.
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -262,15 +306,7 @@ const webUrlRef=React.useRef();
       )}
       <div className="mt-6 flex flex-col overflow-hidden">
         <div className="flex justify-end mr-2">
-          <div class="form-control">
-            <label class="cursor-pointer label">
-              <span class="label-text mr-1 font-bold text-lg ">Maigraph</span>
-              <input
-                typee="checkbox"
-                class="toggle toggle-lg toggle-secondary "
-              />
-            </label>
-          </div>
+        {pageshift}
         </div>
 
         <div className="flex flex-wrap justify-center gap-8 items-center flex-row text-center">
@@ -301,15 +337,7 @@ const webUrlRef=React.useRef();
             classes={typee === "VIDEO" ? "bg-gray-300" : "bg-white"}
           />
 
-          <SelectCard
-            clickFunc={(e) => {
-              settypee("BOOKS");
-            }}
-            icon={<FaBook className="text-green-300" />}
-            title="Books/PDF"
-            classes={typee === "BOOKS" ? "bg-gray-300" : "bg-white"}
-          />
-
+         
           <SelectCard
             clickFunc={(e) => {
               settypee("NOTES");
@@ -331,12 +359,25 @@ const webUrlRef=React.useRef();
           {contentcards}
         </div>
       </div>
+      </div> }
+      
     </div>
   );
 }
 
 
+/*
+ <SelectCard
+            clickFunc={(e) => {
+              settypee("BOOKS");
+            }}
+            icon={<FaBook className="text-green-300" />}
+            title="Books/PDF"
+            classes={typee === "BOOKS" ? "bg-gray-300" : "bg-white"}
+          />
+
+*/
 const openInNewTab = (url) => {
-  const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-  if (newWindow) newWindow.opener = null
-}
+  const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+  if (newWindow) newWindow.opener = null;
+};

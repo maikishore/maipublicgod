@@ -23,34 +23,35 @@ function VideoNote() {
   const nodeRef = React.useRef();
   const videoUrlRef = React.useRef();
   // const titleRef=React.useRef()
+  const getSubtitles = async (url) => {
+    const response = await fetch(
+      process.env.REACT_APP_ML_URL + "/videonote",
+      {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify({ video_url: url }), // body data type must match "Content-Type" header
+      }
+    );
 
+    return response.json();
+  };
   const handleVideo = async (e) => {
-    const getSubtitles = async (url) => {
-      const response = await fetch(
-        process.env.REACT_APP_ML_URL + "/videonote",
-        {
-          method: "POST", // *GET, POST, PUT, DELETE, etc.
-          mode: "cors", // no-cors, *cors, same-origin
-          cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-          credentials: "same-origin", // include, *same-origin, omit
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-          body: JSON.stringify({ video_url: url }), // body data type must match "Content-Type" header
-        }
-      );
-
-      return response.json();
-    };
+  
+  
     setPlayUrl(videoUrlRef.current.value)
-    
+   
     if(videoUrlRef.current.value.includes("https://youtu.be/")){
      
       const t=videoUrlRef.current.value.replace("https://youtu.be/","https://www.youtube.com/watch?v=")
       setPlayUrl(t)
-  
+ 
  
     }
   
@@ -280,38 +281,50 @@ function VideoNote() {
       {showPage ? (
         page
       ) : (
-        <div class="flex h-1/2 my-40 justify-center items center">
-          <div class="card shadow-2xl lg:card-side bg-blue-400 text-primary-content">
-            <div class="card-body">
-              <input
-                id="kk"
-                ref={videoUrlRef}
-                type="text"
-                placeholder="Video Url"
-                class="input input-bordered text-black"
-              />
+        <>
+        <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="relative w-1/2 my-6 mx-auto max-w-3xl">
+            {/*content*/}
 
-              <div class="justify-end ">
-                <button onClick={handleVideo} class="btn btn-primary">
-                  Go
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    class="inline-block w-6 h-6 ml-2 stroke-current"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5l7 7-7 7"
-                    ></path>
-                  </svg>
-                </button>
+            <div className="card w-full h-40 shadow-lg bg-white">
+              <div className="mt-4 flex justify-center items-center">
+                <div class="form-control">
+                  <input
+                  ref={videoUrlRef}
+                    type="text"
+                    placeholder="paste url here"
+                    class="input w-96 input-lg input-bordered"
+                  />
+                </div>
+
+                <div>
+                  <button onClick={
+                    handleVideo
+                   
+                  } className="btn btn-lg ml-1 btn-primary">Go</button>
+                </div>
+
+                <div>
+                 
+                </div>
               </div>
+
+              <div class="alert alert-info">
+<div class="flex-1 text-center mt-1 justify-center items-center">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>                          
+  </svg> 
+  <label>Currently supporting youtube only.Other Integrations like Zoom,Google Classroom etc. comming soon!</label>
+</div>
+</div>
+
+
+            
             </div>
           </div>
         </div>
+        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+      </>
       )}
     </div>
   );

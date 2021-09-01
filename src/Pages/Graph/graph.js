@@ -13,7 +13,7 @@ import {
 import uuid from 'react-uuid'
 import Navbar from "../../Commons/Navbar/Navbar";
 
-function Graph() {
+function Graph(props) {
   const Decorator = (props) => {
     return (
       <Tooltip
@@ -338,8 +338,8 @@ function Graph() {
   }, [showLabel, query]);
 
   return (
-    <div className=" overflow-hidden bg-gray-900">
-      <Navbar />
+    <div className="-mt-3 overflow-hidden bg-gray-900">
+      
       <div style={{ height: "100vh" }} className=" overflow-hidden bg-gray-900">
         <div className="flex  w-full items-baseline ">
           <div className="flex w-2/3  items-center justify-end">
@@ -364,6 +364,14 @@ function Graph() {
           >
             Query
           </button>
+
+          <button onClick={(e)=>{
+              queryRef.current.value=""
+              queryTypeRef.current.value="Type"
+             setQuery(!query)
+            }} className="mx-1 btn btn-outline bg-red-400 hover:bg-red-300">
+              <BiReset />
+            </button>
           </div>
  
 
@@ -376,7 +384,7 @@ function Graph() {
                     onClick={(e) => {
                       setShowLabel(!showLabel);
                     }}
-                    className="toggle toggle-primary"
+                    className="checkbox checkbox-primary"
                   />
                   <span className="label-text text-white mx-1 my-1">
                     Show Labels
@@ -384,14 +392,13 @@ function Graph() {
                 </div>
               </label>
             </div>
+            
 
-            <button onClick={(e)=>{
-              queryRef.current.value=""
-              queryTypeRef.current.value="Type"
-             setQuery(!query)
-            }} className="btn btn-sm bg-red-300 hover:bg-red-100">
-              <BiReset />
-            </button>
+            
+
+
+            {props.togglePage}
+
           </div>
 
 
