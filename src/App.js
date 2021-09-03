@@ -38,7 +38,7 @@ function App() {
             <Route  path="/login" component={Login} />
             <Route  path="/reset" component={Reset} />
             
-            <Route  path="/note" component={Editors} />
+            <Route  path="/note/:id" component={Editors} />
             <Route  path="/videonote" component={VideoNote} />
 
            

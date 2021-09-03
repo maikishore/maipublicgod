@@ -8,14 +8,10 @@ function Notecard(props) {
       <div className="flex flex-row ">
         <div className="py-2 px-2 flex  w-full ">
           <div className="form-control  w-full">
-            <input
-              type="text"
-              placeholder="Note Title"
-              class="input input-md input-bordered w-5/6"
-            />
+            {props.input}
           </div>
 
-          <button class="btn w-1/3 btn-success">Save N</button>
+          <button onClick={props.saveFunc} class="btn w-1/3 btn-success">Add Note</button>
           <button
             onClick={props.closeFunc}
             class="btn my-2  text-center bg-gray-300 mx-1 btn-sm btn-circle"

@@ -20,8 +20,8 @@ import MenuBar from "./Menubar";
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-500 shadow btn btn-ghost hover:bg-gray-100",
   icondeactive: "mx-1 px-2 py-2 bg-gray-200 shadow btn btn-ghost hover:bg-gray-100",
-  bubbleiconactive: "  mx-1   bg-gray-700 shadow btn btn-sm",
-  bubbleicondeactive: "mx-1 bg-gray-900 shadow btn btn-sm",
+  bubbleiconactive: "  mx-1   bg-gray-500 shadow btn btn-sm",
+  bubbleicondeactive: "mx-1 bg-gray-500 shadow btn btn-sm",
   colorbutton: "w-8 h-2 mx-1   shadow btn btn-sm btn-circle  ",
 
   ol: "list-inside",
@@ -132,7 +132,7 @@ const textcolormenu=(<div class="dropdown">
 function BubbleMenus(props) {
   return (
     <BubbleMenu
-      className="bg-gray-100 p-1 flex justify-baseline items-center"
+      className="bg-gray-200 p-1 flex justify-baseline items-center"
       tippyOptions={{
         placement: "bottom",
 
@@ -141,7 +141,7 @@ function BubbleMenus(props) {
       editor={props.editor}
     >
       <button onClick={props.noteFunc} className={styles.bubbleicondeactive}>
-        M
+        Take Note
       </button>
    
      

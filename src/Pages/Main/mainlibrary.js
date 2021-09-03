@@ -8,6 +8,7 @@ import SelectCard from "./components/selectcard";
 import Navbar from "../../Commons/Navbar/Navbar";
 import { useHistory, useParams } from "react-router-dom";
 import Graph from "../Graph/graph";
+import { v4 as uuidv4 } from 'uuid';
 
 const data = [
   {
@@ -170,7 +171,8 @@ export default function MainLibrary(props) {
         break;
 
       case "NOTES":
-        history.push("/note");
+        const urlid=uuidv4()
+        history.push("/note/"+urlid);
         break;
       default:
     }

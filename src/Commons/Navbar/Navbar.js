@@ -1,10 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router";
 import logo from "../../Assets/maibrain_logo.png";
+import useAuth from "../../GlobalContexts/authcontext";
 
 function Navbar() {
 
   const history=useHistory();
+  const currentUser=useAuth();
   return (
     <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content ">
       <div className="flex-none  lg:flex"></div>
@@ -52,15 +54,22 @@ history.push("/library")
               </div>
             </div>
           </div>
-          <ul className="shadow hover :bg-gray-100 menu dropdown-content bg-gray-700 rounded-box w-52">
+          <ul className="shadow menu dropdown-content bg-gray-200 rounded-box w-52">
             <li>
-              <a>Profile</a>
+              <button onClick={(e)=>{
+
+              }} className="btn btn-ghost">Profile</button>
             </li>
             <li>
-              <a>Settings</a>
+              <button onClick={(e)=>{
+              
+              }} className="btn btn-ghost">Profile</button>
             </li>
             <li>
-              <a>Sign Out</a>
+              <button onClick={(e)=>{
+ currentUser.logout()
+ history.push("/login")
+              }} className="btn btn-ghost">Sign Out</button>
             </li>
           </ul>
         </div>
