@@ -14,6 +14,7 @@ import uuid from 'react-uuid'
 import Navbar from "../../Commons/Navbar/Navbar";
 
 function Graph(props) {
+ const data=props.data
   const Decorator = (props) => {
     return (
       <Tooltip
@@ -50,96 +51,7 @@ function Graph(props) {
     );
   };
 
-  const data = [
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["History", "Pre Independence", "Quit India Movement"],
-      maiscore: 30,
-      type: "Web",
-      entities: ["A", "B", "Bio"],
-    },
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Biology", "Botnay",],
-      maiscore: 10,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Botnay", "Plants"],
-      maiscore: 10,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Botnay", "Animals"],
-      maiscore: 5,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Botnay", "Animals", "Humans"],
-      maiscore: 1,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Physics", "Animals", "Humans"],
-      maiscore: 1,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: [ "Humans","Males"],
-      maiscore: 1,
-      type: "Web",
-      entities: ["A", "B"],
-    },
-
-    {
-      id: "kshfkj",
-      title: "Title One",
-      content: "sjhfk",
-      notes: [],
-      nodes: ["Humans","Females"],
-      maiscore: 1,
-      type: "Web",
-      entities: ["A", "B","Sex"],
-    },
-
-
-  ];
-
+  
   const [showLabel, setShowLabel] = React.useState(false);
   const [graph, setGraph] = React.useState();
   const [query, setQuery] = React.useState(false);
@@ -159,7 +71,8 @@ function Graph(props) {
       if (qtype === "title" && qstring.length !== 0) {
         console.log(qstring, cstring, qtype);
         if (
-          qstring.toString().toLowerCase() === cstring.toString().toLowerCase()
+          qstring.toString().toLowerCase() === cstring.toString().toLowerCase() ||
+          cstring.toString().toLowerCase().includes( qstring.toString().toLowerCase()  )
         ) {
           return 18;
         }
@@ -421,6 +334,7 @@ function Graph(props) {
               width: 2,
               shadow: true,
             },
+          
           }}
         >
           {graph}

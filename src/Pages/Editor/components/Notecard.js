@@ -27,33 +27,7 @@ function Notecard(props) {
       </div>
 
       <div className=" flex justify-between items-center">
-        <div class="p-1 card bordered">
-          <div className="flex items-center">
-            <div class="form-control p-2">
-              <label class="cursor-pointer label">
-                <span class="label-text px-2">Low </span>
-                <input
-                  type="radio"
-                  name="opt"
-                  class="radio radio-secondary"
-                  value=""
-                />
-              </label>
-            </div>
-
-            <div class="form-control p-2">
-              <label class="cursor-pointer label">
-                <span class="label-text px-2 ">High </span>
-                <input
-                  type="radio"
-                  name="opt"
-                  class="radio radio-secondary"
-                  value=""
-                />
-              </label>
-            </div>
-          </div>
-        </div>
+       {props.leveldiv}
         <div className="flex justify-end">
           <button 
           onClick={props.addEntityFunc}

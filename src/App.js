@@ -18,33 +18,25 @@ import VideoNote from "./Pages/Video/videonote";
 import Graph from "./Pages/Graph/graph";
 import MainLibrary from "./Pages/Main/mainlibrary";
 
-
-
-
 function App() {
   return (
- 
-   
-      <AuthProvider>
+    <AuthProvider>
       <div className="App ">
-           
         <Router>
           <Switch>
             <Route exact path="/" component={<div>Welcome</div>} />
-            <Route  path="/test" component={Test} />
-            <Route  path="/tks" component={TKS} />
-           
-            <Route  path="/signup" component={SignUp} />
-            <Route  path="/login" component={Login} />
-            <Route  path="/reset" component={Reset} />
-            
-            <Route  path="/note/:id" component={Editors} />
-            <Route  path="/videonote" component={VideoNote} />
+            <Route path="/test" component={Test} />
+            <Route path="/tks" component={TKS} />
 
-           
+            <Route path="/signup" component={SignUp} />
+            <Route path="/login" component={Login} />
+            <Route path="/reset" component={Reset} />
+
+            <Route path="/note/:id" component={Editors} />
+            <Route path="/videonote/:id" component={VideoNote} />
+
             <PrivateRoute path="/profile" component={Profile} />
-           
-           
+
             <PrivateRoute path="/quiz" component={Quiz} />
 
             <PrivateRoute path="/cloze" component={Cloze} />
@@ -53,13 +45,10 @@ function App() {
 
             <PrivateRoute path="/kgraph" component={Graph} />
             <PrivateRoute path="/library" component={MainLibrary} />
-
           </Switch>
         </Router>
-     
       </div>
-      </AuthProvider>
-  
+    </AuthProvider>
   );
 }
 

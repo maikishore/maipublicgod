@@ -475,7 +475,42 @@ const MenuBar = (props) => {
       >
         <FaCode />
       </button>
-
+      <div className="dropdown dropdown-right">
+        <div tabindex="0" className={classes.icondeactive}>
+          <FaImages />
+        </div>
+        <ul
+          tabindex="0"
+          className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
+        >
+          <li>
+            <div className="form-control">
+              <input
+                ref={imgRef}
+                type="text"
+                placeholder="Image Source"
+                className="mb-1 input input-bordered"
+              />
+            </div>
+            <button
+              onClick={(e) => {
+                if (true) {
+                  editor
+                    .chain()
+                    .focus()
+                    .setImage({
+                      src: imgRef.current.value,
+                    })
+                    .run();
+                }
+              }}
+              className="btn btn-sm"
+            >
+              Add
+            </button>
+          </li>
+        </ul>
+      </div>
       <button
         onClick={() =>
           editor
@@ -583,42 +618,7 @@ const MenuBar = (props) => {
         <FaRedo />
       </button>
 
-      <div className="dropdown dropdown-right">
-        <div tabindex="0" className={classes.icondeactive}>
-          <FaImages />
-        </div>
-        <ul
-          tabindex="0"
-          className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
-        >
-          <li>
-            <div className="form-control">
-              <input
-                ref={imgRef}
-                type="text"
-                placeholder="Image Source"
-                className="mb-1 input input-bordered"
-              />
-            </div>
-            <button
-              onClick={(e) => {
-                if (true) {
-                  editor
-                    .chain()
-                    .focus()
-                    .setImage({
-                      src: imgRef.current.value,
-                    })
-                    .run();
-                }
-              }}
-              className="btn btn-sm"
-            >
-              Add
-            </button>
-          </li>
-        </ul>
-      </div>
+     
     </div>
   );
 };

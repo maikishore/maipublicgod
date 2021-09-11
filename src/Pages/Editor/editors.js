@@ -29,6 +29,7 @@ import Speak from "../../Services/tts";
 import { useParams } from "react-router";
 import { postData } from "../../Services/post";
 import useAuth from "../../GlobalContexts/authcontext";
+import AlertDiv from "../../Commons/AlertDiv";
 
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
@@ -58,7 +59,7 @@ function Editors() {
     ],
     editorProps: {
       attributes: {
-        class:
+        className:
           "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl border-none bg-white overflow-y-auto   ",
       },
     },
@@ -66,7 +67,7 @@ function Editors() {
 
   const [editorWidth, setWidth] = React.useState(true);
 
-  const [nlist, setNlist] = React.useState(["A", "b", "C"]);
+  const [nlist, setNlist] = React.useState(["Topic","Sub-topic","Node"]);
   const [nodeCheck, setNodecheck] = React.useState(true);
   const [noteText, setNoteText] = React.useState("");
   const [entityList, setEntityList] = React.useState([]);
@@ -74,31 +75,32 @@ function Editors() {
   const [speakToggle, setSpeakToggle] = React.useState(false);
   const [alertToggle, setAlertToggle] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+  const [level, setLevel] = React.useState();
+
   const nodeRef = React.useRef();
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
   const params = useParams();
   const { currentUser } = useAuth();
-  
+
   React.useEffect(() => {
-  
-   if(loading) {
-    postData("create", {
-      doc_id: params["id"].toString(),
-      user_id: currentUser.uid.toString(),
-    }).then((data) => {
-      console.log({
-        _id: params["id"].toString(),
+    if (loading) {
+      postData("create", {
+        doc_id: params["id"].toString(),
         user_id: currentUser.uid.toString(),
+      }).then((data) => {
+        console.log({
+          _id: params["id"].toString(),
+          user_id: currentUser.uid.toString(),
+        });
+        setLoading(false);
+        //console.log(data); // JSON data parsed by `data.json()` call
       });
-      setLoading(false)
-      //console.log(data); // JSON data parsed by `data.json()` call
-    });
-   }
-   
-    return ()=>{
-setLoading(false)
     }
+
+    return () => {
+      setLoading(false);
+    };
   }, []);
   React.useEffect(() => {
     if (nodeRef.current.value.length !== 0) {
@@ -210,7 +212,7 @@ setLoading(false)
               }}
             />
 
-            <div class="m-2 flex items-start justify-center ">
+            <div className="m-2 flex items-start justify-center ">
               <button
                 onClick={(e) => {
                   console.log(speakToggle);
@@ -277,17 +279,47 @@ setLoading(false)
 
             <div className={`${editorWidth ? "hidden" : "visible w-1/3 "}`}>
               <Notecard
-                /* { "note_id":data["note_id"],"note_title":data["note_title"],
-        
-        "enities":data["entities"],"level":data["level"],"content":data["data"] }
-   */
+                leveldiv={
+                  <div className="p-1 card bordered">
+                    <div className="flex items-center">
+                      <div className="form-control p-2">
+                        <label className="cursor-pointer label">
+                          <span className="label-text px-2">Low </span>
+                          <input
+                            onClick={(e) => {
+                              setLevel(1);
+                            }}
+                            type="radio"
+                            name="opt"
+                            className="radio radio-secondary"
+                            value=""
+                          />
+                        </label>
+                      </div>
 
+                      <div className="form-control p-2">
+                        <label className="cursor-pointer label">
+                          <span className="label-text px-2 ">High </span>
+                          <input
+                            onClick={(e) => {
+                              setLevel(2);
+                            }}
+                            type="radio"
+                            name="opt"
+                            className="radio radio-secondary"
+                            value=""
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                }
                 input={
                   <input
                     ref={NotetitleRef}
                     type="text"
                     placeholder="Note Title"
-                    class="input input-md input-bordered w-5/6"
+                    className="input input-md input-bordered w-5/6"
                   />
                 }
                 saveFunc={async (e) => {
@@ -297,17 +329,11 @@ setLoading(false)
                     user_id: currentUser.uid.toString(),
                     note_title: NotetitleRef.current.value,
                     entities: entityList,
-                    level: 0,
+                    level: level,
                     content: noteText,
                   }).then((data) => {
                     setAlertToggle(true);
-                    console.log({doc_id: params["id"].toString(),
-                    note_id: uuidv4(),
-                    user_id: currentUser.uid.toString(),
-                    note_title: NotetitleRef.current.value,
-                    entities: entityList,
-                    level: 0,
-                    content: noteText,})
+
                     //console.log(data); // JSON data parsed by `data.json()` call
                   });
                 }}
@@ -342,6 +368,7 @@ setLoading(false)
   );
 }
 
+
 function getTextFromEditor(jsonText) {
   console.log(jsonText);
   let s = "";
@@ -354,69 +381,10 @@ function getTextFromEditor(jsonText) {
       s = s + jsonText["content"][i]["content"][0]["text"] + "";
     }
   }
+  console.log("hvjk",s)
   return s;
 }
 
-function AlertDiv(props) {
-  if (props.status === "success") {
-    return (
-      <div class="alert alert-success">
-        <div class="flex-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="w-6 h-6 mx-2 stroke-current"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"
-            ></path>
-          </svg>
-          <label>{props.message}</label>
-        </div>
-        <div class="flex-none">
-          <button
-            onClick={props.closefunc}
-            className="btn btn-sm btn-circle mr-2"
-          >
-            X
-          </button>
-        </div>
-      </div>
-    );
-  } else {
-    return (
-      <div class="alert alert-error">
-        <div class="flex-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="w-6 h-6 mx-2 stroke-current"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"
-            ></path>
-          </svg>
-          <label>{props.message}</label>
-          <div class="flex-none">
-            <button
-              onClick={props.closefunc}
-              className="btn btn-sm btn-circle mr-2"
-            >
-              X
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
+
 
 export default Editors;
