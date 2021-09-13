@@ -160,7 +160,7 @@ export default function MainLibrary(props) {
         break;
 
       case "NOTES":
-        setFilterData(filterFunc(data, "NOTE"));
+        setFilterData(filterFunc(data, "NOTES"));
         break;
       default:
     }
@@ -201,10 +201,16 @@ export default function MainLibrary(props) {
       <MenuCard
         title={each["title"]}
         timetoread={"1 min"}
-        nodes={["a"]}
+        nodes={each['nodes']}
         maiscore={each["maiscore"]}
         openClick={(e) => {
-          console.log(each["_id"]);
+          if(each["type"]==="WEB"){
+            window.open(each['source'], "_blank")
+          }
+if(each['type']==="NOTES") {
+  history.push("readnote/"+each["_id"])
+}
+
         }}
         deleteClick={async(e)=>{
           await deleteDoc(each["_id"])

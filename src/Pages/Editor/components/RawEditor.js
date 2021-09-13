@@ -29,7 +29,7 @@ const styles = {
 
 
 function RawEditor(props) {
-  const editor = props.editor;
+
   const [textColor, setTextColor] = React.useState("black");
 
 
@@ -111,19 +111,19 @@ const textcolormenu=(<div class="dropdown">
 
   return (
     <div className="w-full">
-      {editor && (
+      {props.editor && (
         <BubbleMenus
-          editor={editor}
+          editor={props.editor}
         
           noteFunc={props.noteFunc}
         />
       )}
       <div className="m-1 h-auto p-1 shadow-xxl bg-gray-200">
-        <MenuBar editor={editor} textcolormenu={textcolormenu} />
+        <MenuBar editor={props.editor} textcolormenu={textcolormenu} />
       </div>
 
       <div className="m-1 shadow-md border-2 border-gray-700 ">
-        <EditorContent editor={editor} className={`text-${textColor}-800`} />
+        <EditorContent editor={props.editor} className={`text-${textColor}-800`} />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import Editors from "./Pages/Editor/editors";
 import VideoNote from "./Pages/Video/videonote";
 import Graph from "./Pages/Graph/graph";
 import MainLibrary from "./Pages/Main/mainlibrary";
+import ReadEditor from "./Pages/Editor/readeditor";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/reset" component={Reset} />
 
             <Route path="/note/:id" component={Editors} />
+            <Route path="/readnote/:id" component={ReadEditor} />
             <Route path="/videonote/:id" component={VideoNote} />
 
             <PrivateRoute path="/profile" component={Profile} />

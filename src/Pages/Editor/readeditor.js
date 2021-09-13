@@ -34,6 +34,7 @@ import AlertDiv from "../../Commons/AlertDiv";
 import InfoAlert from "../../Commons/InfoAlert";
 import uuid from "react-uuid";
 import TimeToReadContent from "../../Commons/TimeToRead";
+import LoadingDiv from "../../Commons/LoadingDiv";
 
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
@@ -41,9 +42,72 @@ const styles = {
   ol: "list-inside",
 };
 
-function Editors() {
+function ReadEditor() {
+  
+
+  const [editorWidth, setWidth] = React.useState(true);
+
+  const [nlist, setNlist] = React.useState(["Topic", "Sub-topic", "Node"]);
+  const [nodeCheck, setNodecheck] = React.useState(true);
+  const [noteText, setNoteText] = React.useState("");
+  const [entityList, setEntityList] = React.useState([]);
+  const [highlightColor, setHighlightColor] = React.useState(true);
+  const [speakToggle, setSpeakToggle] = React.useState(false);
+  const [alertToggle, setAlertToggle] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
+  const [saveInfo, setSaveInfo] = React.useState(false);
+  const [saveStatus, setSaveStatus] = React.useState(false);
+  const [level, setLevel] = React.useState();
+  const [content, setContent] = React.useState();
+  const [data, setData] = React.useState([]);
+  const [deleteToggle, setDeleteToggle] = React.useState(false);
+  const [loads, setLoads] = React.useState(false);
+  const MINUTE_MS = 10000;
+  const nodeRef = React.useRef();
+  const titleRef = React.useRef();
+  const NotetitleRef = React.useRef();
+  const params = useParams();
+  const { currentUser } = useAuth();
+
+  React.useEffect(() => {
+    
+    const f = async () => {
+        await getData(params['id']).then(data=>{
+            setData(data['data'])
+            setLoads(true)
+            setLoading(false)
+
+        });
+        
+        
+        
+      };
+
+  
+      f();
+     
+
+   
+  return ()=>{}
+       
+  }, []);
+
+
+React.useEffect(()=>{
+    if(!loading){
+        console.log(data[0]['jsons'])
+        editor.commands.insertContent(data[0]['html'])
+        titleRef.current.value=data[0]['title']
+        setNlist(data[0]['nodes'])
+        setLoading(false)
+    }
+
+},[loading])
+
+
+
   const editor = useEditor({
-    content: "Write Something Awesome here ....",
+    content: content,
     extensions: [
       StarterKit,
 
@@ -70,51 +134,8 @@ function Editors() {
     },
   });
 
-  const [editorWidth, setWidth] = React.useState(true);
 
-  const [nlist, setNlist] = React.useState(["Topic", "Sub-topic", "Node"]);
-  const [nodeCheck, setNodecheck] = React.useState(true);
-  const [noteText, setNoteText] = React.useState("");
-  const [entityList, setEntityList] = React.useState([]);
-  const [highlightColor, setHighlightColor] = React.useState(true);
-  const [speakToggle, setSpeakToggle] = React.useState(false);
-  const [alertToggle, setAlertToggle] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
-  const [saveInfo, setSaveInfo] = React.useState(false);
-  const [saveStatus, setSaveStatus] = React.useState(false);
-  const [level, setLevel] = React.useState();
-  const MINUTE_MS = 10000;
-  const nodeRef = React.useRef();
-  const titleRef = React.useRef();
-  const NotetitleRef = React.useRef();
-  const params = useParams();
-  const { currentUser } = useAuth();
-  React.useEffect(() => {
-    const f = () => {
-      postData("create", {
-        doc_id: params["id"].toString(),
-        user_id: currentUser.uid.toString(),
-
-        title: titleRef.current.value,
-        content: "",
-        type: "NOTES",
-        nodes: [],
-        source: "",
-        notes: [],
-        maiscore: 5,
-        html: "",
-        updates: [],
-        public: false,
-        mentions: [],
-      }).then((data) => {
-       
-        //console.log(data); // JSON data parsed by `data.json()` call
-      });
-    };
-    console.log("render again");
-    f();
-    return () => {};
-  }, []);
+  
   /*
 React.useEffect(() => {
 
@@ -154,10 +175,14 @@ React.useEffect(() => {
 */
 
   React.useEffect(() => {
-    if (nodeRef.current.value.length !== 0) {
-      setNlist((prevstate) => [...prevstate, nodeRef.current.value]);
-      console.log(nlist);
+
+    if(!loading){
+        if (nodeRef.current.value.length !== 0) {
+            setNlist((prevstate) => [...prevstate, nodeRef.current.value]);
+            console.log(nlist);
+          }
     }
+   
   }, [nodeCheck]);
 
   const nlists = nlist.map((each, index) => {
@@ -224,8 +249,7 @@ React.useEffect(() => {
       ) : (
         <></>
       )}
-
-      <div className="w-full h-screen bg-white-400">
+ {loading?<LoadingDiv />: <div className="w-full h-screen bg-white-400">
         <div className="flex flex-col  ">
           <div className="p-2 text-6xl row-span-1 ">
             <div className="form-control">
@@ -238,6 +262,7 @@ React.useEffect(() => {
                 />
                 <button
                   onClick={async (e) => {
+                      console.log(editor.getJSON())
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
                       user_id: currentUser.uid.toString(),
@@ -256,7 +281,6 @@ React.useEffect(() => {
                         updates: [],
                         public: false,
                         mentions: [],
-                        jsons:editor.getJSON()
                       },
                     }).then((data) => {
                       setSaveInfo(true);
@@ -315,7 +339,6 @@ React.useEffect(() => {
                         updates: [],
                         public: false,
                         mentions: [],
-                        jsons:editor.getJSON()
                       },
                     }).then((data) => {
                       //console.log(data); // JSON data parsed by `data.json()` call
@@ -455,7 +478,7 @@ React.useEffect(() => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
     </div>
   );
 }
@@ -483,11 +506,36 @@ function getTextFromEditor(jsonText) {
       jsonText["content"][i]["type"] === "paragraph" ||
       jsonText["content"][i]["type"] === "heading"
     ) {
-      s = s + jsonText["content"][i]["content"][0]["text"] + "";
+        try{
+            s = s + jsonText["content"][i]["content"][0]["text"] + "";
+        }catch {
+            s = s + " ";
+        }
+      
     }
   }
   console.log("hvjk", s);
   return s;
 }
 
-export default Editors;
+
+
+
+const getData = async (doc_id) => {
+    const response = await fetch(process.env.REACT_APP_MB_URL + "/readnote", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify({ doc_id: doc_id }), // body data type must match "Content-Type" header
+    });
+  
+    return response.json();
+  };
+  
+export default ReadEditor;
