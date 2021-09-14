@@ -15,6 +15,7 @@ import Navbar from "../../Commons/Navbar/Navbar";
 
 function Graph(props) {
  const data=props.data
+ console.log(data)
   const Decorator = (props) => {
     return (
       <Tooltip

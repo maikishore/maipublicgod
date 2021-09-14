@@ -3,7 +3,7 @@ import React from "react";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
 import ReactPlayer from "react-player";
-import { Prompt, useParams } from "react-router";
+import { useParams } from "react-router";
 import Navbar from "../../Commons/Navbar/Navbar";
 import useAuth from "../../GlobalContexts/authcontext";
 import { postData } from "../../Services/post";
@@ -12,37 +12,36 @@ import Notecard from "../Editor/components/Notecard";
 import { v4 as uuidv4 } from "uuid";
 import AlertDiv from "../../Commons/AlertDiv";
 import TimeToReadContent from "../../Commons/TimeToRead";
-import InfoAlert from "../../Commons/InfoAlert";
+import LoadingDiv from "../../Commons/LoadingDiv";
 import uuid from "react-uuid";
 
-function VideoNote() {
+function ReadVideoNote() {
   const [editorWidth, setWidth] = React.useState(true);
   const [showPage, setShowPage] = React.useState(false);
 
   const [nlist, setNlist] = React.useState(["Topic", "Sub-topic", "Node"]);
   const [nodeCheck, setNodecheck] = React.useState(true);
   const [noteText, setNoteText] = React.useState("");
+
   const [entityList, setEntityList] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   const [color, setColor] = React.useState(0.0);
   const [play, setPlay] = React.useState(true);
   const [playUrl, setPlayUrl] = React.useState("");
   const [subtitlesText, setSubtitlesText] = React.useState();
-  const [saveInfo, setSaveInfo] = React.useState(false);
-  const [saveStatus, setSaveStatus] = React.useState(false);
   const nodeRef = React.useRef();
   const videoUrlRef = React.useRef();
   // const titleRef=React.useRef()
   const [alertToggle, setAlertToggle] = React.useState(false);
 
   const [level, setLevel] = React.useState();
-const [goToggle,setGotoggle]=React.useState(false)
+  const [data, setData] = React.useState([]);
+
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
   const params = useParams();
   const { currentUser } = useAuth();
-
-
 
   const getSubtitles = async (url) => {
     const response = await fetch(process.env.REACT_APP_ML_URL + "/videonote", {
@@ -63,41 +62,69 @@ const [goToggle,setGotoggle]=React.useState(false)
 
 
   React.useEffect(()=>{
-    if(goToggle){
-    const handleVideo = async (e) => {
-      setPlayUrl(videoUrlRef.current.value);
-  
-      if (videoUrlRef.current.value.includes("https://youtu.be/")) {
-        const t = videoUrlRef.current.value.replace(
-          "https://youtu.be/",
-          "https://www.youtube.com/watch?v="
-        );
-        setPlayUrl(t);
-      }
-  
-      if (playUrl.length >= 2) {
-        if (playUrl.includes("=")) {
-          const x = await getSubtitles(playUrl);
-  
-          setSubtitlesText(x["captions"]);
-          setShowPage(true);
-        } else {
-          setSubtitlesText([
-            { index: "1", text: "Subtitles other than Youtube comming soon!" },
-          ]);
-          setShowPage(true);
+    const handleVideo = async () => {
+      await getData(params['id']).then((data)=>{
+     setData(data['data'])
+     setLoading(false)
+        titleRef.current.value=data['data'][0]['title']
+        if (data['data'][0]['source'].includes("https://youtu.be/")) {
+          const t = data['data']['source'].replace(
+            "https://youtu.be/",
+            "https://www.youtube.com/watch?v="
+          );
+          setPlayUrl(t);
+        }else {
+          setPlayUrl(data['data'][0]['source'])
+
         }
-      }
-    };
-    
-    
-      console.log("--",goToggle)
-      handleVideo()
+      })
+  
     }
+  
+     
+    handleVideo()
+    
+  
+  },[])
+  
 
-return ()=>{ setGotoggle(false)}
 
-  },[goToggle])
+React.useEffect(()=>{
+  const f=async()=>{
+    if (playUrl.length >= 2) {
+      if (playUrl.includes("=")) {
+        const x = await getSubtitles(playUrl);
+  
+        setSubtitlesText(x["captions"]);
+        setShowPage(true);
+      } else {
+        setSubtitlesText([
+          { index: "1", text: "Subtitles other than Youtube comming soon!" },
+        ]);
+        setShowPage(true);
+      }
+    }
+  }
+
+f()
+return  ()=>{}
+},[playUrl])
+
+
+
+React.useEffect(()=>{
+  if(!loading){
+      console.log(data[0]['jsons'])
+   
+      titleRef.current.value=data[0]['title']
+      setNlist(data[0]['nodes'])
+      setLoading(false)
+  }
+
+},[loading])
+
+
+
 
 
   const subtitles = showPage ? (
@@ -117,53 +144,6 @@ return ()=>{ setGotoggle(false)}
   ) : (
     <div></div>
   );
-
-
-
-
-
-
-
-  React.useEffect(() => {
-
-    const f = () => {
-      postData("create", {
-        doc_id: params["id"].toString(),
-        user_id: currentUser.uid.toString(),
-
-        title: "",
-        content: "",
-        type: "VIDEO",
-        nodes: [],
-        source: "",
-        notes: [],
-        maiscore: 5,
-        html: "",
-        updates: [],
-        public: false,
-        mentions: [],
-        thumbnailimage:[]
-      }).then((data) => {
-       
-        //console.log(data); // JSON data parsed by `data.json()` call
-      });
-    };
- 
-    f();
-    return () => {};
-  }, []);
-
-
-
-
-
-
-
-
-
-
-
-
 
   React.useEffect(() => {
     if (showPage) {
@@ -202,10 +182,6 @@ return ()=>{ setGotoggle(false)}
 
   const page = (
     <div className="w-full h-screen bg-white-400">
-      <Prompt
-        when={"shouldBlockNavigation"}
-        message="You have unsaved changes, are you sure you want to leave?"
-      />
       <div className="flex flex-col  ">
         <div className="p-2 text-6xl row-span-1 ">
           <div id="kkk" className="form-control">
@@ -220,41 +196,36 @@ return ()=>{ setGotoggle(false)}
 
               <button
                 className="ml-3 px-6 btn btn-primary "
-                onClick={async (e) => {
+                onClick={async () => {
                   if(titleRef.current.value.length<=1){
                     nlist.push(uuid())
                   }else {
                     nlist.push(titleRef.current.value)
                   }
-                  await postData("updatedoc", {
-                    doc_id: params["id"].toString(),
-                    user_id: currentUser.uid.toString(),
-                    update: {
-                      title: titleRef.current.value,
-                      content: subtitlesText,
-                      timetoread: TimeToReadContent(
-                      subtitlesText),
+                    await postData("updatedoc", {
+                      doc_id: params["id"].toString(),
+                      user_id: currentUser.uid.toString(),
+                      update: {
+                        title: titleRef.current.value,
+                        content: subtitlesText,
+                        timetoread: TimeToReadContent(subtitlesText),
+                        type: "VIDEO",
+                        nodes: nlist,
                       
-                      type: "VIDEO",
-                      nodes: nlist,
-                      source: playUrl,
-                      notes: [],
-                      maiscore: 5,
-                      html: "",
-                      updates: [],
-                      public: false,
-                      mentions: [],
-                      jsons:"",
-                      thumbnailimage:["https://img.youtube.com/vi/"+getVideoId(playUrl).toString()+"/0.jpg"]
-                    },
-                  }).then((data) => {
-                    setSaveInfo(true)
-                    //console.log(data); // JSON data parsed by `data.json()` call
-                  });
-                }}
+                      
+                      
+                      
+                        updates: [],
+                        public: false,
+                        mentions: [],
+                      },
+                    }).then((data) => {
+                      //console.log(data); // JSON data parsed by `data.json()` call
+                    });
+                  } }
               
               >
-                Save
+                Update
               </button>
             </div>
           </div>{" "}
@@ -451,16 +422,6 @@ return ()=>{ setGotoggle(false)}
   return (
     <div className="">
       <Navbar />
-      {saveInfo ? (
-        <InfoAlert
-          message="Your Document Saved and Auto Saved Every 3 mins "
-          closefunc={(e) => {
-            setSaveInfo(false);
-          }}
-        />
-      ) : (
-        <></>
-      )}
       {alertToggle ? (
         <AlertDiv
           status="success"
@@ -472,74 +433,33 @@ return ()=>{ setGotoggle(false)}
       ) : (
         <></>
       )}
-      {showPage ? (
-        page
-      ) : (
-        <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-1/2 my-6 mx-auto max-w-3xl">
-              {/*content*/}
-
-              <div className="card w-full h-40 shadow-lg bg-white">
-                <div className="mt-4 flex justify-center items-center">
-                  <div className="form-control">
-                    <input
-                      ref={videoUrlRef}
-                      type="text"
-                      placeholder="paste url here"
-                      className="input w-96 input-lg input-bordered"
-                    />
-                  </div>
-
-                  <div>
-                    <button
-                      onClick={(e)=>{
-                        setGotoggle(true)
-                        console.log(goToggle)
-                      }}
-                      className="btn btn-lg ml-1 btn-primary"
-                    >
-                      Go
-                    </button>
-                  </div>
-
-                  <div></div>
-                </div>
-
-                <div className="alert alert-info">
-                  <div className="flex-1 text-center mt-1 justify-center items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      className="w-6 h-6 mx-2 stroke-current"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                    <label>
-                      Currently supporting youtube only.Other Integrations like
-                      Zoom,Google classNameroom etc. comming soon!
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-        </>
-      )}
+      {loading ? 
+          <LoadingDiv />
+        :page }
+  
     </div>
   );
 }
 
-export default VideoNote;
+export default ReadVideoNote;
 
 
-function getVideoId(str) {
-  return str.split('=')[1];
-}
+
+
+const getData = async (doc_id) => {
+    const response = await fetch(process.env.REACT_APP_MB_URL + "/readnote", {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify({ doc_id: doc_id }), // body data type must match "Content-Type" header
+    });
+  
+    return response.json();
+  };
+  

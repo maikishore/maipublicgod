@@ -262,7 +262,11 @@ React.useEffect(() => {
                 />
                 <button
                   onClick={async (e) => {
-                      console.log(editor.getJSON())
+                    if(titleRef.current.value.length<=1){
+                      nlist.push(uuid())
+                    }else {
+                      nlist.push(titleRef.current.value)
+                    }
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
                       user_id: currentUser.uid.toString(),
@@ -290,7 +294,7 @@ React.useEffect(() => {
                   }}
                   className="ml-3 px-6 btn btn-primary "
                 >
-                  {saveStatus ? "Update" : "Save"}
+                  Update
                 </button>
               </div>
             </div>
@@ -332,9 +336,9 @@ React.useEffect(() => {
                         timetoread: TimeToReadContent(editor.getJSON()),
                         type: "NOTES",
                         nodes: nlist,
-                        source: "",
-                        notes: [],
-                        maiscore: 5,
+                      
+                      
+                      
                         html: editor.getHTML().toString(),
                         updates: [],
                         public: false,
@@ -498,7 +502,7 @@ React.useEffect(() => {
 
 
 function getTextFromEditor(jsonText) {
-  console.log(jsonText);
+
   let s = "";
 
   for (var i = 0; i < jsonText["content"].length; i++) {

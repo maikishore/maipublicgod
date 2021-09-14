@@ -197,18 +197,24 @@ export default function MainLibrary(props) {
   }, [addToggle]);
 
   const contentcards = filterData.map((each, index) => {
+   
     return (
       <MenuCard
         title={each["title"]}
         timetoread={"1 min"}
         nodes={each['nodes']}
         maiscore={each["maiscore"]}
+        imgsrc={each["thumbnailimage"][0]}
         openClick={(e) => {
           if(each["type"]==="WEB"){
             window.open(each['source'], "_blank")
           }
 if(each['type']==="NOTES") {
   history.push("readnote/"+each["_id"])
+}
+
+if(each['type']==="VIDEO") {
+  history.push("readvideonote/"+each["_id"])
 }
 
         }}
@@ -249,6 +255,9 @@ if(each['type']==="NOTES") {
   return (
     <div>
       <Navbar />
+
+      
+
 
       {graphToggle ? (
         <Graph togglePage={pageshift} data={data} />

@@ -90,6 +90,7 @@ function Editors() {
   const params = useParams();
   const { currentUser } = useAuth();
   React.useEffect(() => {
+
     const f = () => {
       postData("create", {
         doc_id: params["id"].toString(),
@@ -111,7 +112,7 @@ function Editors() {
         //console.log(data); // JSON data parsed by `data.json()` call
       });
     };
-    console.log("render again");
+ 
     f();
     return () => {};
   }, []);
@@ -238,6 +239,11 @@ React.useEffect(() => {
                 />
                 <button
                   onClick={async (e) => {
+                    if(titleRef.current.value.length<=1){
+                      nlist.push(uuid())
+                    }else {
+                      nlist.push(titleRef.current.value)
+                    }
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
                       user_id: currentUser.uid.toString(),
