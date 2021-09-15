@@ -205,6 +205,7 @@ export default function MainLibrary(props) {
         nodes={each['nodes']}
         maiscore={each["maiscore"]}
         imgsrc={each["thumbnailimage"][0]}
+        type={each["type"]}
         openClick={(e) => {
           if(each["type"]==="WEB"){
             window.open(each['source'], "_blank")

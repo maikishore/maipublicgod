@@ -6,57 +6,66 @@ import { BiReset } from "react-icons/bi";
 import { GiBrain } from "react-icons/gi";
 import { FaInfo } from "react-icons/fa";
 
-import {
-  Tooltip,
-} from 'react-tippy';
- 
-import uuid from 'react-uuid'
-import Navbar from "../../Commons/Navbar/Navbar";
+import { Tooltip } from "react-tippy";
+
+import { useHistory } from "react-router";
 
 function Graph(props) {
- const data=props.data
- console.log(data)
+  const data = props.data;
+  const history = useHistory();
+
   const Decorator = (props) => {
     return (
       <Tooltip
-      // options
-      title="Welcome to React"
-      html={
+        // options
+        title="Welcome to React"
+        html={
+          <div className="w-60 h-50 card  rounded shadow-xl bg-green-100">
+            <div className="card-title ">
+              <p className="p-1 "> {props["title"]} </p>
+            </div>
+            <div className="stat">
+              <div className="stat-title">Maiscore</div>
 
-      <div className="w-60 h-50 card  rounded shadow-xl bg-green-100">
-      <div className="card-title ">
-      <p className="p-1 "> {props["title"]} </p>
-      </div>
-      <div className="stat">
-    <div className="stat-title">Maiscore</div> 
-    <div className="stat-value">{props['maiscore_']}</div> 
-    <div className="stat-actions">
-      <button className="btn  btn-sm btn-primary">Open Note</button> 
-      <button className="btn mx-1 btn-sm btn-primary">Memorize</button>
-    </div>
-  </div>
+              <div className="stat-value">{props["maiscore_"]}</div>
+              <div className="stat-actions">
+                <button
+                  className="btn  btn-sm btn-primary"
+                 onClick={(e) => {
+                   console.log(props["type_"] ,props["id_"] )
+                    if (props["type_"] === "WEB") {
+                      window.open(props["source_"], "_blank");
+                    }
+                    if (props["type_"] === "NOTES") {
+                      history.push("readnote/" + props["id_"]);
+                    }
 
-    
-
-        </div>}
-      
-      position="bottom"
-      trigger="click"
-    
-    >
-     
-       <FaInfo className="m-1 bg-green-100"/>
-      
-    </Tooltip>
-   
+                    if (props["type_"] === "VIDEO") {
+                      history.push("readvideonote/" + props["id_"]);
+                    }
+                  }}
+                >
+                  Open Note
+                </button>
+                <button className="btn mx-1 btn-sm btn-primary">
+                  Memorize
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+        position="bottom"
+        trigger="click"
+      >
+        <FaInfo className="m-1 bg-green-100" />
+      </Tooltip>
     );
   };
 
-  
   const [showLabel, setShowLabel] = React.useState(false);
   const [graph, setGraph] = React.useState();
   const [query, setQuery] = React.useState(false);
-  const networkRef=React.useRef()
+  const networkRef = React.useRef();
 
   const queryRef = React.useRef();
   const queryTypeRef = React.useRef();
@@ -64,7 +73,7 @@ function Graph(props) {
   function matchQuery(qstring, cstring, qtype) {
     try {
       if (qtype === "maiscore" && qstring.length !== 0) {
-        if ( parseInt(cstring)<=parseInt(qstring)) {
+        if (parseInt(cstring) <= parseInt(qstring)) {
           return 18;
         }
       }
@@ -72,8 +81,12 @@ function Graph(props) {
       if (qtype === "title" && qstring.length !== 0) {
         console.log(qstring, cstring, qtype);
         if (
-          qstring.toString().toLowerCase() === cstring.toString().toLowerCase() ||
-          cstring.toString().toLowerCase().includes( qstring.toString().toLowerCase()  )
+          qstring.toString().toLowerCase() ===
+            cstring.toString().toLowerCase() ||
+          cstring
+            .toString()
+            .toLowerCase()
+            .includes(qstring.toString().toLowerCase())
         ) {
           return 18;
         }
@@ -102,48 +115,27 @@ function Graph(props) {
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-  const CustomIcon = ({ icon, color = '#F472B6' }) => {
+  const CustomIcon = ({ icon, color = "#F472B6" }) => {
     const viewBox = 36;
     const iconSize = 20;
     const pad = (viewBox - iconSize) / 2;
     const center = viewBox / 2;
-   
-    return (
 
-      <svg id="svgs"
+    return (
+      <svg
+        id="svgs"
         xmlns="http://www.w3.org/2000/svg"
         viewBox={`0 0 ${viewBox} ${viewBox}`}
-
       >
- 
-        <g >
-          <circle  cx={center} cy={center} r={16} fill={color} />
+        <g>
+          <circle cx={center} cy={center} r={16} fill={color} />
           <g transform={`translate(${pad}, ${pad})`}>
- 
-            {React.createElement(icon, { color: 'white', size: iconSize })}
+            {React.createElement(icon, { color: "white", size: iconSize })}
           </g>
         </g>
-
- 
       </svg>
     );
   };
-
-
-
-
-
 
   React.useEffect(() => {
     const nodehistory = [];
@@ -155,13 +147,10 @@ function Graph(props) {
         fixed={true}
         size={30}
         shadow={true}
-        
-       icon={GiBrain}
+        icon={GiBrain}
         component={CustomIcon}
       />,
     ];
-
-
 
     const g = data.map((each, index) => {
       return data[index]["nodes"].map((e, i) => {
@@ -171,12 +160,16 @@ function Graph(props) {
           if (i !== 0) {
             graphList.push(
               <Node
-              key={data[index][i]}
+                key={data[index][i]}
                 id={data[index]["nodes"][i]}
                 title={data[index]["title"]}
                 label={showLabel ? data[index]["nodes"][i] : " "}
                 group={data[index]["nodes"][i - 1]}
                 maiscore_={data[index]["maiscore"]}
+                id_={data[index]['_id']}
+                type_={data[index]["type"]}
+                source_={data[index]["source"]}
+
                 size={matchQuery(
                   queryRef.current.value.toString(),
                   data[index][queryTypeRef.current.value],
@@ -200,10 +193,13 @@ function Graph(props) {
           } else {
             graphList.push(
               <Node
-              key={data[index][i]}
+                key={data[index][i]}
                 id={data[index]["nodes"][i]}
                 label={showLabel ? data[index]["nodes"][i] : " "}
                 group={data[index]["nodes"][i]}
+                id_={data[index]['_id']}
+                type_={data[index]["type"]}
+                source_={data[index]["source"]}
                 size={matchQuery(
                   queryRef.current.value.toString(),
                   data[index][queryTypeRef.current.value],
@@ -224,10 +220,13 @@ function Graph(props) {
             return (
               <>
                 <Node
-                key={data[index][i]}
+                  key={data[index][i]}
                   id={data[index]["nodes"][i]}
                   label={showLabel ? data[index]["nodes"][i] : " "}
                   group={data[index]["nodes"][i]}
+                  id_={data[index]['_id']}
+                  type_={data[index]["type"]}
+                  source_={data[index]["source"]}
                   size={matchQuery(
                     queryRef.current.value.toString(),
                     data[index][queryTypeRef.current.value],
@@ -251,43 +250,47 @@ function Graph(props) {
     setGraph(graphs);
   }, [showLabel, query]);
 
+
+
+
+ 
   return (
     <div className="-mt-3 overflow-hidden bg-gray-900">
-      
       <div style={{ height: "100vh" }} className=" overflow-hidden bg-gray-900">
         <div className="flex  w-full items-baseline ">
           <div className="flex w-2/3  items-center justify-end">
-       
-          <input ref={queryRef} className="my-3 input-md rounded w-1/3 " />
-          <select
-          defaultValue="Type"
-            ref={queryTypeRef}
-            className="mx-1 select select-bordered ax-w-xs text-medium"
-          >
-            <option  className="mb-1 text-md font-bold" >Type</option>
-            <option value="title">Title</option>
-            <option value="nodes">Nodes</option>
-            <option value="entities">Keywords</option>
-            <option value="maiscore">Maiscore</option>
-          </select>
-          <button
-            onClick={(e) => {
-              setQuery(!query);
-            }}
-            className="mx-1 btn btn-outline bg-green-400"
-          >
-            Query
-          </button>
+            <input ref={queryRef} className="my-3 input-md rounded w-1/3 " />
+            <select
+              defaultValue="Type"
+              ref={queryTypeRef}
+              className="mx-1 select select-bordered ax-w-xs text-medium"
+            >
+              <option className="mb-1 text-md font-bold">Type</option>
+              <option value="title">Title</option>
+              <option value="nodes">Nodes</option>
+              <option value="entities">Keywords</option>
+              <option value="maiscore">Maiscore</option>
+            </select>
+            <button
+              onClick={(e) => {
+                setQuery(!query);
+              }}
+              className="mx-1 btn btn-outline bg-green-400"
+            >
+              Query
+            </button>
 
-          <button onClick={(e)=>{
-              queryRef.current.value=""
-              queryTypeRef.current.value="Type"
-             setQuery(!query)
-            }} className="mx-1 btn btn-outline bg-red-400 hover:bg-red-300">
+            <button
+              onClick={(e) => {
+                queryRef.current.value = "";
+                queryTypeRef.current.value = "Type";
+                setQuery(!query);
+              }}
+              className="mx-1 btn btn-outline bg-red-400 hover:bg-red-300"
+            >
               <BiReset />
             </button>
           </div>
- 
 
           <div className="flex w-1/4 justify-end items-baseline ">
             <div className="form-control">
@@ -306,16 +309,9 @@ function Graph(props) {
                 </div>
               </label>
             </div>
-            
-
-            
-
 
             {props.togglePage}
-
           </div>
-
-
         </div>
 
         <Network
@@ -334,8 +330,20 @@ function Graph(props) {
             edges: {
               width: 2,
               shadow: true,
+              smooth: {
+                "forceDirection": "none"
+              }
             },
-          
+           
+            physics: {
+           
+              "minVelocity": 0.75,
+              "timestep": 0.51,
+              "barnesHut": {
+                "centralGravity": 0.05
+              },
+            }
+            
           }}
         >
           {graph}

@@ -5,7 +5,7 @@ import Nodes from "./components/Nodes";
 import Notecard from "./components/Notecard";
 import RawEditor from "./components/RawEditor";
 
-import { IoAddCircleSharp } from "react-icons/io5";
+import { IoAddCirclefharp } from "react-icons/io5";
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { v4 as uuidv4 } from "uuid";
@@ -107,6 +107,7 @@ function Editors() {
         updates: [],
         public: false,
         mentions: [],
+        thumbnailimage:[]
       }).then((data) => {
        
         //console.log(data); // JSON data parsed by `data.json()` call
@@ -203,6 +204,9 @@ React.useEffect(() => {
         message="You have unsaved changes, are you sure you want to leave?"
       />
       <Navbar />
+      <button onClick={(e)=>{
+       console.log(getImage(editor.getJSON()))
+      }}>Json</button>
       {saveInfo ? (
         <InfoAlert
           message="Your Document Saved and Auto Saved Every 3 mins "
@@ -262,11 +266,13 @@ React.useEffect(() => {
                         updates: [],
                         public: false,
                         mentions: [],
-                        jsons:editor.getJSON()
+                        jsons:editor.getJSON(),
+                        thumbnailimage:[getImage(editor.getJSON())]
                       },
                     }).then((data) => {
                       setSaveInfo(true);
                       setSaveStatus(true)
+                   
                       //console.log(data); // JSON data parsed by `data.json()` call
                     });
                   }}
@@ -477,11 +483,8 @@ React.useEffect(() => {
 
 
 
-
-
-
 function getTextFromEditor(jsonText) {
-  console.log(jsonText);
+
   let s = "";
 
   for (var i = 0; i < jsonText["content"].length; i++) {
@@ -489,11 +492,47 @@ function getTextFromEditor(jsonText) {
       jsonText["content"][i]["type"] === "paragraph" ||
       jsonText["content"][i]["type"] === "heading"
     ) {
-      s = s + jsonText["content"][i]["content"][0]["text"] + "";
+        try{
+            s = s + jsonText["content"][i]["content"][0]["text"] + "";
+        }catch {
+            s = s + " ";
+        }
+      
     }
   }
   console.log("hvjk", s);
   return s;
+}
+
+
+
+function getImage(jsondoc){
+
+ var s=""
+  if(jsondoc['content'].length <=2){
+    return ""
+  }
+
+  for(var each=0;each<jsondoc['content'].length;each++){
+    
+    if(each>=30){
+      s=""
+     break
+
+    }else {
+      if(jsondoc['content'][each]['type']==="image"){
+        s= jsondoc['content'][each]['attrs']['src']
+        break
+      }
+    }
+
+
+  }
+console.log(s)
+  return s
+
+
+
 }
 
 export default Editors;
