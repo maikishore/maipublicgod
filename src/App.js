@@ -19,6 +19,7 @@ import Graph from "./Pages/Graph/graph";
 import MainLibrary from "./Pages/Main/mainlibrary";
 import ReadEditor from "./Pages/Editor/readeditor";
 import ReadVideoNote from "./Pages/Video/readvideo";
+import Memorize from "./Pages/Quiz/memorize";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
             <Route path="/readnote/:id" component={ReadEditor} />
             <Route path="/readvideonote/:id" component={ReadVideoNote} />
             <Route path="/videonote/:id" component={VideoNote} />
-
+            <Route path="/memorize/:id" component={Memorize} />
             <PrivateRoute path="/profile" component={Profile} />
 
             <PrivateRoute path="/quiz" component={Quiz} />

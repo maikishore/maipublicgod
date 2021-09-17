@@ -102,7 +102,7 @@ function Editors() {
         nodes: [],
         source: "",
         notes: [],
-        maiscore: 5,
+
         html: "",
         updates: [],
         public: false,
@@ -261,7 +261,6 @@ React.useEffect(() => {
                         nodes: nlist,
                         source: "",
                         notes: [],
-                        maiscore: 5,
                         html: editor.getHTML().toString(),
                         updates: [],
                         public: false,
@@ -322,7 +321,7 @@ React.useEffect(() => {
                         nodes: nlist,
                         source: "",
                         notes: [],
-                        maiscore: 5,
+                      
                         html: editor.getHTML().toString(),
                         updates: [],
                         public: false,

@@ -206,6 +206,10 @@ export default function MainLibrary(props) {
         maiscore={each["maiscore"]}
         imgsrc={each["thumbnailimage"][0]}
         type={each["type"]}
+
+        memorizeClick={(e)=>{
+          history.push("memorize/"+each["_id"])
+        }}
         openClick={(e) => {
           if(each["type"]==="WEB"){
             window.open(each['source'], "_blank")
@@ -261,7 +265,7 @@ if(each['type']==="VIDEO") {
 
 
       {graphToggle ? (
-        <Graph togglePage={pageshift} data={data} />
+        <Graph togglePage={pageshift} data={data}  />
       ) : (
         <div>
           <div></div>

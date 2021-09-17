@@ -137,7 +137,6 @@ return ()=>{ setGotoggle(false)}
         nodes: [],
         source: "",
         notes: [],
-        maiscore: 5,
         html: "",
         updates: [],
         public: false,
@@ -239,7 +238,7 @@ return ()=>{ setGotoggle(false)}
                       nodes: nlist,
                       source: playUrl,
                       notes: [],
-                      maiscore: 5,
+              
                       html: "",
                       updates: [],
                       public: false,
