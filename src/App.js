@@ -44,7 +44,7 @@ function App() {
 
             <PrivateRoute path="/quiz" component={Quiz} />
 
-            <PrivateRoute path="/cloze" component={Cloze} />
+            <PrivateRoute path="/cloze/:id" component={Cloze} />
             <PrivateRoute path="/qna" component={QandA} />
             <PrivateRoute path="/mcq" component={Mcq} />
 

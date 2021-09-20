@@ -21,6 +21,9 @@ function ClozeCard(props) {
       >
         <div
           onClick={() => {
+            props.trackfunc()
+            
+
             setToggleFlip(!toggleFlip);
           }}
           className="py-40  bg-white"
@@ -34,7 +37,9 @@ function ClozeCard(props) {
 
         <div
           onClick={() => {
+            
             setToggleFlip(!toggleFlip);
+            
           }}
           className="py-40 bg-white"
         >
@@ -47,7 +52,7 @@ function ClozeCard(props) {
         onClick={(e) => {
           setToggleSound(!toogleSound);
           if (toogleSound) {
-            Speak(true, toggleFlip ? props.answer : props.question);
+            Speak(true, toggleFlip ? props.answer.replace(/_/g*props.answer, "dash") : props.speakquestion);
           } else {
             window.speechSynthesis.cancel();
           }

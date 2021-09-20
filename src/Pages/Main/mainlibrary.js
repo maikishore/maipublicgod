@@ -208,7 +208,7 @@ export default function MainLibrary(props) {
         type={each["type"]}
 
         memorizeClick={(e)=>{
-          history.push("memorize/"+each["_id"])
+          history.push("cloze/"+each["_id"])
         }}
         openClick={(e) => {
           if(each["type"]==="WEB"){
