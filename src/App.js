@@ -23,13 +23,14 @@ import LoadingDiv from "./Commons/LoadingDiv";
 
 
 
+
 function App() {
   return (
     <AuthProvider>
       <div className="App ">
         <Router>
           <Switch>
-            <Route exact path="/" component={<div>Welcome</div>} />
+          
             <Route path="/test" component={Test} />
             <Route path="/tks" component={TKS} />
 

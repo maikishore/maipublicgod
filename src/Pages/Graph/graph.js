@@ -33,7 +33,7 @@ function Graph(props) {
                 <button
                   className="btn  btn-sm btn-primary"
                  onClick={(e) => {
-                   console.log(props["type_"] ,props["id_"] )
+                   //console.log(props["type_"] ,props["id_"] )
                     if (props["type_"] === "WEB") {
                       window.open(props["source_"], "_blank");
                     }
@@ -84,7 +84,7 @@ function Graph(props) {
       }
 
       if (qtype === "title" && qstring.length !== 0) {
-        console.log(qstring, cstring, qtype);
+        //console.log(qstring, cstring, qtype);
         if (
           qstring.toString().toLowerCase() ===
             cstring.toString().toLowerCase() ||
@@ -147,9 +147,10 @@ function Graph(props) {
 
     const graphList = [
       <Node
+      key="maibrain"
         id="Maibrain"
         label={"Maibrain"}
-        fixed={true}
+        fixed={false}
         size={30}
         shadow={true}
         icon={GiBrain}
@@ -189,6 +190,7 @@ function Graph(props) {
                 }}
               />,
               <Edge
+              key={data[index][i]}
                 id={data[index]["nodes"][i]}
                 from={data[index]["nodes"][i - 1]}
                 to={data[index]["nodes"][i]}
@@ -217,6 +219,7 @@ function Graph(props) {
             );
             graphList.push(
               <Edge
+              key={data[index][i]}
                 id={"Maibrain-" + data[index]["nodes"][i]}
                 from={"Maibrain"}
                 to={data[index]["nodes"][i]}

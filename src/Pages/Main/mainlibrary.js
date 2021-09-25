@@ -1,18 +1,16 @@
 import React from "react";
 import { CgStack } from "react-icons/cg";
 import { MdAdd, MdVideoLibrary, MdWebAsset } from "react-icons/md";
-import { FaBook, FaStickyNote } from "react-icons/fa";
+import { FaStickyNote } from "react-icons/fa";
 import MenuCard from "./components/menucard";
 import SelectCard from "./components/selectcard";
 import Navbar from "../../Commons/Navbar/Navbar";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Graph from "../Graph/graph";
 import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../GlobalContexts/authcontext";
 import LoadingDiv from "../../Commons/LoadingDiv";
 import { Truncate } from "../../Commons/Truncate";
-
-
 
 export default function MainLibrary(props) {
   const [typee, settypee] = React.useState("ALL");
@@ -65,7 +63,7 @@ export default function MainLibrary(props) {
 
       case "WEB":
         setFilterData(filterFunc(data, "WEB"));
-       
+
         break;
       case "VIDEO":
         setFilterData(filterFunc(d, "VIDEO"));
@@ -113,59 +111,54 @@ export default function MainLibrary(props) {
   }, [addToggle]);
 
   const contentcards = filterData.map((each, index) => {
-
     return (
       <MenuCard
-        title={Truncate(each["title"],24)}
-        timetoread={each['timetoread']}
-        nodes={each['nodes']}
+        key={index}
+        title={Truncate(each["title"], 24)}
+        timetoread={each["timetoread"]}
+        nodes={each["nodes"]}
         maiscore={each["maiscore"]}
         imgsrc={each["thumbnailimage"][0]}
         type={each["type"]}
-
-        memorizeClick={(e)=>{
-          history.push("quiz/"+each["_id"])
+        memorizeClick={(e) => {
+          history.push("quiz/" + each["_id"]);
         }}
         openClick={(e) => {
-          if(each["type"]==="WEB"){
-            window.open(each['source'], "_blank")
+          if (each["type"] === "WEB") {
+            window.open(each["source"], "_blank");
           }
-if(each['type']==="NOTES") {
-  history.push("readnote/"+each["_id"])
-}
+          if (each["type"] === "NOTES") {
+            history.push("readnote/" + each["_id"]);
+          }
 
-if(each['type']==="VIDEO") {
-  history.push("readvideonote/"+each["_id"])
-}
-
+          if (each["type"] === "VIDEO") {
+            history.push("readvideonote/" + each["_id"]);
+          }
         }}
-        deleteClick={async(e)=>{
-          await deleteDoc(each["_id"])
-          setDeleteToggle(!deleteToggle)
-          settypee("ALL")
-          setLoading(true)
+        deleteClick={async (e) => {
+          await deleteDoc(each["_id"]);
+          setDeleteToggle(!deleteToggle);
+          settypee("ALL");
+          setLoading(true);
         }}
-
       />
     );
   });
 
   const pageshift = (
-    <div class="">
-      <div
-        class="form-control flex "
-        onClick={() => {
-          setGraphToggle(!graphToggle);
-        }}
-      >
-        <label class="cursor-pointer">
+    <div className="">
+      <div className="form-control flex ">
+        <label className="cursor-pointer">
           <div className="flex flex-col justify-center items-center">
             <input
               type="checkbox"
               checked={graphToggle ? "checked" : ""}
-              class="toggle toggle-secondary"
+              className="toggle toggle-secondary"
+              onChange={() => {
+                setGraphToggle(!graphToggle);
+              }}
             />
-            <span class="label-text px-2 font-bold text-lg text-yellow-500 ">
+            <span className="label-text px-2 font-bold text-lg text-yellow-500 ">
               {graphToggle ? "Mailibrary" : "Maigraph"}
             </span>
           </div>
@@ -177,11 +170,8 @@ if(each['type']==="VIDEO") {
     <div>
       <Navbar />
 
-      
-
-
       {graphToggle ? (
-        <Graph togglePage={pageshift} data={data}  />
+        <Graph togglePage={pageshift} data={data} />
       ) : (
         <div>
           <div></div>
@@ -194,12 +184,12 @@ if(each['type']==="VIDEO") {
 
                   <div className="card w-full h-40 shadow-lg bg-white">
                     <div className="mt-4 flex justify-center items-center">
-                      <div class="form-control">
+                      <div className="form-control">
                         <input
                           ref={webUrlRef}
                           type="text"
                           placeholder="paste url here"
-                          class="input w-96 input-lg input-bordered"
+                          className="input w-96 input-lg input-bordered"
                         />
                       </div>
 
@@ -226,13 +216,13 @@ if(each['type']==="VIDEO") {
                       </div>
                     </div>
 
-                    <div class="alert alert-info">
-                      <div class="flex-1 text-center mt-1 justify-center items-center">
+                    <div className="alert alert-info">
+                      <div className="flex-1 text-center mt-1 justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          class="w-6 h-6 mx-2 stroke-current"
+                          className="w-6 h-6 mx-2 stroke-current"
                         >
                           <path
                             stroke-linecap="round"
@@ -266,7 +256,7 @@ if(each['type']==="VIDEO") {
                 }}
                 icon={<CgStack />}
                 title="ALL"
-                classes={typee === "ALL" ? "bg-gray-300" : "bg-white"}
+                classNamees={typee === "ALL" ? "bg-gray-300" : "bg-white"}
               />
 
               <SelectCard
@@ -275,7 +265,7 @@ if(each['type']==="VIDEO") {
                 }}
                 icon={<MdWebAsset className="text-blue-300" />}
                 title="Web"
-                classes={typee === "WEB" ? "bg-gray-300" : "bg-white"}
+                classNamees={typee === "WEB" ? "bg-gray-300" : "bg-white"}
               />
 
               <SelectCard
@@ -284,7 +274,7 @@ if(each['type']==="VIDEO") {
                 }}
                 icon={<MdVideoLibrary className="text-red-300" />}
                 title="Video"
-                classes={typee === "VIDEO" ? "bg-gray-300" : "bg-white"}
+                classNamees={typee === "VIDEO" ? "bg-gray-300" : "bg-white"}
               />
 
               <SelectCard
@@ -293,7 +283,7 @@ if(each['type']==="VIDEO") {
                 }}
                 icon={<FaStickyNote className="text-yellow-300" />}
                 title="Note"
-                classes={typee === "NOTES" ? "bg-gray-300" : "bg-white"}
+                classNamees={typee === "NOTES" ? "bg-gray-300" : "bg-white"}
               />
               <SelectCard
                 clickFunc={(e) => {
@@ -320,13 +310,10 @@ if(each['type']==="VIDEO") {
   );
 }
 
-
 const openInNewTab = (url) => {
   const newWindow = window.open(url, "_blank", "noopener,noreferrer");
   if (newWindow) newWindow.opener = null;
 };
-
-
 
 const deleteDoc = async (doc_id) => {
   const response = await fetch(process.env.REACT_APP_MB_URL + "/deletedoc", {
@@ -344,10 +331,6 @@ const deleteDoc = async (doc_id) => {
 
   return response.json();
 };
-
-
-
-
 
 const getData = async (user_id) => {
   const response = await fetch(process.env.REACT_APP_MB_URL + "/getdata", {
