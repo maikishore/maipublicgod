@@ -1,58 +1,88 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
+import {
+  HiAnnotation,
+  HiOutlinePencil,
+  HiPencil,
+  HiPencilAlt,
+  HiQrcode,
+} from "react-icons/hi";
+import { FaQuestion, FaList, FaPuzzlePiece } from "react-icons/fa";
+import { BiBracket } from "react-icons/bi";
 
-import { HiAnnotation, HiOutlinePencil, HiPencil, HiPencilAlt, HiQrcode } from "react-icons/hi";
 import Navbar from "../../Commons/Navbar/Navbar";
-
-
-
 
 function QuizTypeCard(props) {
   return (
-    <div 
-    onClick={props.handleClick}
-    class="mx-2  flex btn btn-ghost card w-full h-60 lg:w-40 lg:h-1/3  flex-col  flex-auto bg-white  justify-center items-center hover:shadow-xl hover:bg-green-200">
+    <div
+      onClick={props.handleClick}
+      class="flex flex-col items-center justify-center btn btn-lg btn-ghost w-40  h-40 bordered hover-bordered hover:bg-green-100 "
+    >
       <div>
-        <p class="p-2 text-8xl "> {props.icon} </p>
-       
+        <p class="p-2 text-5xl "> {props.icon} </p>
       </div>
       <div class="p-2 text-lg">{props.text}</div>
+      {props.text === "MCQ" || props.text === "Matchings" ? (
+        <div class=" text-xs">Comming Soon</div>
+      ) : (
+        <div class="stat-desc"> </div>
+      )}
     </div>
   );
 }
 
 function Quiz() {
-const data=[
-  {icon:<HiAnnotation />,text:"ONE",goto:"/test"},
-  {icon:<HiPencil />,text:"two",goto:"/test"},
-  {icon:<HiPencilAlt />,text:"three",goto:"/test"},
-  {icon:<HiQrcode />,text:"four",goto:"/test"},
-  {icon:<HiQrcode />,text:"five",goto:"/test"},
-  {icon:<HiQrcode />,text:"six",goto:"/test"},
-]
+  const params = useParams();
+  const history = useHistory();
 
-const Qcards=data.map((each)=>{
-  return <QuizTypeCard key={each.text} icon={each.icon} text={each.text} handleClick={()=>{
-    console.log(each.goto) 
-  }}/>
-})
+  const data = [
+    {
+      icon: <BiBracket className="text-green-400" />,
+      text: "Clozes",
+      goto: `/cloze/${params["id"]}`,
+    },
+    {
+      icon: <FaQuestion className="text-blue-400" />,
+      text: "Q&A's",
+      goto: `/qna/${params["id"]}`,
+    },
+    {
+      icon: <FaList className="text-red-400" />,
+      text: "MCQ",
+      goto: `/quiz/${params["id"]}`,
+    },
+    {
+      icon: <FaPuzzlePiece className="text-yellow-400" />,
+      text: "Matchings",
+      goto: `/quiz/${params["id"]}`,
+    },
+  ];
 
-
-
+  const Qcards = data.map((each) => {
+    return (
+      <QuizTypeCard
+        key={each.text}
+        icon={each.icon}
+        text={each.text}
+        handleClick={() => {
+          history.push(each["goto"]);
+        }}
+      />
+    );
+  });
 
   return (
-    <div class="bg-gray-600 ">
+    <div class="bg-gray-200 h-screen">
       <Navbar />
-      
-      <div class="flex  justify-center bg-gray-600 h-screen ">
 
+      <div class="bg-white w-1/2 m-auto my-40 shadow-lg rounded-box text-center flex flex-col gap-4 items-center justify-center  ">
+        <div class="stat-value py-2 ">Choose your quiz type</div>
 
- 
-      <div class="flex  flex-col w-full  lg:flex-row justify-center items-center">  {Qcards} </div>
-
+        <div class="py-2 flex  flex-col w-full  lg:flex-row justify-center items-center gap-3">
+          {Qcards}{" "}
+        </div>
       </div>
- 
     </div>
   );
 }

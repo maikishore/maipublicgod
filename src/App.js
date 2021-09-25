@@ -10,7 +10,7 @@ import PrivateRoute from "./Routes/PrivateRoute";
 import Profile from "./Pages/Dashboard/profile";
 import Cloze from "./Pages/Quiz/Cloze/Cloze";
 import Quiz from "./Pages/Quiz/Quiz";
-import QandA from "./Pages/Quiz/QnA/QnA";
+import QnA from "./Pages/Quiz/QnA/QnA";
 import Mcq from "./Pages/Quiz/MCQ/mcq";
 import TKS from "./tks";
 import Editors from "./Pages/Editor/editors";
@@ -19,7 +19,9 @@ import Graph from "./Pages/Graph/graph";
 import MainLibrary from "./Pages/Main/mainlibrary";
 import ReadEditor from "./Pages/Editor/readeditor";
 import ReadVideoNote from "./Pages/Video/readvideo";
-import Memorize from "./Pages/Quiz/memorize";
+import LoadingDiv from "./Commons/LoadingDiv";
+
+
 
 function App() {
   return (
@@ -39,17 +41,19 @@ function App() {
             <Route path="/readnote/:id" component={ReadEditor} />
             <Route path="/readvideonote/:id" component={ReadVideoNote} />
             <Route path="/videonote/:id" component={VideoNote} />
-            <Route path="/memorize/:id" component={Memorize} />
+     
             <PrivateRoute path="/profile" component={Profile} />
 
-            <PrivateRoute path="/quiz" component={Quiz} />
+            <PrivateRoute path="/quiz/:id" component={Quiz} />
 
             <PrivateRoute path="/cloze/:id" component={Cloze} />
-            <PrivateRoute path="/qna" component={QandA} />
+            <PrivateRoute path="/qna/:id" component={QnA} />
             <PrivateRoute path="/mcq" component={Mcq} />
 
             <PrivateRoute path="/kgraph" component={Graph} />
             <PrivateRoute path="/library" component={MainLibrary} />
+
+            <PrivateRoute path="/loading" component={LoadingDiv} />
           </Switch>
         </Router>
       </div>

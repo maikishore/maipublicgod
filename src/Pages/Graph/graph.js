@@ -9,6 +9,7 @@ import { FaInfo } from "react-icons/fa";
 import { Tooltip } from "react-tippy";
 
 import { useHistory } from "react-router";
+import { Truncate } from "../../Commons/Truncate";
 
 function Graph(props) {
   const data = props.data;
@@ -195,7 +196,7 @@ function Graph(props) {
               <Node
                 key={data[index][i]}
                 id={data[index]["nodes"][i]}
-                label={showLabel ? data[index]["nodes"][i] : " "}
+                label={showLabel ? Truncate(data[index]["nodes"][i] ,25): " "}
                 group={data[index]["nodes"][i]}
                 id_={data[index]['_id']}
                 type_={data[index]["type"]}
@@ -222,7 +223,7 @@ function Graph(props) {
                 <Node
                   key={data[index][i]}
                   id={data[index]["nodes"][i]}
-                  label={showLabel ? data[index]["nodes"][i] : " "}
+                  label={showLabel ? Truncate(data[index]["nodes"][i],25) : " "}
                   group={data[index]["nodes"][i]}
                   id_={data[index]['_id']}
                   type_={data[index]["type"]}
@@ -352,5 +353,6 @@ function Graph(props) {
     </div>
   );
 }
+
 
 export default Graph;

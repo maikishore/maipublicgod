@@ -1,8 +1,11 @@
 import React from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import LoadingDiv from "../../../Commons/LoadingDiv";
 import Navbar from "../../../Commons/Navbar/Navbar";
 import { postDataMB, postDataML } from "../../../Services/post";
+import PopUpModal from "../components/popupmodal";
+import Rating from "../rating";
+
 import ClozeCard from "./components/ClozeCard";
 
 function Cloze() {
@@ -15,8 +18,12 @@ function Cloze() {
   const [track,setTrack]=React.useState([])
   const [total,setTotal]=React.useState()
   const [currentId,setCurrentId]=React.useState()
-  const [trackSum,setTrackSum]=React.useState()
+  const [trackSum,setTrackSum]=React.useState(0)
+  const [showModal,setShowModal]=React.useState(false)
+  const [level,setLevel]=React.useState(0)
+  const [indx, setIndx] = React.useState(0);
   const params = useParams();
+  const history=useHistory()
 
   React.useEffect(() => {
     const f = () => {
@@ -43,15 +50,22 @@ function Cloze() {
         notes: data[0]["notes"],
       }).then((data) => {
         setClozes(data["data"]);
-        setTotal(data['total']) // JSON data parsed by `data.json()` call
+        setTotal(data['total']) 
+        var z=[]
+      for(var each=0;each<=data['total'];each++){
+        z.push(0)
+      }
+      setTrack(z)
+    
+        // JSON data parsed by `data.json()` call
       });
     };
     if (dataloading) {
       f();
       setReady(true);
       setLoading(false);
-    
-    
+      
+  
     }
 
     return () => {};
@@ -66,6 +80,7 @@ if(ready){
   newstate[currentId]=1
   setTrack(newstate)
   setTrackSum(track.reduce((a, b) => a + b, 1))
+
   
 }
 
@@ -78,26 +93,22 @@ return ()=>{}
 
 React.useEffect(()=>{
 console.log(trackSum,total)
+console.log(track)
 if(trackSum===total){
-  setTrackSum(0)
+ 
+
+
+setTimeout(function () {
   console.log("Hurray !")
+  setShowModal(true)
+}, 4000);
+ 
 }
 
 return ()=>{}
 },[trackSum])
 
 
-
-  const datas = [
-    {
-      question:
-        "This is first questionThis is first questioThis is first question",
-      answer: "This is first answer",
-    },
-    { question: "This is second question", answer: "This is first answer" },
-    { question: "This is third question", answer: "This is first answer" },
-    { question: "This is fourth question", answer: "This is first answer" },
-  ];
 
   const clozecards = ready ? (
     clozes.map((each, index) => {
@@ -107,6 +118,32 @@ return ()=>{}
           id={"item" + index.toString()}
           className="flex items-center justify-center w-full text-center shadow carousel-item"
         >
+
+ {showModal?<PopUpModal 
+ 
+ rating={<Rating
+  indx={indx}
+  indexfunc={(e)=>{
+    console.log(e.currentTarget.value)
+    setIndx(e.currentTarget.value)
+  }}
+  />}
+ libraryfunc={(e)=>{
+   history.push("/library")
+ }}
+ 
+ submitfunc={(e)=>{
+  const f = async() => {
+    await postDataMB("updatemaiscore", {
+      doc_id: params["id"].toString(),
+      quality:indx
+    }).then((data) => {
+     history.push("/library")
+    });
+  };
+f()
+ }}
+ />:null}   
           <ClozeCard question={each["question"]} answer={each["answer"]} 
           speakquestion={each["speak"]}
           
@@ -129,7 +166,7 @@ return ()=>{}
       
       return (   <a
         href={`/cloze/${params["id"]}#item${index.toString()}`}
-        className="btn btn-xs btn-circle"
+        className={`btn btn-sm btn-circle ${track[index]===1?"bg-green-400":"bg-gray-800"}`}
       >
         {(index + 1).toString()}
       </a>)
@@ -160,8 +197,13 @@ return ()=>{}
           >
             {clozecards}
           </div>
-          <div className="flex justify-center w-full my-1 space-x-2">
+          <div className="flex justify-center items-baseline w-full my-1 space-x-2">
             {clozenavigation}
+            <div className="mx-2"> <button 
+            onClick={()=>{
+              setShowModal(true)
+            }}
+            className="btn btn-md btn-info">FINISH</button> </div>
           </div>{" "}
         </div>
       )}

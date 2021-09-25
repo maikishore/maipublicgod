@@ -204,9 +204,7 @@ React.useEffect(() => {
         message="You have unsaved changes, are you sure you want to leave?"
       />
       <Navbar />
-      <button onClick={(e)=>{
-       console.log(getImage(editor.getJSON()))
-      }}>Json</button>
+     
       {saveInfo ? (
         <InfoAlert
           message="Your Document Saved and Auto Saved Every 3 mins "

@@ -1,6 +1,7 @@
 import React from "react";
 import { FaBeer, FaRegClock } from "react-icons/fa";
 import {AiOutlineDelete } from "react-icons/ai";
+import { Truncate } from "../../../Commons/Truncate";
 
 export default function MenuCard(props) {
   return (
@@ -21,7 +22,7 @@ export default function MenuCard(props) {
         {props.nodes.map((each, index) => {
           return (
             <div key={index} class="badge bg-gray-600">
-              {each}
+              {Truncate(each,12)}
             </div>
           );
         })}

@@ -10,6 +10,7 @@ import Graph from "../Graph/graph";
 import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../GlobalContexts/authcontext";
 import LoadingDiv from "../../Commons/LoadingDiv";
+import { Truncate } from "../../Commons/Truncate";
 
 /*
 const data = [
@@ -197,10 +198,10 @@ export default function MainLibrary(props) {
   }, [addToggle]);
 
   const contentcards = filterData.map((each, index) => {
-   
+
     return (
       <MenuCard
-        title={each["title"]}
+        title={Truncate(each["title"],24)}
         timetoread={"1 min"}
         nodes={each['nodes']}
         maiscore={each["maiscore"]}
@@ -208,7 +209,7 @@ export default function MainLibrary(props) {
         type={each["type"]}
 
         memorizeClick={(e)=>{
-          history.push("cloze/"+each["_id"])
+          history.push("quiz/"+each["_id"])
         }}
         openClick={(e) => {
           if(each["type"]==="WEB"){

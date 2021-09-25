@@ -3,10 +3,7 @@ import React from "react";
 import ReactCardFlip from "react-card-flip";
 
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
-
 import Speak from "../../../../Services/tts";
-
-
 
 
 function QnACard(props) {
@@ -24,6 +21,9 @@ function QnACard(props) {
       >
         <div
           onClick={() => {
+            props.trackfunc()
+            
+
             setToggleFlip(!toggleFlip);
           }}
           className="py-40  bg-white"
@@ -37,7 +37,9 @@ function QnACard(props) {
 
         <div
           onClick={() => {
+            
             setToggleFlip(!toggleFlip);
+            
           }}
           className="py-40 bg-white"
         >
@@ -50,7 +52,7 @@ function QnACard(props) {
         onClick={(e) => {
           setToggleSound(!toogleSound);
           if (toogleSound) {
-            Speak(true, toggleFlip ? props.answer : props.question);
+            Speak(true, toggleFlip ? props.answer.replace(/_/g*props.answer, "dash") : props.speakquestion);
           } else {
             window.speechSynthesis.cancel();
           }

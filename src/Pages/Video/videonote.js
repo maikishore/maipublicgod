@@ -346,15 +346,15 @@ return ()=>{ setGotoggle(false)}
                       saveFunc={async (e) => {
                         await postData("savenotes", {
                           doc_id: params["id"].toString(),
-                          note_id: uuidv4(),
                           user_id: currentUser.uid.toString(),
+                          note_id: uuid(),
                           note_title: NotetitleRef.current.value,
                           entities: entityList,
                           level: level,
                           content: noteText,
                         }).then((data) => {
                           setAlertToggle(true);
-
+      
                           //console.log(data); // JSON data parsed by `data.json()` call
                         });
                       }}
