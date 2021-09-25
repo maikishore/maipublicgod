@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory, useParams } from "react-router";
 import LoadingDiv from "../../../Commons/LoadingDiv";
+import LoadingQuoteDiv from "../../../Commons/Loadingquote";
 import Navbar from "../../../Commons/Navbar/Navbar";
 import { postDataMB, postDataML } from "../../../Services/post";
 import PopUpModal from "../components/popupmodal";
@@ -188,7 +189,7 @@ f()
     <div className=" ">
       <Navbar />
       {loading ? (
-        <LoadingDiv />
+        <LoadingQuoteDiv />
       ) : (
         <div>
           <div

@@ -12,92 +12,7 @@ import useAuth from "../../GlobalContexts/authcontext";
 import LoadingDiv from "../../Commons/LoadingDiv";
 import { Truncate } from "../../Commons/Truncate";
 
-/*
-const data = [
-  {
-    id: "kshfkj",
-    title: "History",
-    content: "sjhfk",
-    notes: [],
-    nodes: [
-      "History",
-      "Pre Independence",
-     
-      "Quit India Movement",
-    
-    ],
-    maiscore: 8,
-    typee: "WEB",
-    entities: ["A", "B", "Bio"],
-  },
-  {
-    id: "kshfkj",
-    title: "Flora and Fauna",
-    content: "sjhfk",
-    notes: [],
-    nodes: ["Biology", "Botnay"],
-    maiscore: 10,
-    typee: "VIDEO",
-    entities: ["A", "B"],
-  },
-  {
-    id: "kshfkj",
-    title: "Vegitation",
-    content: "sjhfk",
-    notes: [],
-    nodes: ["Botnay", "Plants"],
-    maiscore: 10,
-    typee: "NOTES",
-    entities: ["A", "B"],
-  },
 
-  {
-    id: "kshfkj",
-    title: "Title One",
-    content: "sjhfk",
-    notes: [],
-    nodes: ["Botnay", "Animals"],
-    maiscore: 5,
-    typee: "BOOKS",
-    entities: ["A", "B"],
-  },
-
-  {
-    id: "kshfkj",
-    title: "Title One",
-    content: "sjhfk",
-    notes: [],
-    nodes: ["Botnay", "Animals", "Humans"],
-    maiscore: 1,
-    typee: "WEB",
-    entities: ["A", "B"],
-  },
-
- 
-
-  {
-    id: "kshfkj",
-    title: "Michael Seibel - Building Product",
-    content: "sjhfk",
-    notes: [],
-    nodes: ["Business", "Startup","Y-cobminator"],
-    maiscore: 100,
-    typee: "VIDEO",
-    entities: ["A", "B"],
-  },
-
-  {
-    id: "kshfkj",
-    title: "Title One",
-    content: "sjhfk",
-    notes: [],
-    nodes: ["Humans", "Females"],
-    maiscore: 1,
-    typee: "WEB",
-    entities: ["A", "B", "Sex"],
-  },
-];
-*/
 
 export default function MainLibrary(props) {
   const [typee, settypee] = React.useState("ALL");
@@ -202,7 +117,7 @@ export default function MainLibrary(props) {
     return (
       <MenuCard
         title={Truncate(each["title"],24)}
-        timetoread={"1 min"}
+        timetoread={each['timetoread']}
         nodes={each['nodes']}
         maiscore={each["maiscore"]}
         imgsrc={each["thumbnailimage"][0]}
@@ -405,45 +320,12 @@ if(each['type']==="VIDEO") {
   );
 }
 
-/*
- <SelectCard
-            clickFunc={(e) => {
-              settypee("BOOKS");
-            }}
-            icon={<FaBook className="text-green-300" />}
-            title="Books/PDF"
-            classes={typee === "BOOKS" ? "bg-gray-300" : "bg-white"}
-          />
 
-*/
 const openInNewTab = (url) => {
   const newWindow = window.open(url, "_blank", "noopener,noreferrer");
   if (newWindow) newWindow.opener = null;
 };
 
-function timeToReadContent(ev) {
- try {
-  if(typeof ev==="string"){
-    const wordsPerMinute = 200; // Average case.
-    let result;
-  
-    let textLength = ev.split(" ").length; // Split by words
-    if (textLength > 0) {
-      let value = Math.ceil(textLength / wordsPerMinute);
-      result = `~${value} min`;
-      return result;
-    } else {
-      return `$~${1} min`;
-    }
-   } else {
-    return `${1} min`
-  }
-  } 
-  catch {
-    return `${0} min`
-  }
-  
-}
 
 
 const deleteDoc = async (doc_id) => {

@@ -19,7 +19,7 @@ function Graph(props) {
     return (
       <Tooltip
         // options
-        title="Welcome to React"
+      
         html={
           <div className="w-60 h-50 card  rounded shadow-xl bg-green-100">
             <div className="card-title ">
@@ -48,7 +48,11 @@ function Graph(props) {
                 >
                   Open Note
                 </button>
-                <button className="btn mx-1 btn-sm btn-primary">
+                <button
+                onClick={()=>{
+                  history.push(`/quiz/${props["id_"]}`)
+                }}
+                className="btn mx-1 btn-sm btn-primary">
                   Memorize
                 </button>
               </div>
@@ -63,7 +67,7 @@ function Graph(props) {
     );
   };
 
-  const [showLabel, setShowLabel] = React.useState(false);
+  const [showLabel, setShowLabel] = React.useState(true);
   const [graph, setGraph] = React.useState();
   const [query, setQuery] = React.useState(false);
   const networkRef = React.useRef();
@@ -177,7 +181,7 @@ function Graph(props) {
                   queryTypeRef.current.value
                 )}
                 decorator={
-                  i === data[index]["nodes"].length - 1 ? Decorator : () => {}
+                  i === data[index]["nodes"].length - 1 ? Decorator : null
                 }
                 shadow={{
                   size: 60,
@@ -207,7 +211,7 @@ function Graph(props) {
                   queryTypeRef.current.value
                 )}
                 decorator={
-                  i === data[index]["nodes"].length - 1 ? Decorator : () => {}
+                  i === data[index]["nodes"].length - 1 ? Decorator : null
                 }
               />
             );
@@ -234,7 +238,7 @@ function Graph(props) {
                     queryTypeRef.current.value
                   )}
                   decorator={
-                    i === data[index]["nodes"].length - 1 ? Decorator : () => {}
+                    i === data[index]["nodes"].length - 1 ? Decorator : null
                   }
                 />
               </>
@@ -299,9 +303,10 @@ function Graph(props) {
                 <div className="flex flex-col justify-center items-center">
                   <input
                     type="checkbox"
-                    onClick={(e) => {
+                    onChange={(e) => {
                       setShowLabel(!showLabel);
                     }}
+                    checked={showLabel?"checked":""}
                     className="checkbox checkbox-primary"
                   />
                   <span className="label-text text-white mx-1 my-1">

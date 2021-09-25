@@ -2,12 +2,15 @@ import React from "react";
 import { FaBeer, FaRegClock } from "react-icons/fa";
 import {AiOutlineDelete } from "react-icons/ai";
 import { Truncate } from "../../../Commons/Truncate";
+import note from "../../../Assets/note.svg";
+
+
 
 export default function MenuCard(props) {
   return (
     <div className="m-2 flex card h-96 w-96 shadow-md hover:shadow-xl hover:border-gray-100">
-      <div className="h-1/3 bg-gray-200 object-contain">
-        <img alt="" className={`h-full w-full ${props.type==="WEB"?"object-contain":"object-cover"}`} src={props.imgsrc} />
+      <div className="h-1/3 bg-hero-pattern bg-cover bg-opacity-100 ">
+        <img alt="" className={`h-full w-full     ${props.type==="WEB"?"object-contain":"object-cover"} `}  src={props.imgsrc.length<=1?note:props.imgsrc} />
      
       </div>
       <div className="my-1 flex flex-row items-baseline justify-end">

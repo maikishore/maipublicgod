@@ -256,7 +256,7 @@ React.useEffect(() => {
                           getTextFromEditor(editor.getJSON())
                         ),
                         type: "NOTES",
-                        nodes: nlist,
+                        nodes: [ ...new Set(nlist) ],
                         source: "",
                         notes: [],
                         html: editor.getHTML().toString(),
@@ -432,6 +432,7 @@ React.useEffect(() => {
                     entities: entityList,
                     level: level,
                     content: noteText,
+                    nodes:nlist
                   }).then((data) => {
                     setAlertToggle(true);
 

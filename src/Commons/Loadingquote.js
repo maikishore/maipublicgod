@@ -213,6 +213,7 @@ export default function LoadingQuoteDiv() {
     const r=random_item(quotes)
   
     return (
+        <div class="flex justify-center items-center h-screen w-full">
       <div class="flex h-40 w-1/2 justify-center items-center">
     
   
@@ -233,7 +234,7 @@ export default function LoadingQuoteDiv() {
       </div>
   </div>
   
-  
+  </div>
     )
   
   
