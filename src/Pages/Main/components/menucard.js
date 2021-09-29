@@ -5,6 +5,19 @@ import { Truncate } from "../../../Commons/Truncate";
 import note from "../../../Assets/note.svg";
 
 export default function MenuCard(props) {
+  var imgsrcs=""
+  if(typeof(props.imgsrc)==="undefined"){
+    imgsrcs=note
+  }
+ if(typeof(props.imgsrc)==="string"){
+   if(props.imgsrc.length<=0){
+     imgsrcs=note
+   }else {
+     imgsrcs=props.imgsrc
+   }
+ }
+
+
   return (
     <div className="m-2 flex card h-96 w-96 shadow-md hover:shadow-xl hover:border-gray-100">
       <div className="h-1/3 bg-hero-pattern bg-cover bg-opacity-100 ">
@@ -13,7 +26,8 @@ export default function MenuCard(props) {
           className={`h-full w-full     ${
             props.type === "WEB" ? "object-contain" : "object-cover"
           } `}
-          src={props.imgsrc.length <= 1 ? note : props.imgsrc}
+          src={imgsrcs}
+          
         />
       </div>
       <div className="my-1 flex flex-row items-baseline justify-end">

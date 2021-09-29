@@ -34,7 +34,7 @@ const styles = {
 };
 
 const MenuBar = (props) => {
-  const classes = styles;
+  const classNamees = styles;
   const editor = props.editor;
   const imgRef = React.useRef();
 
@@ -44,7 +44,7 @@ const MenuBar = (props) => {
 
   return (
     <div className="px-1 py-2 bg-gray-100 flex gap-1 items-baseline flex-wrap">
-     <div data-tip="Bold" class="tooltip tooltip-bottom">
+     <div data-tip="Bold" className="tooltip tooltip-top">
      
       <button
         onClick={() =>
@@ -55,7 +55,7 @@ const MenuBar = (props) => {
             .run()
         }
         className={
-          editor.isActive("bold") ? classes.iconactive : classes.icondeactive
+          editor.isActive("bold") ? classNamees.iconactive : classNamees.icondeactive
         }
       >
         <FaBold />
@@ -63,6 +63,7 @@ const MenuBar = (props) => {
 
 
       </div>
+      <div data-tip="Italic" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -72,11 +73,13 @@ const MenuBar = (props) => {
             .run()
         }
         className={
-          editor.isActive("italic") ? classes.iconactive : classes.icondeactive
+          editor.isActive("italic") ? classNamees.iconactive : classNamees.icondeactive
         }
       >
         <FaItalic />
       </button>
+      </div>
+      <div data-tip="Strike" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -86,12 +89,13 @@ const MenuBar = (props) => {
             .run()
         }
         className={
-          editor.isActive("strike") ? classes.iconactive : classes.icondeactive
+          editor.isActive("strike") ? classNamees.iconactive : classNamees.icondeactive
         }
       >
         <MdStrikethroughS />
       </button>
-
+      </div>
+      <div data-tip="Superscript" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -102,13 +106,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("superscript")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaSuperscript />
       </button>
-
+      </div>
+      <div data-tip="Subscript" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -119,25 +124,28 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("subscript")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaSubscript />
       </button>
+</div>
 
-      <div class="dropdown">
-        <div tabindex="0" class={styles.icondeactive}>
+
+<div data-tip="Font Family" className="tooltip tooltip-top">
+      <div className="dropdown">
+        <div tabIndex="0" className={styles.icondeactive}>
           <BiFontFamily />
         </div>
         <ul
-          tabindex="0"
-          class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
+          tabIndex="0"
+          className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
         >
           <li>
             <p
               href={""}
-              class="p-1 font-bold hover:bg-gray-400 cursor-pointer"
+              className="p-1 font-bold hover:bg-gray-400 cursor-pointer"
               style={{
                 fontFamily: "sans-serif",
               }}
@@ -159,7 +167,7 @@ const MenuBar = (props) => {
               style={{
                 fontFamily: "Inter",
               }}
-              class="p-1 font-bold hover:bg-gray-400 cursor-pointer"
+              className="p-1 font-bold hover:bg-gray-400 cursor-pointer"
               onClick={() =>
                 editor
                   .chain()
@@ -175,7 +183,7 @@ const MenuBar = (props) => {
           <li>
             <p
               href={""}
-              class="p-1 font-bold hover:bg-gray-400 cursor-pointer"
+              className="p-1 font-bold hover:bg-gray-400 cursor-pointer"
               style={{
                 fontFamily: "IBM Plex Sans",
               }}
@@ -194,7 +202,7 @@ const MenuBar = (props) => {
           <li>
             <p
               href={""}
-              class="p-1 font-bold hover:bg-gray-400 cursor-pointer"
+              className="p-1 font-bold hover:bg-gray-400 cursor-pointer"
               style={{
                 fontFamily: "Roboto",
               }}
@@ -212,7 +220,7 @@ const MenuBar = (props) => {
           <li>
             <p
               href={""}
-              class="p-1 font-bold hover:bg-gray-400 cursor-pointer"
+              className="p-1 font-bold hover:bg-gray-400 cursor-pointer"
               style={{
                 fontFamily: "Zilla Slab",
               }}
@@ -230,7 +238,7 @@ const MenuBar = (props) => {
           <li>
             <p
               href={""}
-              class="p-1 font-bold hover:bg-gray-400 cursor-pointer"
+              className="p-1 font-bold hover:bg-gray-400 cursor-pointer"
               style={{
                 fontFamily: "Quintessential, cursive",
               }}
@@ -247,8 +255,11 @@ const MenuBar = (props) => {
           </li>
         </ul>
       </div>
+      </div>
+      <div data-tip="Font Color" className="tooltip tooltip-top">
       {props.textcolormenu}
-
+</div>
+<div data-tip="Highlight" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -259,12 +270,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("highlight")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaHighlighter />
       </button>
+      </div>
+      <div data-tip="Left Align" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -275,13 +288,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive({ textAlign: "left" })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaAlignLeft />
       </button>
-
+</div>
+<div data-tip="Center Align" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -292,13 +306,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive({ textAlign: "center" })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaAlignCenter />
       </button>
-
+      </div>
+      <div data-tip="Right Align" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -309,13 +324,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive({ textAlign: "right" })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaAlignRight />
       </button>
-
+</div>
+<div data-tip="Paragraph" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -326,13 +342,15 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("paragraph")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaParagraph />
       </button>
+</div>
 
+<div data-tip="Heading 1" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -343,12 +361,15 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("heading", { level: 1 })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         h1
       </button>
+      </div> 
+      <div data-tip="Heading 2" className="tooltip tooltip-top">
+
       <button
         onClick={() =>
           editor
@@ -359,12 +380,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("heading", { level: 2 })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         h2
       </button>
+      </div>
+      <div data-tip="Heading 3" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -375,12 +398,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("heading", { level: 3 })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         h3
       </button>
+      </div>
+      <div data-tip="Heading 4" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -391,12 +416,14 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("heading", { level: 4 })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         h4
       </button>
+      </div>
+      <div data-tip="Heading 5" className="tooltip tooltip-top">
       <button
         onClick={() =>
           editor
@@ -407,13 +434,15 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("heading", { level: 5 })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         h5
       </button>
-      <button
+      </div>
+
+      <div data-tip="Heading 6" className="tooltip tooltip-top">      <button
         onClick={() =>
           editor
             .chain()
@@ -423,12 +452,15 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("heading", { level: 6 })
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         h6
       </button>
+      </div>
+      
+      <div data-tip="Unordered List" className="tooltip tooltip-top">   
       <button
         onClick={() =>
           editor
@@ -439,12 +471,15 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("bulletList")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaListUl />
       </button>
+      </div>
+      
+      <div data-tip="Ordered List" className="tooltip tooltip-top">   
       <button
         onClick={() =>
           editor
@@ -455,12 +490,15 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("orderedList")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaListOl />
       </button>
+      </div>
+      
+      <div data-tip="Code" className="tooltip tooltip-top">   
       <button
         onClick={() =>
           editor
@@ -470,17 +508,21 @@ const MenuBar = (props) => {
             .run()
         }
         className={
-          editor.isActive("code") ? classes.iconactive : classes.icondeactive
+          editor.isActive("code") ? classNamees.iconactive : classNamees.icondeactive
         }
       >
         <FaCode />
       </button>
+      </div>
+      
+      <div data-tip="Add Image" className="tooltip tooltip-top">   
+      <div data-tip="" className="tooltip tooltip-top">   
       <div className="dropdown dropdown-right">
-        <div tabindex="0" className={classes.icondeactive}>
+        <div tabIndex="0" className={classNamees.icondeactive}>
           <FaImages />
         </div>
         <ul
-          tabindex="0"
+          tabIndex="0"
           className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
         >
           <li>
@@ -511,6 +553,9 @@ const MenuBar = (props) => {
           </li>
         </ul>
       </div>
+      </div></div>
+      
+      <div data-tip="Code Block" className="tooltip tooltip-top">   
       <button
         onClick={() =>
           editor
@@ -521,15 +566,19 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("codeBlock")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         <FaFileCode />
       </button>
 
+</div>
+
+
+<div data-tip="Horizontal Rule" className="tooltip tooltip-top">   
       <button
-        className={classes.icondeactive}
+        className={classNamees.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -540,8 +589,11 @@ const MenuBar = (props) => {
       >
         <AiOutlineLine />
       </button>
+      </div>
+      
+      <div data-tip="Break" className="tooltip tooltip-top">   
       <button
-        className={classes.icondeactive}
+        className={classNamees.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -552,6 +604,9 @@ const MenuBar = (props) => {
       >
         <ImPagebreak />
       </button>
+      </div>
+      
+      <div data-tip="Block Quote" className="tooltip tooltip-top">   
       <button
         onClick={() =>
           editor
@@ -562,14 +617,17 @@ const MenuBar = (props) => {
         }
         className={
           editor.isActive("blockquote")
-            ? classes.iconactive
-            : classes.icondeactive
+            ? classNamees.iconactive
+            : classNamees.icondeactive
         }
       >
         blockquote
       </button>
+      </div>
+      
+      <div data-tip="Clear Marks" className="tooltip tooltip-top">   
       <button
-        className={classes.icondeactive}
+        className={classNamees.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -580,8 +638,11 @@ const MenuBar = (props) => {
       >
         clear marks
       </button>
+      </div>
+      
+      <div data-tip="Clear Content" className="tooltip tooltip-top">   
       <button
-        className={classes.icondeactive}
+        className={classNamees.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -590,11 +651,13 @@ const MenuBar = (props) => {
             .run()
         }
       >
-        clear nodes
+        clear content
       </button>
+      </div>
 
+      <div data-tip="Undo" className="tooltip tooltip-top">   
       <button
-        className={classes.icondeactive}
+        className={classNamees.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -605,8 +668,11 @@ const MenuBar = (props) => {
       >
         <FaUndo />
       </button>
+      </div>
+      
+      <div data-tip="Redo" className="tooltip tooltip-top">   
       <button
-        className={classes.icondeactive}
+        className={classNamees.icondeactive}
         onClick={() =>
           editor
             .chain()
@@ -617,7 +683,7 @@ const MenuBar = (props) => {
       >
         <FaRedo />
       </button>
-
+</div>
      
     </div>
   );

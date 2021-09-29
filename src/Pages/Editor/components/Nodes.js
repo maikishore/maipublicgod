@@ -13,11 +13,11 @@ function Nodes(props) {
           <ul>{props.nlists}</ul>
         </div>
         <div className="dropdown dropdown-right">
-          <div tabindex="0" className="btn btn-sm btn-accent rounded-btn">
+          <div tabIndex="0" className="btn btn-sm btn-accent rounded-btn">
             Add Node
           </div>
           <ul
-            tabindex="0"
+            tabIndex="0"
             className="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
           >
             <li>

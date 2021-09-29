@@ -11,16 +11,16 @@ function Notecard(props) {
             {props.input}
           </div>
 
-          <button onClick={props.saveFunc} class="btn w-1/3 btn-success">Add Note</button>
+          <button onClick={props.saveFunc} className="btn w-1/3 btn-success">Add Note</button>
           <button
             onClick={props.closeFunc}
-            class="btn my-2  text-center bg-gray-300 mx-1 btn-sm btn-circle"
+            className="btn my-2  text-center bg-gray-300 mx-1 btn-sm btn-circle"
           >
             X
           </button>
         </div>
       </div>
-      <div className="flex flex-wrap  bg-green-100 ">
+      <div className="flex flex-wrap bg-green-50 ">
         <div className="w-full max-h-36 overflow-y-scroll">
           <Entities entityList={props.entityList}  entityFunc={props.entityFunc}  />
         </div>
@@ -32,11 +32,11 @@ function Notecard(props) {
           <button 
           onClick={props.addEntityFunc}
           
-          className="m-2 btn btn-sm btn-ghost ">Add Entity</button>
+          className="m-2 btn btn-sm btn-ghost ">Add Keywords</button>
         </div>
       </div>
 
-      <div className="w-auto text-left px-2 text-md bg-purple-100 max-h-60 overflow-y-scroll">
+      <div className=" w-auto text-left px-2 text-lg font-semibold bg-purple-100 max-h-60 overflow-y-scroll">
         {props.text}
       </div>
     </div>

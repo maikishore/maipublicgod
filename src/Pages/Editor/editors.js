@@ -5,19 +5,12 @@ import Nodes from "./components/Nodes";
 import Notecard from "./components/Notecard";
 import RawEditor from "./components/RawEditor";
 
-import { IoAddCirclefharp } from "react-icons/io5";
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { v4 as uuidv4 } from "uuid";
+
 import { Prompt } from "react-router";
-import {
-  FaBold,
-  FaItalic,
-  FaCode,
-  FaVolumeUp,
-  FaVolumeMute,
-} from "react-icons/fa";
-import { MdStrikethroughS } from "react-icons/md";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+
 import Subscript from "@tiptap/extension-subscript";
 
 import Superscript from "@tiptap/extension-superscript";
@@ -82,15 +75,16 @@ function Editors() {
   const [loading, setLoading] = React.useState(true);
   const [saveInfo, setSaveInfo] = React.useState(false);
   const [saveStatus, setSaveStatus] = React.useState(false);
+  const [autosaveStatus, setAutoSaveStatus] = React.useState(false);
   const [level, setLevel] = React.useState();
-  const MINUTE_MS = 10000;
+  const MINUTE_MS =180000 ;
   const nodeRef = React.useRef();
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
   const params = useParams();
   const { currentUser } = useAuth();
-  React.useEffect(() => {
 
+  React.useEffect(() => {
     const f = () => {
       postData("create", {
         doc_id: params["id"].toString(),
@@ -107,69 +101,67 @@ function Editors() {
         updates: [],
         public: false,
         mentions: [],
-        thumbnailimage:[],
-        timetoread:"~ 1 min"
+        thumbnailimage: [""],
+        timetoread: "~ 1 min",
       }).then((data) => {
-       
-        //console.log(data); // JSON data parsed by `data.json()` call
+        setAutoSaveStatus(true);
+        ////console.log(data); // JSON data parsed by `data.json()` call
       });
     };
- 
+
     f();
     return () => {};
   }, []);
-  /*
-React.useEffect(() => {
 
-  const f=async() => {
-    await  postData("updatedoc", {
-       doc_id: params["id"].toString(),
-       user_id: currentUser.uid.toString(),
-       update:{
-         title: titleRef.current.value,
-         content: editor.getText(),
-         type: "NOTES",
-         nodes: nlist,
-         source: "",
-         notes: [],
-         maiscore: 5,
-         html: editor.getHTML().toString(),
-         updates: [],
-         public: false,
-         mentions: [],}
-       
-     }).then((data) => {
+  React.useEffect(() => {
+    const f = async () => {
+      await postData("updatedoc", {
+        doc_id: params["id"].toString(),
+        user_id: currentUser.uid.toString(),
+        update: {
+          title: titleRef.current.value,
+          content: getTextFromEditor(editor.getJSON()),
+          timetoread: TimeToReadContent(getTextFromEditor(editor.getJSON())),
+          type: "NOTES",
+          nodes: [...new Set(nlist)],
+          source: "",
+          notes: [],
+          html: editor.getHTML().toString(),
+          updates: [],
+          public: false,
+          mentions: [],
+          jsons: editor.getJSON(),
+          thumbnailimage: [getImage(editor.getJSON())],
+        },
+      }).then((data) => {
+        //console.log("Doc Updated without errors")
+        ////console.log(data); // JSON data parsed by `data.json()` call
+      });
+    };
+    const interval = setInterval(() => {
+      if (autosaveStatus) {
+        f();
+      }
+    }, MINUTE_MS);
 
-       //console.log(data); // JSON data parsed by `data.json()` call
-     });
-   }
-  const interval = setInterval(() => {
-    
-
-    // f()
-
-
-     console.log("called ",editor.getText())
-  }, MINUTE_MS);
-
-  return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-}, [])
-*/
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [autosaveStatus]);
 
   React.useEffect(() => {
     if (nodeRef.current.value.length !== 0) {
       setNlist((prevstate) => [...prevstate, nodeRef.current.value]);
-      console.log(nlist);
+      //console.log(nlist);
     }
   }, [nodeCheck]);
 
   const nlists = nlist.map((each, index) => {
     return (
       <li
+      key={index}
         id={index}
         onClick={(e) => {
           setNlist((prevstate) => prevstate.filter((item) => item !== each));
-          console.log(nlist);
+          //console.log(nlist);
         }}
       >
         <svg
@@ -179,9 +171,9 @@ React.useEffect(() => {
           className="inline-block w-2 h-2 mr-2 stroke-current"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
@@ -200,12 +192,9 @@ React.useEffect(() => {
 
   return (
     <div className="">
-      <Prompt
-        when={"shouldBlockNavigation"}
-        message="You have unsaved changes, are you sure you want to leave?"
-      />
+      <Prompt message="You have unsaved changes, are you sure you want to leave?" />
       <Navbar />
-     
+
       {saveInfo ? (
         <InfoAlert
           message="Your Document Saved and Auto Saved Every 3 mins "
@@ -242,10 +231,10 @@ React.useEffect(() => {
                 />
                 <button
                   onClick={async (e) => {
-                    if(titleRef.current.value.length<=1){
-                      nlist.push(uuid())
-                    }else {
-                      nlist.push(titleRef.current.value)
+                    if (titleRef.current.value.length <= 1) {
+                      nlist.push(uuid());
+                    } else {
+                      nlist.push(titleRef.current.value);
                     }
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
@@ -257,21 +246,21 @@ React.useEffect(() => {
                           getTextFromEditor(editor.getJSON())
                         ),
                         type: "NOTES",
-                        nodes: [ ...new Set(nlist) ],
+                        nodes: [...new Set(nlist)],
                         source: "",
                         notes: [],
                         html: editor.getHTML().toString(),
                         updates: [],
                         public: false,
                         mentions: [],
-                        jsons:editor.getJSON(),
-                        thumbnailimage:[getImage(editor.getJSON())]
+                        jsons: editor.getJSON(),
+                        thumbnailimage: [getImage(editor.getJSON())],
                       },
                     }).then((data) => {
                       setSaveInfo(true);
-                      setSaveStatus(true)
-                   
-                      //console.log(data); // JSON data parsed by `data.json()` call
+                      setSaveStatus(true);
+
+                      ////console.log(data); // JSON data parsed by `data.json()` call
                     });
                   }}
                   className="ml-3 px-6 btn btn-primary "
@@ -293,7 +282,7 @@ React.useEffect(() => {
             <div className="m-2 flex items-start justify-center ">
               <button
                 onClick={(e) => {
-                  console.log(speakToggle);
+                  //console.log(speakToggle);
                   setSpeakToggle(!speakToggle);
                 }}
                 className="btn  btn-sm btn-circle"
@@ -308,7 +297,7 @@ React.useEffect(() => {
                 editorWidth={editorWidth}
                 editor={editor}
                 noteFunc={async () => {
-                  if(!saveStatus){
+                  if (!saveStatus) {
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
                       user_id: currentUser.uid.toString(),
@@ -320,18 +309,18 @@ React.useEffect(() => {
                         nodes: nlist,
                         source: "",
                         notes: [],
-                      
+
                         html: editor.getHTML().toString(),
                         updates: [],
                         public: false,
                         mentions: [],
-                        jsons:editor.getJSON()
+                        jsons: editor.getJSON(),
                       },
                     }).then((data) => {
-                      //console.log(data); // JSON data parsed by `data.json()` call
+                      ////console.log(data); // JSON data parsed by `data.json()` call
                     });
                   }
-                
+
                   const getEntities = async (notedata) => {
                     const response = await fetch(
                       process.env.REACT_APP_ML_URL + "/entities",
@@ -433,11 +422,11 @@ React.useEffect(() => {
                     entities: entityList,
                     level: level,
                     content: noteText,
-                    nodes:nlist
+                    nodes: nlist,
                   }).then((data) => {
                     setAlertToggle(true);
 
-                    //console.log(data); // JSON data parsed by `data.json()` call
+                    ////console.log(data); // JSON data parsed by `data.json()` call
                   });
                 }}
                 entityList={entityList}
@@ -448,13 +437,13 @@ React.useEffect(() => {
                       (item, index) => index.toString() !== id.toString()
                     )
                   );
-                  console.log(id);
+                  //console.log(id);
                 }}
                 closeFunc={(e) => {
                   setWidth(true);
                 }}
                 addEntityFunc={(e) => {
-                  console.log(window.getSelection().toString());
+                  //console.log(window.getSelection().toString());
 
                   setEntityList([
                     ...entityList,
@@ -471,19 +460,7 @@ React.useEffect(() => {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
 function getTextFromEditor(jsonText) {
-
   let s = "";
 
   for (var i = 0; i < jsonText["content"].length; i++) {
@@ -491,47 +468,36 @@ function getTextFromEditor(jsonText) {
       jsonText["content"][i]["type"] === "paragraph" ||
       jsonText["content"][i]["type"] === "heading"
     ) {
-        try{
-            s = s + jsonText["content"][i]["content"][0]["text"] + "";
-        }catch {
-            s = s + " ";
-        }
-      
+      try {
+        s = s + jsonText["content"][i]["content"][0]["text"] + "";
+      } catch {
+        s = s + " ";
+      }
     }
   }
-  console.log("hvjk", s);
+  //console.log("hvjk", s);
   return s;
 }
 
-
-
-function getImage(jsondoc){
-
- var s=""
-  if(jsondoc['content'].length <=2){
-    return ""
+function getImage(jsondoc) {
+  var s = "";
+  if (jsondoc["content"].length <= 2) {
+    return "";
   }
 
-  for(var each=0;each<jsondoc['content'].length;each++){
-    
-    if(each>=30){
-      s=""
-     break
-
-    }else {
-      if(jsondoc['content'][each]['type']==="image"){
-        s= jsondoc['content'][each]['attrs']['src']
-        break
+  for (var each = 0; each < jsondoc["content"].length; each++) {
+    if (each >= 30) {
+      s = "";
+      break;
+    } else {
+      if (jsondoc["content"][each]["type"] === "image") {
+        s = jsondoc["content"][each]["attrs"]["src"];
+        break;
       }
     }
-
-
   }
-console.log(s)
-  return s
-
-
-
+  //console.log("SS>",s)
+  return s;
 }
 
 export default Editors;

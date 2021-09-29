@@ -252,9 +252,12 @@ function Graph(props) {
         }
       });
     });
-    const graphs = graphList.map((each, i) => {
-      return each;
-    });
+    const graphs = []
+   
+    for(var e=0;e<graphList.length;e++){
+      graphs.push(graphList[e])
+    }
+   
     setGraph(graphs);
   }, [showLabel, query]);
 
