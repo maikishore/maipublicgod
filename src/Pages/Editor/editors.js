@@ -99,7 +99,7 @@ function Editors() {
         title: titleRef.current.value,
         content: "",
         type: "NOTES",
-        nodes: [],
+        nodes: ["No Nodes"],
         source: "",
         notes: [],
 
@@ -107,7 +107,8 @@ function Editors() {
         updates: [],
         public: false,
         mentions: [],
-        thumbnailimage:[]
+        thumbnailimage:[],
+        timetoread:"~ 1 min"
       }).then((data) => {
        
         //console.log(data); // JSON data parsed by `data.json()` call

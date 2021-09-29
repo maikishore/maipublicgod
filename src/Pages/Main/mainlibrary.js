@@ -1,6 +1,8 @@
 import React from "react";
 import { CgStack } from "react-icons/cg";
 import { MdAdd, MdVideoLibrary, MdWebAsset } from "react-icons/md";
+
+import { FiRefreshCcw } from "react-icons/fi";
 import { FaStickyNote } from "react-icons/fa";
 import MenuCard from "./components/menucard";
 import SelectCard from "./components/selectcard";
@@ -39,6 +41,7 @@ export default function MainLibrary(props) {
   };
 
   React.useEffect(() => {
+    setLoading(true);
     const f = async () => {
       const z = await getData(currentUser.uid);
       setData(z["data"]);
@@ -47,9 +50,7 @@ export default function MainLibrary(props) {
     };
 
     f();
-    return () => {
-      setLoading(false);
-    };
+    return () => {};
   }, [deleteToggle]);
 
   React.useEffect(() => {
@@ -146,7 +147,7 @@ export default function MainLibrary(props) {
   });
 
   const pageshift = (
-    <div className="">
+    <div className="flex flex-row items-baseline justify-center">
       <div className="form-control flex ">
         <label className="cursor-pointer">
           <div className="flex flex-col justify-center items-center">
@@ -164,6 +165,19 @@ export default function MainLibrary(props) {
           </div>
         </label>
       </div>
+      {!graphToggle?  <div data-tip="Refresh" className="tooltip  tooltip-bottom">
+        <div className="flex flex-col ">
+          <div
+            className="btn btn-ghost"
+            onClick={(e) => {
+              setDeleteToggle(!deleteToggle);
+            }}
+          >
+            <FiRefreshCcw className="text-lg" />
+          </div>
+        </div>
+      </div>:null}
+    
     </div>
   );
   return (

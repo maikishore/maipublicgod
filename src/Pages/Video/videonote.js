@@ -3,7 +3,7 @@ import React from "react";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
 import ReactPlayer from "react-player";
-import { Prompt, useParams } from "react-router";
+import { Prompt, useHistory, useParams } from "react-router";
 import Navbar from "../../Commons/Navbar/Navbar";
 import useAuth from "../../GlobalContexts/authcontext";
 import { postData } from "../../Services/post";
@@ -36,16 +36,15 @@ function VideoNote() {
   const [alertToggle, setAlertToggle] = React.useState(false);
 
   const [level, setLevel] = React.useState();
-const [goToggle,setGotoggle]=React.useState(false)
+  const [goToggle, setGotoggle] = React.useState(false);
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
   const params = useParams();
   const { currentUser } = useAuth();
-
-
+  const history=useHistory()
 
   const getSubtitles = async (url) => {
-    const response = await fetch(process.env.REACT_APP_ML_URL + "/videonote", {
+    const response = await fetch(process.env.REACT_APP_MB_URL + "/getsubtitles", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -61,44 +60,45 @@ const [goToggle,setGotoggle]=React.useState(false)
     return response.json();
   };
 
+  React.useEffect(() => {
+    if (goToggle) {
+      const handleVideo = async (e) => {
+        setPlayUrl(videoUrlRef.current.value);
 
-  React.useEffect(()=>{
-    if(goToggle){
-    const handleVideo = async (e) => {
-      setPlayUrl(videoUrlRef.current.value);
-  
-      if (videoUrlRef.current.value.includes("https://youtu.be/")) {
-        const t = videoUrlRef.current.value.replace(
-          "https://youtu.be/",
-          "https://www.youtube.com/watch?v="
-        );
-        setPlayUrl(t);
-      }
-  
-      if (playUrl.length >= 2) {
-        if (playUrl.includes("=")) {
-          const x = await getSubtitles(playUrl);
-  
-          setSubtitlesText(x["captions"]);
-          setShowPage(true);
-        } else {
-          setSubtitlesText([
-            { index: "1", text: "Subtitles other than Youtube comming soon!" },
-          ]);
-          setShowPage(true);
+        if (videoUrlRef.current.value.includes("https://youtu.be/")) {
+          const t = videoUrlRef.current.value.replace(
+            "https://youtu.be/",
+            "https://www.youtube.com/watch?v="
+          );
+          setPlayUrl(t);
         }
-      }
-    };
-    
-    
-      console.log("--",goToggle)
-      handleVideo()
+
+        if (playUrl.length >= 2) {
+          if (playUrl.includes("=")) {
+            const x = await getSubtitles(playUrl);
+
+            setSubtitlesText(x["captions"]);
+            setShowPage(true);
+          } else {
+            setSubtitlesText([
+              {
+                index: "1",
+                text: "Subtitles other than Youtube comming soon!",
+              },
+            ]);
+            setShowPage(true);
+          }
+        }
+      };
+
+      console.log("--", goToggle);
+      handleVideo();
     }
 
-return ()=>{ setGotoggle(false)}
-
-  },[goToggle])
-
+    return () => {
+      setGotoggle(false);
+    };
+  }, [goToggle]);
 
   const subtitles = showPage ? (
     subtitlesText.map((each, index) => {
@@ -118,14 +118,7 @@ return ()=>{ setGotoggle(false)}
     <div></div>
   );
 
-
-
-
-
-
-
   React.useEffect(() => {
-
     const f = () => {
       postData("create", {
         doc_id: params["id"].toString(),
@@ -141,28 +134,15 @@ return ()=>{ setGotoggle(false)}
         updates: [],
         public: false,
         mentions: [],
-        thumbnailimage:[]
+        thumbnailimage: [],
       }).then((data) => {
-       
         //console.log(data); // JSON data parsed by `data.json()` call
       });
     };
- 
+
     f();
     return () => {};
   }, []);
-
-
-
-
-
-
-
-
-
-
-
-
 
   React.useEffect(() => {
     if (showPage) {
@@ -220,10 +200,10 @@ return ()=>{ setGotoggle(false)}
               <button
                 className="ml-3 px-6 btn btn-primary "
                 onClick={async (e) => {
-                  if(titleRef.current.value.length<=1){
-                    nlist.push(uuid())
-                  }else {
-                    nlist.push(titleRef.current.value)
+                  if (titleRef.current.value.length <= 1) {
+                    nlist.push(uuid());
+                  } else {
+                    nlist.push(titleRef.current.value);
                   }
                   await postData("updatedoc", {
                     doc_id: params["id"].toString(),
@@ -231,27 +211,29 @@ return ()=>{ setGotoggle(false)}
                     update: {
                       title: titleRef.current.value,
                       content: subtitlesText,
-                      timetoread: TimeToReadContent(
-                      subtitlesText),
-                      
+                      timetoread: TimeToReadContent(subtitlesText),
+
                       type: "VIDEO",
                       nodes: nlist,
                       source: playUrl,
                       notes: [],
-              
+
                       html: "",
                       updates: [],
                       public: false,
                       mentions: [],
-                      jsons:"",
-                      thumbnailimage:["https://img.youtube.com/vi/"+getVideoId(playUrl).toString()+"/0.jpg"]
+                      jsons: "",
+                      thumbnailimage: [
+                        "https://img.youtube.com/vi/" +
+                          getVideoId(playUrl).toString() +
+                          "/0.jpg",
+                      ],
                     },
                   }).then((data) => {
-                    setSaveInfo(true)
+                    setSaveInfo(true);
                     //console.log(data); // JSON data parsed by `data.json()` call
                   });
                 }}
-              
               >
                 Save
               </button>
@@ -351,10 +333,10 @@ return ()=>{ setGotoggle(false)}
                           note_title: NotetitleRef.current.value,
                           entities: entityList,
                           level: level,
-                          content: noteText,
+                          content: noteText+".",
                         }).then((data) => {
                           setAlertToggle(true);
-      
+
                           //console.log(data); // JSON data parsed by `data.json()` call
                         });
                       }}
@@ -439,7 +421,9 @@ return ()=>{ setGotoggle(false)}
                 </div>
               </div>
 
-              <div className="p-2 text-left h-96 overflow-y-auto">{subtitles}</div>
+              <div className="p-2 text-left h-96 overflow-y-auto">
+                {subtitles}
+              </div>
             </div>
           </div>
         </div>
@@ -492,13 +476,21 @@ return ()=>{ setGotoggle(false)}
 
                   <div>
                     <button
-                      onClick={(e)=>{
-                        setGotoggle(true)
-                        console.log(goToggle)
+                      onClick={(e) => {
+                        setGotoggle(true);
+                        console.log(goToggle);
                       }}
                       className="btn btn-lg ml-1 btn-primary"
                     >
                       Go
+                    </button>
+                    <button
+                      onClick={(e) => {
+                       history.push("/library")
+                      }}
+                      className="btn btn-lg ml-1 btn-primary"
+                    >
+                      Back
                     </button>
                   </div>
 
@@ -521,8 +513,7 @@ return ()=>{ setGotoggle(false)}
                       ></path>
                     </svg>
                     <label>
-                      Currently supporting youtube only.Other Integrations like
-                      Zoom,Google classNameroom etc. comming soon!
+                    Currently, only YouTube is supported. Other integrations, such as Zoom and Google Classroom, are on the way!
                     </label>
                   </div>
                 </div>
@@ -538,7 +529,6 @@ return ()=>{ setGotoggle(false)}
 
 export default VideoNote;
 
-
 function getVideoId(str) {
-  return str.split('=')[1];
+  return str.split("=")[1];
 }
