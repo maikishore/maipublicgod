@@ -5,16 +5,11 @@ import Nodes from "./components/Nodes";
 import Notecard from "./components/Notecard";
 import RawEditor from "./components/RawEditor";
 
-
 import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { v4 as uuidv4 } from "uuid";
 import { Prompt } from "react-router";
-import {
-
-  FaVolumeUp,
-  FaVolumeMute,
-} from "react-icons/fa";
+import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 
 import Subscript from "@tiptap/extension-subscript";
 
@@ -138,13 +133,15 @@ function ReadEditor() {
           class="inline-block w-2 h-2 mr-2 stroke-current"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
-        <p class="badge badge-warning cursor-pointer">{each}</p>
+        <p className="badge badge-warning cursor-pointer">
+          {each.split("-")[0]}
+        </p>
       </li>
     );
   });
@@ -203,9 +200,14 @@ function ReadEditor() {
                   <button
                     onClick={async (e) => {
                       if (titleRef.current.value.length <= 1) {
-                        nlist.push(uuid());
+
+                        nlist.splice(-1)
+                        nlist.push("-"+params['id']);
+                        setNlist(nlist)
                       } else {
-                        nlist.push(titleRef.current.value);
+                        nlist.splice(-1)
+                        nlist.push(titleRef.current.value+"-"+params['id']);
+                        setNlist(nlist)
                       }
                       await postData("updatedoc", {
                         doc_id: params["id"].toString(),
@@ -271,7 +273,8 @@ function ReadEditor() {
                         doc_id: params["id"].toString(),
                         user_id: currentUser.uid.toString(),
                         update: {
-                          title: titleRef.current.value,
+                          title: titleRef.current.value.length===0?"No Title":titleRef.current.value,
+
                           content: getTextFromEditor(editor.getJSON()),
                           timetoread: TimeToReadContent(editor.getJSON()),
                           type: "NOTES",

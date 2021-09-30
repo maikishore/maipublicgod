@@ -3,7 +3,7 @@ import React from "react";
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
 import ReactPlayer from "react-player";
-import { useParams } from "react-router";
+import { Prompt, useParams } from "react-router";
 import Navbar from "../../Commons/Navbar/Navbar";
 import useAuth from "../../GlobalContexts/authcontext";
 import { postData } from "../../Services/post";
@@ -67,6 +67,8 @@ function ReadVideoNote() {
      setData(data['data'])
      setLoading(false)
         titleRef.current.value=data['data'][0]['title']
+        
+        
         if (data['data'][0]['source'].includes("https://youtu.be/")) {
           const t = data['data']['source'].replace(
             "https://youtu.be/",
@@ -75,7 +77,9 @@ function ReadVideoNote() {
           setPlayUrl(t);
         }else {
           setPlayUrl(data['data'][0]['source'])
-
+          setSubtitlesText(data['data'][0]['content'])
+console.log("-->",data['data'][0]['content'])
+setShowPage(true)
         }
       })
   
@@ -89,36 +93,19 @@ function ReadVideoNote() {
   
 
 
-React.useEffect(()=>{
-  const f=async()=>{
-    if (playUrl.length >= 2) {
-      if (playUrl.includes("=")) {
-        const x = await getSubtitles(playUrl);
-  
-        setSubtitlesText(x["captions"]);
-        setShowPage(true);
-      } else {
-        setSubtitlesText([
-          { index: "1", text: "Subtitles other than Youtube comming soon!" },
-        ]);
-        setShowPage(true);
-      }
-    }
-  }
-
-f()
-return  ()=>{}
-},[playUrl])
 
 
 
 React.useEffect(()=>{
   if(!loading){
       console.log(data[0]['jsons'])
-   
-      titleRef.current.value=data[0]['title']
+      console.log("===>",data[0])
+      titleRef.current.value=data[0]['title'].split("-")[0]
       setNlist(data[0]['nodes'])
+ 
       setLoading(false)
+    
+     
   }
 
 },[loading])
@@ -175,13 +162,17 @@ React.useEffect(()=>{
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
-        <p className="badge badge-warning cursor-pointer">{each}</p>
+        <p className="badge badge-warning cursor-pointer">{each.split("-")[0]}</p>
       </li>
     );
   });
 
   const page = (
     <div className="w-full h-screen bg-white-400">
+            <Prompt
+        when={true}
+        message="You have unsaved changes, are you sure you want to leave?"
+      />
       <div className="flex flex-col  ">
         <div className="p-2 text-6xl row-span-1 ">
           <div id="kkk" className="form-control">
@@ -197,10 +188,16 @@ React.useEffect(()=>{
               <button
                 className="ml-3 px-6 btn btn-primary "
                 onClick={async () => {
-                  if(titleRef.current.value.length<=1){
-                    nlist.push(uuid())
-                  }else {
-                    nlist.push(titleRef.current.value)
+                  if (titleRef.current.value.length <= 1) {
+
+                    nlist.splice(-1)
+                    nlist.push("-"+params['id']);
+          
+               
+                  } else {
+                    nlist.splice(-1)
+                    nlist.push(titleRef.current.value+"-"+params['id']);
+                  
                   }
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
@@ -210,7 +207,7 @@ React.useEffect(()=>{
                         content: subtitlesText,
                         timetoread: TimeToReadContent(subtitlesText),
                         type: "VIDEO",
-                        nodes: nlist,
+                        nodes: [...new Set(nlist)],
                       
                       
                       

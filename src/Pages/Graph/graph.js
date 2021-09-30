@@ -19,7 +19,7 @@ function Graph(props) {
     return (
       <Tooltip
         // options
-      
+
         html={
           <div className="w-60 h-50 card  rounded shadow-xl bg-green-100">
             <div className="card-title ">
@@ -32,8 +32,8 @@ function Graph(props) {
               <div className="stat-actions">
                 <button
                   className="btn  btn-sm btn-primary"
-                 onClick={(e) => {
-                   //console.log(props["type_"] ,props["id_"] )
+                  onClick={(e) => {
+                    //console.log(props["type_"] ,props["id_"] )
                     if (props["type_"] === "WEB") {
                       window.open(props["source_"], "_blank");
                     }
@@ -49,10 +49,11 @@ function Graph(props) {
                   Open Note
                 </button>
                 <button
-                onClick={()=>{
-                  history.push(`/quiz/${props["id_"]}`)
-                }}
-                className="btn mx-1 btn-sm btn-primary">
+                  onClick={() => {
+                    history.push(`/quiz/${props["id_"]}`);
+                  }}
+                  className="btn mx-1 btn-sm btn-primary"
+                >
                   Memorize
                 </button>
               </div>
@@ -147,7 +148,7 @@ function Graph(props) {
 
     const graphList = [
       <Node
-      key="maibrain"
+        key="maibrain"
         id="Maibrain"
         label={"Maibrain"}
         fixed={false}
@@ -168,14 +169,13 @@ function Graph(props) {
               <Node
                 key={data[index][i]}
                 id={data[index]["nodes"][i]}
-                title={data[index]["title"]}
-                label={showLabel ? data[index]["nodes"][i] : " "}
+                title={data[index]["title"].split("-")[0]}
+                label={showLabel ? data[index]["nodes"][i].split("-")[0] : " "}
                 group={data[index]["nodes"][i - 1]}
                 maiscore_={data[index]["maiscore"]}
-                id_={data[index]['_id']}
+                id_={data[index]["_id"]}
                 type_={data[index]["type"]}
                 source_={data[index]["source"]}
-
                 size={matchQuery(
                   queryRef.current.value.toString(),
                   data[index][queryTypeRef.current.value],
@@ -190,7 +190,7 @@ function Graph(props) {
                 }}
               />,
               <Edge
-              key={data[index][i]}
+                key={data[index][i]}
                 id={data[index]["nodes"][i]}
                 from={data[index]["nodes"][i - 1]}
                 to={data[index]["nodes"][i]}
@@ -202,9 +202,9 @@ function Graph(props) {
               <Node
                 key={data[index][i]}
                 id={data[index]["nodes"][i]}
-                label={showLabel ? Truncate(data[index]["nodes"][i] ,25): " "}
+                label={showLabel ? Truncate(data[index]["nodes"][i].split("-")[0], 25) : " "}
                 group={data[index]["nodes"][i]}
-                id_={data[index]['_id']}
+                id_={data[index]["_id"]}
                 type_={data[index]["type"]}
                 source_={data[index]["source"]}
                 size={matchQuery(
@@ -219,7 +219,7 @@ function Graph(props) {
             );
             graphList.push(
               <Edge
-              key={data[index][i]}
+                key={data[index][i]}
                 id={"Maibrain-" + data[index]["nodes"][i]}
                 from={"Maibrain"}
                 to={data[index]["nodes"][i]}
@@ -230,9 +230,11 @@ function Graph(props) {
                 <Node
                   key={data[index][i]}
                   id={data[index]["nodes"][i]}
-                  label={showLabel ? Truncate(data[index]["nodes"][i],25) : " "}
+                  label={
+                    showLabel ? Truncate(data[index]["nodes"][i].split("-")[0], 25) : " "
+                  }
                   group={data[index]["nodes"][i]}
-                  id_={data[index]['_id']}
+                  id_={data[index]["_id"]}
                   type_={data[index]["type"]}
                   source_={data[index]["source"]}
                   size={matchQuery(
@@ -252,19 +254,15 @@ function Graph(props) {
         }
       });
     });
-    const graphs = []
-   
-    for(var e=0;e<graphList.length;e++){
-      graphs.push(graphList[e])
+    const graphs = [];
+
+    for (var e = 0; e < graphList.length; e++) {
+      graphs.push(graphList[e]);
     }
-   
+
     setGraph(graphs);
   }, [showLabel, query]);
 
-
-
-
- 
   return (
     <div className="-mt-3 overflow-hidden bg-gray-900">
       <div style={{ height: "100vh" }} className=" overflow-hidden bg-gray-900">
@@ -312,7 +310,7 @@ function Graph(props) {
                     onChange={(e) => {
                       setShowLabel(!showLabel);
                     }}
-                    checked={showLabel?"checked":""}
+                    checked={showLabel ? "checked" : ""}
                     className="checkbox checkbox-primary"
                   />
                   <span className="label-text text-white mx-1 my-1">
@@ -343,19 +341,18 @@ function Graph(props) {
               width: 2,
               shadow: true,
               smooth: {
-                "forceDirection": "none"
-              }
-            },
-           
-            physics: {
-           
-              "minVelocity": 0.75,
-              "timestep": 0.51,
-              "barnesHut": {
-                "centralGravity": 0.05
+                forceDirection: "none",
               },
-            }
-            
+              
+            },
+
+            physics: {
+              minVelocity: 0.75,
+              timestep: 0.51,
+              barnesHut: {
+                centralGravity: 0.5,
+              },
+            },
           }}
         >
           {graph}
@@ -364,6 +361,5 @@ function Graph(props) {
     </div>
   );
 }
-
 
 export default Graph;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
-
+import uuid from 'react-uuid'
 import ReactPlayer from "react-player";
 import { Prompt, useHistory, useParams } from "react-router";
 import Navbar from "../../Commons/Navbar/Navbar";
@@ -13,7 +13,6 @@ import { v4 as uuidv4 } from "uuid";
 import AlertDiv from "../../Commons/AlertDiv";
 import TimeToReadContent from "../../Commons/TimeToRead";
 import InfoAlert from "../../Commons/InfoAlert";
-import uuid from "react-uuid";
 
 function VideoNote() {
   const [editorWidth, setWidth] = React.useState(true);
@@ -32,38 +31,99 @@ function VideoNote() {
   const [saveStatus, setSaveStatus] = React.useState(false);
   const nodeRef = React.useRef();
   const videoUrlRef = React.useRef();
-  // const titleRef=React.useRef()
-  const [alertToggle, setAlertToggle] = React.useState(false);
 
+  const [alertToggle, setAlertToggle] = React.useState(false);
+  const [loading,setLoading]=React.useState(false)
   const [level, setLevel] = React.useState();
   const [goToggle, setGotoggle] = React.useState(false);
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
   const params = useParams();
   const { currentUser } = useAuth();
-  const history=useHistory()
+  const history = useHistory();
 
   const getSubtitles = async (url) => {
-    const response = await fetch(process.env.REACT_APP_MB_URL + "/getsubtitles", {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json",
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify({ video_url: url }), // body data type must match "Content-Type" header
-    });
-
+    const response = await fetch(
+      process.env.REACT_APP_MB_URL + "/getsubtitles",
+      {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify({ video_url: url }), // body data type must match "Content-Type" header
+      }
+    );
+    setLoading(false)
+    //console.log("Function Called")
     return response.json();
   };
 
+
+
+
+
+
+
+
   React.useEffect(() => {
-    if (goToggle) {
-      const handleVideo = async (e) => {
+    const f = () => {
+      postData("create", {
+        doc_id: params["id"].toString(),
+        user_id: currentUser.uid.toString(),
+
+        title: ""+"-"+params["id"].toString(),
+        content: "",
+        type: "VIDEO",
+        nodes: [],
+        source: "",
+        notes: [],
+        html: "",
+        updates: [],
+        public: false,
+        mentions: [],
+        thumbnailimage: [],
+        timetoread:""
+      }).then((data) => {
+      //console.log("doc created"); // JSON data parsed by `data.json()` call
+      });
+    };
+
+    f();
+    return () => {};
+  }, []);
+
+React.useEffect(()=>{
+  const f=async()=>{
+  if (playUrl.length >= 2) {
+    if (playUrl.includes("=")) {
+      const x =  await getSubtitles(playUrl);
+      //console.log("Captions  Called")
+      setSubtitlesText(x["captions"]);
+      setShowPage(true)
+    } else {
+      setSubtitlesText([
+        {
+          index: "1",
+          text: "Subtitles other than Youtube comming soon!",
+        },
+      ]);
+      setShowPage(true)
+    }
+  }
+}
+f()
+},[playUrl])
+
+   
+      const handleVideo = async(e) => {
+       setLoading(true)
         setPlayUrl(videoUrlRef.current.value);
+
 
         if (videoUrlRef.current.value.includes("https://youtu.be/")) {
           const t = videoUrlRef.current.value.replace(
@@ -73,32 +133,20 @@ function VideoNote() {
           setPlayUrl(t);
         }
 
-        if (playUrl.length >= 2) {
-          if (playUrl.includes("=")) {
-            const x = await getSubtitles(playUrl);
+      
 
-            setSubtitlesText(x["captions"]);
-            setShowPage(true);
-          } else {
-            setSubtitlesText([
-              {
-                index: "1",
-                text: "Subtitles other than Youtube comming soon!",
-              },
-            ]);
-            setShowPage(true);
-          }
-        }
-      };
 
-      console.log("--", goToggle);
-      handleVideo();
+
+
+ 
+
+
+    
+
     }
 
-    return () => {
-      setGotoggle(false);
-    };
-  }, [goToggle]);
+   
+
 
   const subtitles = showPage ? (
     subtitlesText.map((each, index) => {
@@ -110,7 +158,7 @@ function VideoNote() {
             color < each.start ? "bg-white" : "bg-gray-300 shadow-lg"
           } inline`}
         >
-          {each.text + " "}
+          {each.text.toUpperCase() + " "}
         </p>
       );
     })
@@ -118,31 +166,7 @@ function VideoNote() {
     <div></div>
   );
 
-  React.useEffect(() => {
-    const f = () => {
-      postData("create", {
-        doc_id: params["id"].toString(),
-        user_id: currentUser.uid.toString(),
-
-        title: "",
-        content: "",
-        type: "VIDEO",
-        nodes: [],
-        source: "",
-        notes: [],
-        html: "",
-        updates: [],
-        public: false,
-        mentions: [],
-        thumbnailimage: [],
-      }).then((data) => {
-        //console.log(data); // JSON data parsed by `data.json()` call
-      });
-    };
-
-    f();
-    return () => {};
-  }, []);
+ 
 
   React.useEffect(() => {
     if (showPage) {
@@ -174,7 +198,7 @@ function VideoNote() {
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
-        <p className="badge badge-warning cursor-pointer">{each}</p>
+        <p className="badge badge-warning cursor-pointer">{each.split("-")[0]}</p>
       </li>
     );
   });
@@ -201,20 +225,25 @@ function VideoNote() {
                 className="ml-3 px-6 btn btn-primary "
                 onClick={async (e) => {
                   if (titleRef.current.value.length <= 1) {
-                    nlist.push(uuid());
+
+              
+                    nlist.push("-"+params['id']);
+                    setNlist(nlist)
                   } else {
-                    nlist.push(titleRef.current.value);
+                   
+                    nlist.push(titleRef.current.value+"-"+params['id']);
+                    setNlist(nlist)
                   }
                   await postData("updatedoc", {
                     doc_id: params["id"].toString(),
                     user_id: currentUser.uid.toString(),
                     update: {
-                      title: titleRef.current.value,
+                      title: titleRef.current.value+"-"+params["id"].toString(),
                       content: subtitlesText,
                       timetoread: TimeToReadContent(subtitlesText),
 
                       type: "VIDEO",
-                      nodes: nlist,
+                      nodes: [...new Set(nlist)],
                       source: playUrl,
                       notes: [],
 
@@ -231,7 +260,7 @@ function VideoNote() {
                     },
                   }).then((data) => {
                     setSaveInfo(true);
-                    //console.log(data); // JSON data parsed by `data.json()` call
+                    ////console.log(data); // JSON data parsed by `data.json()` call
                   });
                 }}
               >
@@ -264,18 +293,7 @@ function VideoNote() {
                       setColor(played.playedSeconds);
                     }}
                     url={playUrl}
-                    config={{
-                      file: {
-                        tracks: [
-                          {
-                            kind: "subtitles",
-                            src: "./videovtt.vtt",
-                            srcLang: "en",
-                            default: true,
-                          },
-                        ],
-                      },
-                    }}
+                   
                   />
 
                   <div
@@ -333,11 +351,11 @@ function VideoNote() {
                           note_title: NotetitleRef.current.value,
                           entities: entityList,
                           level: level,
-                          content: noteText+".",
+                          content: noteText + ".",
                         }).then((data) => {
                           setAlertToggle(true);
 
-                          //console.log(data); // JSON data parsed by `data.json()` call
+                          ////console.log(data); // JSON data parsed by `data.json()` call
                         });
                       }}
                       entityList={entityList}
@@ -348,13 +366,13 @@ function VideoNote() {
                             (item, index) => index.toString() !== id.toString()
                           )
                         );
-                        console.log(id);
+                        //console.log(id);
                       }}
                       closeFunc={(e) => {
                         setWidth(true);
                       }}
                       addEntityFunc={(e) => {
-                        console.log(window.getSelection().toString());
+                        //console.log(window.getSelection().toString());
 
                         setEntityList([
                           ...entityList,
@@ -432,6 +450,9 @@ function VideoNote() {
   );
 
   return (
+
+
+    
     <div className="">
       <Navbar />
       {saveInfo ? (
@@ -476,17 +497,14 @@ function VideoNote() {
 
                   <div>
                     <button
-                      onClick={(e) => {
-                        setGotoggle(true);
-                        console.log(goToggle);
-                      }}
-                      className="btn btn-lg ml-1 btn-primary"
+                      onClick={handleVideo }
+                      className={`btn btn-lg ml-1 btn-primary ${loading?"loading":""}`}
                     >
                       Go
                     </button>
                     <button
                       onClick={(e) => {
-                       history.push("/library")
+                        history.push("/library");
                       }}
                       className="btn btn-lg ml-1 btn-primary"
                     >
@@ -513,7 +531,8 @@ function VideoNote() {
                       ></path>
                     </svg>
                     <label>
-                    Currently, only YouTube is supported. Other integrations, such as Zoom and Google Classroom, are on the way!
+                      Currently, only YouTube is supported. Other integrations,
+                      such as Zoom and Google classNameroom, are on the way!
                     </label>
                   </div>
                 </div>

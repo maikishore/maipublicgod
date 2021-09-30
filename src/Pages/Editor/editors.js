@@ -77,7 +77,7 @@ function Editors() {
   const [saveStatus, setSaveStatus] = React.useState(false);
   const [autosaveStatus, setAutoSaveStatus] = React.useState(false);
   const [level, setLevel] = React.useState();
-  const MINUTE_MS =180000 ;
+  const MINUTE_MS = 180000;
   const nodeRef = React.useRef();
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
@@ -157,10 +157,11 @@ function Editors() {
   const nlists = nlist.map((each, index) => {
     return (
       <li
-      key={index}
+        key={index}
         id={index}
         onClick={(e) => {
           setNlist((prevstate) => prevstate.filter((item) => item !== each));
+
           //console.log(nlist);
         }}
       >
@@ -177,7 +178,7 @@ function Editors() {
             d="M6 18L18 6M6 6l12 12"
           ></path>
         </svg>
-        <p className="badge badge-warning cursor-pointer">{each}</p>
+        <p className="badge badge-warning cursor-pointer">{each.split("-")[0]}</p>
       </li>
     );
   });
@@ -232,9 +233,9 @@ function Editors() {
                 <button
                   onClick={async (e) => {
                     if (titleRef.current.value.length <= 1) {
-                      nlist.push(uuid());
+                      nlist.push(params["id"]);
                     } else {
-                      nlist.push(titleRef.current.value);
+                      nlist.push(titleRef.current.value + "-" + params["id"]);
                     }
                     await postData("updatedoc", {
                       doc_id: params["id"].toString(),
@@ -302,7 +303,7 @@ function Editors() {
                       doc_id: params["id"].toString(),
                       user_id: currentUser.uid.toString(),
                       update: {
-                        title: titleRef.current.value,
+                        title: titleRef.current.value.length===0?"No Title":titleRef.current.value,
                         content: getTextFromEditor(editor.getJSON()),
                         timetoread: TimeToReadContent(editor.getJSON()),
                         type: "NOTES",

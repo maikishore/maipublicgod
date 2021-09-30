@@ -13,7 +13,12 @@ export default function MenuCard(props) {
    if(props.imgsrc.length<=0){
      imgsrcs=note
    }else {
-     imgsrcs=props.imgsrc
+     if(props.type==="WEB"){
+       imgsrcs=props.imgsrc
+     }
+      if(props.type==="VIDEO"){
+       imgsrcs=props.imgsrc
+     }
    }
  }
 
@@ -39,7 +44,7 @@ export default function MenuCard(props) {
         {props.nodes.map((each, index) => {
           return (
             <div key={index} className="badge bg-gray-600">
-              {Truncate(each, 12)}
+              {Truncate(each.split("-")[0], 12)}
             </div>
           );
         })}

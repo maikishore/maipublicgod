@@ -112,10 +112,11 @@ export default function MainLibrary(props) {
   }, [addToggle]);
 
   const contentcards = filterData.map((each, index) => {
+    
     return (
       <MenuCard
         key={index}
-        title={Truncate(each["title"], 24)}
+        title={each["title"].length===0?"No Title":Truncate(each["title"].split("-")[0], 24)}
         timetoread={each["timetoread"]}
         nodes={each["nodes"]}
         maiscore={each["maiscore"]}
