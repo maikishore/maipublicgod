@@ -76,7 +76,7 @@ function ReadEditor() {
 
   React.useEffect(() => {
     if (!loading) {
-      console.log(data[0]["jsons"]);
+
       editor.commands.insertContent(data[0]["html"]);
       titleRef.current.value = data[0]["title"];
       setNlist(data[0]["nodes"]);
@@ -160,7 +160,7 @@ function ReadEditor() {
         when={"shouldBlockNavigation"}
         message="You have unsaved changes, are you sure you want to leave?"
       />
-      <Navbar />
+
       {saveInfo ? (
         <InfoAlert
           message="Your Document Saved and Auto Saved Every 3 mins "

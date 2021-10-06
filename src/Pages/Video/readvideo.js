@@ -4,7 +4,7 @@ import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 
 import ReactPlayer from "react-player";
 import { Prompt, useParams } from "react-router";
-import Navbar from "../../Commons/Navbar/Navbar";
+
 import useAuth from "../../GlobalContexts/authcontext";
 import { postData } from "../../Services/post";
 import Nodes from "../Editor/components/Nodes";
@@ -418,7 +418,7 @@ React.useEffect(()=>{
 
   return (
     <div className="">
-      <Navbar />
+
       {alertToggle ? (
         <AlertDiv
           status="success"

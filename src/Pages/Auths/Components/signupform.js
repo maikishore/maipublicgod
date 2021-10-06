@@ -2,10 +2,12 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import ErrorAlert from "../../../Commons/ErrorAlert";
 import useAuth from "../../../GlobalContexts/authcontext";
+import { postDataMB } from "../../../Services/post";
 
 function SignUpForm() {
   const history = useHistory();
   const emailRef = React.useRef();
+  const nameRef = React.useRef();
   const passwordRef = React.useRef();
   const confirmpasswordRef = React.useRef();
 
@@ -23,7 +25,15 @@ function SignUpForm() {
         setErrorMessage("");
         setLoading(true);
 
-        await signup(emailRef.current.value, passwordRef.current.value);
+        const k=await signup(emailRef.current.value, passwordRef.current.value);
+   
+        await postDataMB("/createprofile",{
+          "_id":k['user']["uid"],
+          "email":emailRef.current.value,
+          "name":nameRef.current.value,
+          "age":"",
+          "limit":10,
+        })
         history.push("/login");
       } catch {
         setErrorMessage("Failed to create an account");
@@ -36,6 +46,17 @@ function SignUpForm() {
     <div className="card flex-shrink-0 w-full max-w-lg shadow-2xl bg-base-100">
       {errorMessage ? <ErrorAlert message={errorMessage} /> : ""}
       <div className="card-body  ">
+      <div className="form-control">
+          <label className="label">
+            <span className="label-text">Name</span>
+          </label>
+          <input
+            ref={nameRef}
+            type="email"
+            placeholder="email"
+            className="input input-bordered font-semibold"
+          />
+        </div>
         <div className="form-control">
           <label className="label">
             <span className="label-text">Email</span>
@@ -71,11 +92,11 @@ function SignUpForm() {
             Already have an acccount ?
             <button
               onClick={() => {
-                history.push("/signin");
+                history.push("/login");
               }}
               className="btn btn-link"
             >
-              Login In
+              Log In
             </button>
           </label>
         </div>

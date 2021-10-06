@@ -4,7 +4,7 @@ import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
 import uuid from 'react-uuid'
 import ReactPlayer from "react-player";
 import { Prompt, useHistory, useParams } from "react-router";
-import Navbar from "../../Commons/Navbar/Navbar";
+
 import useAuth from "../../GlobalContexts/authcontext";
 import { postData } from "../../Services/post";
 import Nodes from "../Editor/components/Nodes";
@@ -454,7 +454,7 @@ f()
 
     
     <div className="">
-      <Navbar />
+
       {saveInfo ? (
         <InfoAlert
           message="Your Document Saved and Auto Saved Every 3 mins "

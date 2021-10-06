@@ -2,11 +2,34 @@ import React from "react";
 import { useHistory } from "react-router";
 import logo from "../../Assets/maibrain_logo.png";
 import useAuth from "../../GlobalContexts/authcontext";
+import testavatar from "../../Assets/testavatar.svg";
+
+import { postDataMB } from "../../Services/post";
+import {
+  two,
+  three,
+  four,
+  five,
+  six,
+  seven,
+  eight,
+} from "../../Assets/avatars/avatars";
 
 function Navbar() {
+  const avatars = [two, three, four, five, six, seven, eight];
+  const { currentUser } = useAuth();
+  const history = useHistory();
+  const { logout } = useAuth();
+  const [avatarIndex, setAvatarIndex] = React.useState(0);
+  React.useEffect(() => {
+    const f = async () => {
+      const k = await postDataMB("/getprofile", { _id: currentUser.uid });
 
-  const history=useHistory();
-  const currentUser=useAuth();
+      setAvatarIndex(k["data"][0]["avatar"]);
+    };
+    f();
+  }, []);
+
   return (
     <div className="navbar mb-2 shadow-lg bg-neutral text-neutral-content ">
       <div className="flex-none  lg:flex"></div>
@@ -21,12 +44,17 @@ function Navbar() {
       </div>
       <div className="flex-1  lg:flex-none ">
         <div className="form-control">
-        <button onClick={()=>{
-history.push("/library")
-        }} className="btn btn-ghost">Home</button>
+          <button
+            onClick={() => {
+              history.push("/library");
+            }}
+            className="btn btn-ghost"
+          >
+            Home
+          </button>
         </div>
       </div>
-      
+
       <div className="flex-none">
         <button className="btn btn-square btn-ghost">
           <svg
@@ -50,26 +78,29 @@ history.push("/library")
             {" "}
             <div className="avatar">
               <div className="rounded-full w-10 h-10 m-1">
-                <img src="https://i.pravatar.cc/500?img=32" />
+                <img src={avatars[avatarIndex]} alt="#"/>
               </div>
             </div>
           </div>
           <ul className="shadow menu dropdown-content bg-gray-200 rounded-box w-52">
             <li>
-              <button onClick={(e)=>{
-
-              }} className="btn btn-ghost">Profile</button>
+              <button onClick={(e) => {
+                history.push("/profile")
+              }} className="btn btn-ghost">
+                Profile
+              </button>
             </li>
+           
             <li>
-              <button onClick={(e)=>{
-              
-              }} className="btn btn-ghost">Profile</button>
-            </li>
-            <li>
-              <button onClick={(e)=>{
- currentUser.logout()
- history.push("/login")
-              }} className="btn btn-ghost">Sign Out</button>
+              <button
+                onClick={(e) => {
+                  logout();
+                  history.push("/login");
+                }}
+                className="btn btn-ghost"
+              >
+                Sign Out
+              </button>
             </li>
           </ul>
         </div>

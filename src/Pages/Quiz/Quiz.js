@@ -1,17 +1,10 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import {
-  HiAnnotation,
-  HiOutlinePencil,
-  HiPencil,
-  HiPencilAlt,
-  HiQrcode,
-} from "react-icons/hi";
 import { FaQuestion, FaList, FaPuzzlePiece } from "react-icons/fa";
 import { BiBracket } from "react-icons/bi";
 
-import Navbar from "../../Commons/Navbar/Navbar";
+
 
 function QuizTypeCard(props) {
   return (
@@ -74,7 +67,7 @@ function Quiz() {
 
   return (
     <div class="bg-gray-200 h-screen">
-      <Navbar />
+  
 
       <div class="bg-white w-1/2 m-auto my-40 shadow-lg rounded-box text-center flex flex-col gap-4 items-center justify-center  ">
         <div class="stat-value py-2 ">Choose your quiz type</div>

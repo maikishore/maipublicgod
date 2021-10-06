@@ -20,11 +20,14 @@ import MainLibrary from "./Pages/Main/mainlibrary";
 import ReadEditor from "./Pages/Editor/readeditor";
 import ReadVideoNote from "./Pages/Video/readvideo";
 import LoadingDiv from "./Commons/LoadingDiv";
+import Navbar from "./Commons/Navbar/Navbar";
+import Dashborad from "./Pages/Dashboard/dashborad";
 
 
 
 
 function App() {
+
   return (
     <AuthProvider>
       <div className="App ">
@@ -37,13 +40,16 @@ function App() {
             <Route path="/signup" component={SignUp} />
             <Route path="/login" component={Login} />
             <Route path="/reset" component={Reset} />
-
-            <Route path="/note/:id" component={Editors} />
-            <Route path="/readnote/:id" component={ReadEditor} />
-            <Route path="/readvideonote/:id" component={ReadVideoNote} />
-            <Route path="/videonote/:id" component={VideoNote} />
+            <PrivateRoute path="/profile" component={Profile}  />
+           <div>
+             <Navbar />
+            <PrivateRoute path="/note/:id" component={Editors} />
+            <PrivateRoute path="/readnote/:id" component={ReadEditor} />
+            <PrivateRoute path="/readvideonote/:id" component={ReadVideoNote} />
+            <PrivateRoute path="/videonote/:id" component={VideoNote} />
+            <PrivateRoute path="/dashboard" component={Dashborad} />
      
-            <PrivateRoute path="/profile" component={Profile} />
+            
 
             <PrivateRoute path="/quiz/:id" component={Quiz} />
 
@@ -55,6 +61,10 @@ function App() {
             <PrivateRoute path="/library" component={MainLibrary} />
 
             <PrivateRoute path="/loading" component={LoadingDiv} />
+
+
+           </div>
+
           </Switch>
         </Router>
       </div>

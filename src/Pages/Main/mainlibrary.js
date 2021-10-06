@@ -6,13 +6,14 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { FaStickyNote } from "react-icons/fa";
 import MenuCard from "./components/menucard";
 import SelectCard from "./components/selectcard";
-import Navbar from "../../Commons/Navbar/Navbar";
+
 import { useHistory } from "react-router-dom";
 import Graph from "../Graph/graph";
 import { v4 as uuidv4 } from "uuid";
 import useAuth from "../../GlobalContexts/authcontext";
 import LoadingDiv from "../../Commons/LoadingDiv";
 import { Truncate } from "../../Commons/Truncate";
+import { postDataMB } from "../../Services/post";
 
 export default function MainLibrary(props) {
   const [typee, settypee] = React.useState("ALL");
@@ -23,6 +24,7 @@ export default function MainLibrary(props) {
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [deleteToggle, setDeleteToggle] = React.useState(false);
+  const [sizeCheck, setSizeCheck] = React.useState(true);
   const history = useHistory();
 
   const webUrlRef = React.useRef();
@@ -82,29 +84,45 @@ export default function MainLibrary(props) {
   }, [typee]);
 
   React.useEffect(() => {
-    switch (typee) {
-      case "ALL":
-        break;
+   const f=async()=>{
+     const k=await postDataMB("/getsize",{"user_id":currentUser.uid})
+     if(k['message']==="REACHED"){
+       setSizeCheck(false)
+     } else {
+       setSizeCheck(true)
+     }
+     return k
+   }
 
-      case "WEB":
-        setShowModal(true);
-        break;
 
-      case "VIDEO":
-        history.push("/videonote/" + uuidv4());
+f()
+if(sizeCheck){
+  switch (typee) {
+    case "ALL":
+      break;
 
-        break;
+    case "WEB":
+      setShowModal(true);
+      break;
 
-      case "BOOKS":
-        break;
+    case "VIDEO":
+      history.push("/videonote/" + uuidv4());
 
-      case "NOTES":
-        const urlid = uuidv4();
-        history.push("/note/" + urlid);
-        break;
-      default:
-    }
+      break;
 
+    case "BOOKS":
+      break;
+
+    case "NOTES":
+      const urlid = uuidv4();
+      history.push("/note/" + urlid);
+      break;
+    default:
+  }
+
+}
+
+  
     return () => {
       setaddToggle(false);
       setShowModal(false);
@@ -183,8 +201,16 @@ export default function MainLibrary(props) {
   );
   return (
     <div>
-      <Navbar />
 
+{sizeCheck?null
+:<div className="alert alert-error">
+<div className="flex-1">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current">    
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>                      
+  </svg> 
+  <label>It appears that you have reached your free 10 MB limit. Contact us if you want to push your limits.. </label>
+</div>
+</div>}
       {graphToggle ? (
         <Graph togglePage={pageshift} data={data} />
       ) : (
@@ -264,7 +290,7 @@ export default function MainLibrary(props) {
           <div className="mt-6 flex flex-col overflow-hidden">
             <div className="flex justify-end mr-2">{pageshift}</div>
 
-            <div className="flex flex-wrap justify-center gap-8 items-center flex-row text-center">
+            <div className="mb-8 flex flex-wrap justify-center gap-8 items-center flex-row text-center">
               <SelectCard
                 clickFunc={(e) => {
                   settypee("ALL");
@@ -309,7 +335,7 @@ export default function MainLibrary(props) {
               />
             </div>
 
-            <div className="  overflow-y-auto m-6 flex flex-wrap h-screen  justify-start">
+            <div className="  overflow-y-auto m-6 flex flex-wrap h-screen my-4  justify-start">
               {loading ? (
                 <div className="flex w-full    items-center justify-center">
                   <LoadingDiv />
@@ -321,6 +347,8 @@ export default function MainLibrary(props) {
           </div>
         </div>
       )}
+
+      
     </div>
   );
 }

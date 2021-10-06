@@ -1,6 +1,4 @@
-import React from "react";
-import Navbar from "../../../Commons/Navbar/Navbar";
-import OptionCard from "./components/optioncard";
+import React from "react";import OptionCard from "./components/optioncard";
 import McqCard from "./mcqcard";
 
 import { useRef, useEffect } from 'react';
@@ -44,7 +42,7 @@ function Mcqq() {
 
   return (
     <div>
-      <Navbar />
+
       <McqCard data={data} question={data[0].question} />
     </div>
   );
@@ -210,7 +208,7 @@ useEffect(() => {
 
   return (
     <div className=" ">
-      <Navbar />
+
       <div className=""></div>
       <div
         style={{ height: "80vh" }}

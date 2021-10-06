@@ -1,7 +1,15 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+
 import ErrorAlert from "../../Commons/ErrorAlert";
 import useAuth from "../../GlobalContexts/authcontext";
+import { two ,three,four,five,six,seven,eight} from "../../Assets/avatars/avatars";
+
+import {FaCheckCircle} from "react-icons/fa";
+import { postDataMB } from "../../Services/post";
+import AlertDiv from "../../Commons/AlertDiv";
+import Navbar from "../../Commons/Navbar/Navbar";
+
 
 const styles = {
   update_profile_container:
@@ -15,28 +23,38 @@ const styles = {
   logout_button: "",
 };
 
-function Profile() {
+
+
+
+
+function Profile(props) {
   const classNamees = styles;
-  const [errorMessage, setErrorMessage] = React.useState("");
-  const { currentUser, logout, updateEmail } = useAuth();
+  const [errorMessage, setErrorMessage] = React.useState(false);
+  const [imageIndex, setImageIndex] = React.useState(1);
+  
+  const [value,setValue] = React.useState();
+  const { currentUser, logout,  } = useAuth();
   const history = useHistory();
   const emailRef = React.useRef();
+  const nameRef = React.useRef();
+  const ageRef = React.useRef();
   const [loading, setLoading] = React.useState(false);
-
+  const [updateCheck, setUpdateCheck] = React.useState(false);
   async function handleLogout() {
     setErrorMessage("");
     setLoading(true);
     try {
       await logout();
       history.push("/login");
-      console.log("logged out");
+
     } catch {
       setErrorMessage("Failed to logout ");
-      console.log("not logged out");
+     
     }
     setLoading(false);
   }
-
+  
+/*
   async function handleUpdate() {
     setErrorMessage("");
     try {
@@ -45,18 +63,80 @@ function Profile() {
     } catch {
       setErrorMessage("Failed to update profile ");
     }
-  }
+  }*/
+const x=[two ,three,four,five,six,seven,eight]
 
+
+
+
+
+
+
+
+
+React.useEffect(()=>{
+
+
+const f=async()=>{
+  await postDataMB("/updateprofile",
+
+ {"_id":currentUser.uid,"update" :{
+    "name":nameRef.current.value,
+"age":ageRef.current.value,
+"avatar":imageIndex}}
+  )
+
+}
+ 
+if(updateCheck){
+  f()
+  setUpdateCheck(false)
+  setErrorMessage(true)
+
+}
+
+return ()=>{}
+},[updateCheck])
+
+
+
+
+const avatars=x.map((each,index)=>{
   return (
+    <div class="my-6 avatar indicator">
+     {imageIndex===index?<div class="indicator-item badge bg-green-400"><FaCheckCircle /></div> :null}
+      <div class="w-24 h-24 rounded-btn">
+        <img className="btn btn-circle btn-ghost" src={each} alt={each} onClick={(e)=>{
+          setImageIndex(index)
+        }}/>
+      </div>
+    </div>
+    )
+})
+  return (
+    <div>
+  {props.navbar}
+      {errorMessage ?   <AlertDiv status="success" message="Sucessfully Updated" closefunc={(e)=>{
+    setErrorMessage(false)
+  }}/> : null}
     <div className={classNamees.update_profile_container}>
-      {errorMessage ? <ErrorAlert message={errorMessage} /> : ""}
+  
+   
 
-      <div className="card w-1/3 h-2/3 text-center shadow-2xl">
-        <figure className="px-10 pt-10">
-          <img src="https://picsum.photos/id/1005/400/250" className="rounded-xl" />
-        </figure>
+      <div className="card w-1/2 h-2/3 text-center shadow-2xl">
+        <div className="flex flex-col">
+        <div className="flex flex-row items-center justify-center">   
+
+{avatars}
+
+</div>
+<h1>Pick your avatar</h1>
+
+        </div>
+       
+  
         <div className="card-body">
-          <div className="form-control">
+        <div className="form-control">
             <label className="label">
               <span className="label-text">Email</span>
             </label>
@@ -68,13 +148,53 @@ function Profile() {
             />
           </div>
 
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Name</span>
+            </label>
+            <input
+              ref={nameRef}
+              type="text"
+              
+              className="input input-bordered"
+            />
+          </div>
+
+
+      
+
+
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Age</span>
+            </label>
+            <input
+              ref={ageRef}
+              type="text"
+              
+              className="input input-bordered"
+            />
+          </div>
           <div className="justify-evenly card-actions">
             <button
               disabled={loading}
-              onClick={handleUpdate}
+              onClick={(e)=>{
+                setUpdateCheck(true)
+              }}
               className="btn btn-outline btn-primary"
             >
               Update
+            </button>
+
+            <button
+              disabled={loading}
+              onClick={(e) => {
+             history.push("/library")
+              }}
+              className="btn btn-outline btn-warning hover:bg-green-300"
+            >
+              Home
             </button>
             <button
               disabled={loading}
@@ -88,6 +208,7 @@ function Profile() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

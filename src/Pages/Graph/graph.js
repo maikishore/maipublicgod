@@ -38,6 +38,7 @@ function Graph(props) {
                       window.open(props["source_"], "_blank");
                     }
                     if (props["type_"] === "NOTES") {
+                      
                       history.push("readnote/" + props["id_"]);
                     }
 
@@ -284,21 +285,24 @@ function Graph(props) {
               onClick={(e) => {
                 setQuery(!query);
               }}
-              className="mx-1 btn btn-outline bg-green-400"
+              className="mx-1 btn btn-outline bg-green-400 hover:bg-green-500"
             >
               Query
             </button>
-
+            <div data-tip="Reset" class="tooltip  tooltip-bottom ">
             <button
               onClick={(e) => {
                 queryRef.current.value = "";
                 queryTypeRef.current.value = "Type";
                 setQuery(!query);
               }}
-              className="mx-1 btn btn-outline bg-red-400 hover:bg-red-300"
+              className="mx-1 btn btn-outline bg-red-300 hover:bg-red-300"
             >
+
               <BiReset />
+             
             </button>
+            </div>
           </div>
 
           <div className="flex w-1/4 justify-end items-baseline ">
@@ -340,19 +344,15 @@ function Graph(props) {
             edges: {
               width: 2,
               shadow: true,
-              smooth: {
-                forceDirection: "none",
-              },
+            
               
             },
-
             physics: {
-              minVelocity: 0.75,
-              timestep: 0.51,
-              barnesHut: {
-                centralGravity: 0.5,
-              },
+              stabilization: false,
             },
+            configure: true,
+
+            
           }}
         >
           {graph}

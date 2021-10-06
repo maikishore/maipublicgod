@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../../Commons/Navbar/Navbar";
+
 
 import Nodes from "./components/Nodes";
 import Notecard from "./components/Notecard";
@@ -9,7 +9,8 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import { Prompt } from "react-router";
-import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
+import { FaVolumeUp, FaVolumeMute,FaShareAlt } from "react-icons/fa";
+
 
 import Subscript from "@tiptap/extension-subscript";
 
@@ -21,12 +22,13 @@ import TextStyle from "@tiptap/extension-text-style";
 import FontFamily from "@tiptap/extension-font-family";
 import Speak from "../../Services/tts";
 import { useParams } from "react-router";
-import { postData } from "../../Services/post";
+import { postData ,postDataMB} from "../../Services/post";
 import useAuth from "../../GlobalContexts/authcontext";
 import AlertDiv from "../../Commons/AlertDiv";
 import InfoAlert from "../../Commons/InfoAlert";
 import uuid from "react-uuid";
 import TimeToReadContent from "../../Commons/TimeToRead";
+
 
 const styles = {
   iconactive: "mx-1 px-2 py-2  bg-gray-400 shadow btn btn-ghost",
@@ -76,19 +78,30 @@ function Editors() {
   const [saveInfo, setSaveInfo] = React.useState(false);
   const [saveStatus, setSaveStatus] = React.useState(false);
   const [autosaveStatus, setAutoSaveStatus] = React.useState(false);
+   const [collabStatus, setcollabStatus] = React.useState(false);
   const [level, setLevel] = React.useState();
   const MINUTE_MS = 180000;
   const nodeRef = React.useRef();
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
+  const shareidRef = React.useRef();
+  const sharepasswordRef = React.useRef();
   const params = useParams();
   const { currentUser } = useAuth();
+  const [shareid]=React.useState(uuid().toString()+"$$-?-$$"+params["id"].toString())
+  const [sharepassword]=React.useState(uuid())
+
+
+
+
+
 
   React.useEffect(() => {
     const f = () => {
       postData("create", {
         doc_id: params["id"].toString(),
         user_id: currentUser.uid.toString(),
+        sharedata:{shareid:shareid,sharepassword:sharepassword},
 
         title: titleRef.current.value,
         content: "",
@@ -112,6 +125,48 @@ function Editors() {
     f();
     return () => {};
   }, []);
+
+
+
+
+
+  React.useEffect(() => {
+  
+    const f = async() => {
+      if(shareidRef.current.value.length!==0 && sharepasswordRef.current.value.length!==0){
+
+      
+   const k=  await postDataMB("readcollabnote", {
+      sharedata:{shareid:shareidRef.current.value,sharepassword:sharepasswordRef.current.value},
+      })
+      console.log("kk",k)
+    
+   if(k["message"]!=="" ){
+    if(k["message"]==="success"){
+      console.log(k["data"][0])
+editor.commands.insertContent(k["data"][0]["html"]);
+titleRef.current.value=k["data"][0]["title"]
+setNlist(k["data"][0]["nodes"])
+    
+  };
+   }
+   }
+
+  }
+      if(collabStatus){
+        try{
+          f()
+        }
+        catch {
+
+        }
+        setcollabStatus(false)
+      
+    }
+    return () => {};
+  }, [collabStatus]);
+
+
 
   React.useEffect(() => {
     const f = async () => {
@@ -147,12 +202,20 @@ function Editors() {
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
   }, [autosaveStatus]);
 
+
+
+
   React.useEffect(() => {
     if (nodeRef.current.value.length !== 0) {
       setNlist((prevstate) => [...prevstate, nodeRef.current.value]);
       //console.log(nlist);
     }
+    return ()=>{}
   }, [nodeCheck]);
+
+
+
+
 
   const nlists = nlist.map((each, index) => {
     return (
@@ -194,7 +257,7 @@ function Editors() {
   return (
     <div className="">
       <Prompt message="You have unsaved changes, are you sure you want to leave?" />
-      <Navbar />
+
 
       {saveInfo ? (
         <InfoAlert
@@ -280,7 +343,56 @@ function Editors() {
               }}
             />
 
-            <div className="m-2 flex items-start justify-center ">
+            <div className="m-2 flex items-center justify-center gap-2">
+   
+          
+<div class="w-full ">
+<div class="dropdown dropdown-end">
+  <div tabindex="0" class="m-1 btn btn-sm"><FaShareAlt /></div> 
+  <ul tabindex="0" class="p-2 w-96 shadow menu dropdown-content bg-base-100 rounded-box ">
+    <li className=" w-96 ">
+    <div class="p-2 w-96 flex flex-col gap-2">
+   
+   
+   <div className="flex flex-row items-baseline justify-start gap-2">
+     <h1>Share ID</h1>
+   <kbd class="kbd">{shareid}</kbd>  
+   </div>
+
+   <div className="flex flex-row items-baseline justify-start gap-2">
+     <h1>Password</h1>
+   <kbd class="kbd">{sharepassword}</kbd>  
+
+   </div>
+
+
+   <div class="form-control">
+
+  <div class="flex flex-col items-baseline justify-center mt-5 gap-2">
+  <input ref={shareidRef} type="text" placeholder="Share ID" class="w-full input input-info input-bordered" />    
+  <input ref={sharepasswordRef} type="text" placeholder="Password" class="w-full input input-info input-bordered"/> 
+    <button class=" btn btn-primary" onClick={(e)=>{
+      setcollabStatus(true)
+    }}>Get Notes</button>
+  </div>
+</div> 
+   
+   
+   
+   
+   
+  </div>
+
+    </li> 
+  
+  </ul>
+</div>
+</div>
+
+  
+
+      
+
               <button
                 onClick={(e) => {
                   //console.log(speakToggle);
@@ -290,6 +402,9 @@ function Editors() {
               >
                 {speakToggle ? <FaVolumeMute /> : <FaVolumeUp />}
               </button>
+
+
+
             </div>
           </div>
           <div className="flex justify-center items-baseline">

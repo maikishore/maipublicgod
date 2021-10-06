@@ -19,6 +19,10 @@ export default function MenuCard(props) {
       if(props.type==="VIDEO"){
        imgsrcs=props.imgsrc
      }
+     if(props.type==="NOTES"){
+      imgsrcs=props.imgsrc
+     
+    }
    }
  }
 
