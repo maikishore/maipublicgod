@@ -6,7 +6,7 @@ import ReactPlayer from "react-player";
 import { Prompt, useHistory, useParams } from "react-router";
 
 import useAuth from "../../GlobalContexts/authcontext";
-import { postData } from "../../Services/post";
+import { postData, postDataMB, postDataML } from "../../Services/post";
 import Nodes from "../Editor/components/Nodes";
 import Notecard from "../Editor/components/Notecard";
 import { v4 as uuidv4 } from "uuid";
@@ -34,7 +34,8 @@ function VideoNote() {
 
   const [alertToggle, setAlertToggle] = React.useState(false);
   const [loading,setLoading]=React.useState(false)
-  const [level, setLevel] = React.useState();
+  const [mode,setMode]=React.useState(false)
+  const [level, setLevel] = React.useState(0);
   const [goToggle, setGotoggle] = React.useState(false);
   const titleRef = React.useRef();
   const NotetitleRef = React.useRef();
@@ -59,6 +60,7 @@ function VideoNote() {
       }
     );
     setLoading(false)
+  
     //console.log("Function Called")
     return response.json();
   };
@@ -72,10 +74,10 @@ function VideoNote() {
 
   React.useEffect(() => {
     const f = () => {
-      postData("create", {
+      postDataMB("create", {
         doc_id: params["id"].toString(),
         user_id: currentUser.uid.toString(),
-
+        sharedata:[],
         title: ""+"-"+params["id"].toString(),
         content: "",
         type: "VIDEO",
@@ -87,14 +89,17 @@ function VideoNote() {
         public: false,
         mentions: [],
         thumbnailimage: [],
-        timetoread:""
+        timetoread:"",
+      
       }).then((data) => {
+
       //console.log("doc created"); // JSON data parsed by `data.json()` call
       });
     };
 
     f();
-    return () => {};
+    return ()=>{}
+   
   }, []);
 
 React.useEffect(()=>{
@@ -105,6 +110,11 @@ React.useEffect(()=>{
       //console.log("Captions  Called")
       setSubtitlesText(x["captions"]);
       setShowPage(true)
+      if(x["mode"]===true){
+        setMode(true)
+      } else {
+        setMode(false)
+      }
     } else {
       setSubtitlesText([
         {
@@ -133,14 +143,6 @@ f()
           setPlayUrl(t);
         }
 
-      
-
-
-
-
- 
-
-
     
 
     }
@@ -158,7 +160,7 @@ f()
             color < each.start ? "bg-white" : "bg-gray-300 shadow-lg"
           } inline`}
         >
-          {each.text.toUpperCase() + " "}
+          {each.text + " "}
         </p>
       );
     })
@@ -234,7 +236,7 @@ f()
                     nlist.push(titleRef.current.value+"-"+params['id']);
                     setNlist(nlist)
                   }
-                  await postData("updatedoc", {
+                  await postDataMB("updatedoc", {
                     doc_id: params["id"].toString(),
                     user_id: currentUser.uid.toString(),
                     update: {
@@ -246,7 +248,7 @@ f()
                       nodes: [...new Set(nlist)],
                       source: playUrl,
                       notes: [],
-
+                      sharedata:[],
                       html: "",
                       updates: [],
                       public: false,
@@ -351,7 +353,7 @@ f()
                           note_title: NotetitleRef.current.value,
                           entities: entityList,
                           level: level,
-                          content: noteText + ".",
+                          content: noteText,
                         }).then((data) => {
                           setAlertToggle(true);
 
@@ -400,8 +402,13 @@ f()
                 <div
                   className="btn btn-primary"
                   onClick={async (e) => {
+              
                     setPlay(false);
-                    setNoteText(window.getSelection().toString());
+                    const noteGrammertext=await postDataML("grammer",{
+                      note:window.getSelection().toString()
+                    })
+                    console.log(noteGrammertext)
+                    setNoteText(noteGrammertext["note"]);
                     setWidth(false);
 
                     const getEntities = async (notedata) => {
@@ -428,6 +435,8 @@ f()
                       const x = await getEntities(
                         window.getSelection().toString()
                       );
+                     
+
 
                       setEntityList(x["entities"]);
                     } catch {

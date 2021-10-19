@@ -152,7 +152,7 @@ function Graph(props) {
         key="maibrain"
         id="Maibrain"
         label={"Maibrain"}
-        fixed={false}
+        fixed={true}
         size={30}
         shadow={true}
         icon={GiBrain}

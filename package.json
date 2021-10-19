@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
+    "@pdftron/webviewer": "^8.1.0",
     "@tailwindcss/typography": "^0.4.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -27,6 +28,7 @@
     "dotenv": "^10.0.0",
     "firebase": "^8.8.0",
     "pdf-viewer-reactjs": "^2.2.3",
+    "pdfjs-dist": "^2.6.347",
     "react": "^17.0.2",
     "react-card-flip": "^1.1.1",
     "react-copy-to-clipboard": "^5.0.4",
